@@ -23,7 +23,9 @@ import shop.common.interfaces.ShopInterface;
 import shop.common.valueobjects.Artikel;
 import shop.common.valueobjects.Kunde;
 import shop.common.valueobjects.Mitarbeiter;
+import shop.common.valueobjects.MitarbeiterFunktion;
 import shop.common.valueobjects.Person;
+import shop.common.valueobjects.PersonTyp;
 import shop.common.valueobjects.Rechnung;
 import shop.common.valueobjects.WarenkorbArtikel;
 
@@ -107,15 +109,6 @@ public class ShopFassade implements ShopInterface {
 	}
 
 	@Override
-	public void artikelBestandErhoehen(Mitarbeiter mitarbeiter,
-			int artikelnummer, int anzahl)
-			throws ArtikelExistiertNichtException, IOException,
-			ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public List<Artikel> gibAlleArtikelSortiertNachArtikelnummer() {
 		// TODO Auto-generated method stub
 		return null;
@@ -189,14 +182,6 @@ public class ShopFassade implements ShopInterface {
 	}
 
 	@Override
-	public void fuegeMitarbeiterHinzu(int id, String username, String passwort,
-			String name) throws MitarbeiterExistiertBereitsException,
-			UsernameExistiertBereitsException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void schreibeMitarbeiter() throws IOException {
 		// TODO Auto-generated method stub
 		
@@ -223,15 +208,6 @@ public class ShopFassade implements ShopInterface {
 
 	@Override
 	public void kundenLoeschen(Kunde k) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void fuegeKundenHinzu(int id, String username, String passwort,
-			String name, String strasse, int plz, String wohnort)
-			throws KundeExistiertBereitsException,
-			UsernameExistiertBereitsException {
 		// TODO Auto-generated method stub
 		
 	}
@@ -285,8 +261,51 @@ public class ShopFassade implements ShopInterface {
 
 	@Override
 	public Person pruefeLogin(String username, String password) {
-		// TODO Auto-generated method stub
-		return null;
+		Person p = null;
+		sout.println("pl");
+		sout.println(username);
+		sout.println(password);
+		String antwort = "?";
+		try {
+			// PersonTyp
+			antwort = sin.readLine();
+			PersonTyp personTyp = PersonTyp.valueOf(antwort);
+			// ID
+			antwort = sin.readLine();
+			int id = Integer.parseInt(antwort);
+			// Name
+			antwort = sin.readLine();
+			String name = antwort;
+			switch(personTyp) {
+				case Kunde: 
+					// Strasse
+					antwort = sin.readLine();
+					String strasse = antwort;
+					// Postleitzahl
+					antwort = sin.readLine();
+					int plz = Integer.parseInt(antwort);
+					// Wohnort
+					antwort = sin.readLine();
+					String wohnort = antwort;
+					p = new Kunde(id, username, password, name, strasse, plz, wohnort); 
+					break;
+				case Mitarbeiter: 
+					// MitarbeiterFunktion
+					antwort = sin.readLine();
+					MitarbeiterFunktion funktion = MitarbeiterFunktion.valueOf(antwort);
+					// Gehalt
+					antwort = sin.readLine();
+					double gehalt = Double.valueOf(antwort);
+					p = new Mitarbeiter(id, username, password, name, funktion, gehalt);
+					break;
+				default: 
+					break;
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return null;
+		}
+		return p;
 	}
 
 	@Override
@@ -309,6 +328,65 @@ public class ShopFassade implements ShopInterface {
 
 	@Override
 	public String gibLogDatei() throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void artikelBestandVeraendern(Mitarbeiter mitarbeiter,
+			int artikelnummer, int anzahl)
+			throws ArtikelExistiertNichtException,
+			ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void artikelBearbeiten(int artikelnummer, double preis,
+			String bezeichnung) throws ArtikelExistiertNichtException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void fuegeMitarbeiterHinzu(String username, String passwort,
+			String name, MitarbeiterFunktion funktion, double gehalt)
+			throws MitarbeiterExistiertBereitsException,
+			UsernameExistiertBereitsException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mitarbeiterBearbeiten(int id, String passwort, String name,
+			MitarbeiterFunktion funktion, double gehalt, boolean blockiert)
+			throws MitarbeiterExistiertNichtException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void kundenBearbeiten(int id, String passwort, String name,
+			String strasse, int plz, String wohnort, boolean blockiert)
+			throws KundeExistiertNichtException {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void fuegeKundenHinzu(String username, String passwort, String name,
+			String strasse, int plz, String wohnort)
+			throws KundeExistiertBereitsException,
+			UsernameExistiertBereitsException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+	@Override
+	public Kunde loginVergessen(String name, String strasse, int zip,
+			String wohnort) {
 		// TODO Auto-generated method stub
 		return null;
 	}
