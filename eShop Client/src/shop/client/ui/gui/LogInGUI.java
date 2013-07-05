@@ -1,6 +1,3 @@
-/**
- * 
- */
 package shop.client.ui.gui;
 
 import static java.awt.GridBagConstraints.CENTER;
@@ -688,7 +685,8 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 			try {
 				port = Integer.parseInt(args[1]);
 			} catch (NumberFormatException e) {
-				System.out.println("Aufruf: java BibClientGUI [<hostname> [<port>]]");
+				System.out
+						.println("Aufruf: java BibClientGUI [<hostname> [<port>]]");
 				System.exit(0);
 			}
 		}

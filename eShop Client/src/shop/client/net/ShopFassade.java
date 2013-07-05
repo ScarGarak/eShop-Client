@@ -1,3 +1,4 @@
+
 package shop.client.net;
 
 import java.io.BufferedReader;
@@ -28,6 +29,7 @@ import shop.common.valueobjects.Person;
 import shop.common.valueobjects.PersonTyp;
 import shop.common.valueobjects.Rechnung;
 import shop.common.valueobjects.WarenkorbArtikel;
+
 
 /**
  * Klasse mit Fassade des Shops auf Client-Seite.
@@ -84,19 +86,26 @@ public class ShopFassade implements ShopInterface {
 	}
 
 	@Override
-	public void fuegeArtikelEin(Mitarbeiter mitarbeiter, int artikelnummer, String bezeichnung, double preis, int bestand) throws ArtikelExistiertBereitsException {
+	public void fuegeArtikelEin(Mitarbeiter mitarbeiter, int artikelnummer,
+			String bezeichnung, double preis, int bestand)
+			throws ArtikelExistiertBereitsException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void fuegeMassengutartikelEin(Mitarbeiter mitarbeiter, int artikelnummer, String bezeichnung, double preis, int packungsgroesse, int bestand) throws ArtikelExistiertBereitsException, ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
+	public void fuegeMassengutartikelEin(Mitarbeiter mitarbeiter,
+			int artikelnummer, String bezeichnung, double preis,
+			int packungsgroesse, int bestand)
+			throws ArtikelExistiertBereitsException,
+			ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public Artikel gibArtikel(int artikelnummer) throws ArtikelExistiertNichtException {
+	public Artikel gibArtikel(int artikelnummer)
+			throws ArtikelExistiertNichtException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -155,143 +164,6 @@ public class ShopFassade implements ShopInterface {
 		
 	}
 
-	////////// Mitarbeiter Methoden ////////// 
-	
-	@Override
-	public Mitarbeiter sucheMitarbeiter(int id) throws MitarbeiterExistiertNichtException {
-		Mitarbeiter m = null;
-		sout.println("mf");
-		sout.println(id);
-		String antwort = "?";
-		try{
-			antwort = sin.readLine();
-			if(antwort.equals("MitarbeiterExistiertNicht"))
-				throw new MitarbeiterExistiertNichtException(id, " - beim Empfangen der Daten!");
-			
-			//id
-			// Wird nicht gebraucht
-			//Username
-			String username = sin.readLine();
-			//Passwort
-			String passwort = sin.readLine();
-			//Name
-			String name = sin.readLine();
-			//Funktion
-			MitarbeiterFunktion funktion = MitarbeiterFunktion.valueOf(sin.readLine());
-			//Gehalt
-			double gehalt = Double.parseDouble(sin.readLine());
-			//Blockiert
-			boolean blockiert = Boolean.valueOf(sin.readLine());
-			
-			m = new Mitarbeiter(id, username, passwort, name, funktion, gehalt);
-			m.setBlockiert(blockiert);
-		}catch(Exception e){
-			System.err.println(e.getMessage());
-			return null;
-		}
-		return m;
-	}
-
-	@Override
-	public Vector<Mitarbeiter> gibAlleMitarbeiter() {
-		Vector<Mitarbeiter> mitarbeiterListe = new Vector<Mitarbeiter>();
-		Mitarbeiter m = null;
-		sout.println("ma");
-		
-		try{
-			int size = Integer.parseInt(sin.readLine());
-			
-			for(int i = 0; i < size ; i++){
-				//id
-				int id = Integer.parseInt(sin.readLine());
-				//Username
-				String username = sin.readLine();
-				//Passwort
-				String passwort = sin.readLine();
-				//Name
-				String name = sin.readLine();
-				//Funktion
-				MitarbeiterFunktion funktion = MitarbeiterFunktion.valueOf(sin.readLine());
-				//Gehalt
-				double gehalt = Double.parseDouble(sin.readLine());
-				//Blockiert
-				boolean blockiert = Boolean.valueOf(sin.readLine());
-				
-				m = new Mitarbeiter(id, username, passwort, name, funktion, gehalt);
-				m.setBlockiert(blockiert);
-				mitarbeiterListe.add(m);
-			}
-			
-		}catch(Exception e){
-			System.err.println(e.getMessage());
-			return null;
-		}
-		return mitarbeiterListe;
-	}
-
-	@Override
-	public void fuegeMitarbeiterHinzu(String username, String passwort, String name, MitarbeiterFunktion funktion, double gehalt) throws MitarbeiterExistiertBereitsException, UsernameExistiertBereitsException {
-		sout.println("me");
-		sout.println(username);
-		sout.println(passwort);
-		sout.println(name);
-		sout.println(funktion);
-		sout.println(gehalt);
-		
-		String antwort = "?";
-		try{
-			antwort = sin.readLine();
-			if(antwort.equals("MitarbeiterExistiertBereits")){
-				throw new MitarbeiterExistiertBereitsException(new Mitarbeiter(-1, "?", "?", "?", MitarbeiterFunktion.Mitarbeiter, 0), " - in ShopFassade (Einfugen von Mitarbeiter)!");
-			}else if(antwort.equals("UsernameExistiertBereits")){
-				throw new UsernameExistiertBereitsException(username, " - in ShopFassade (Einfugen von Mitarbeiter)!");
-			}
-			// OK
-			
-		}catch(Exception e){
-			System.err.println(e.getMessage());
-			return;
-		}
-	}
-
-	@Override
-	public void mitarbeiterBearbeiten(int id, String passwort, String name, MitarbeiterFunktion funktion, double gehalt, boolean blockiert) throws MitarbeiterExistiertNichtException {
-		sout.println("mb");
-		sout.println(id);
-		sout.println(passwort);
-		sout.println(name);
-		sout.println(funktion);
-		sout.println(gehalt);
-		sout.println(blockiert);
-		
-		String antwort = "?";
-		try{
-			antwort = sin.readLine();
-			if(antwort.equals("MitarbeiterExistiertNicht")){
-				throw new MitarbeiterExistiertNichtException(id, " - in ShopFassade (Mitarbeiter Bearbeiten)!");
-			}
-			// OK
-			
-		}catch(Exception e){
-			System.err.println(e.getMessage());
-			return;
-		}
-	}
-
-	@Override
-	public void mitarbeiterLoeschen(Mitarbeiter m) {
-		sout.println("ml");
-		sout.println(m.getId());
-	}
-
-	@Override
-	public void schreibeMitarbeiter() throws IOException {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	//////// Kunden Methoden ////////
-
 	@Override
 	public Kunde sucheKunde(int id) throws KundeExistiertNichtException {
 		// TODO Auto-generated method stub
@@ -317,31 +189,42 @@ public class ShopFassade implements ShopInterface {
 	}
 
 	@Override
-	public void inDenWarenkorbLegen(Kunde kunde, Artikel artikel, int stueckzahl) throws ArtikelBestandIstZuKleinException, ArtikelExistiertNichtException, ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
+	public void inDenWarenkorbLegen(Kunde kunde, Artikel artikel, int stueckzahl)
+			throws ArtikelBestandIstZuKleinException,
+			ArtikelExistiertNichtException,
+			ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void ausDemWarenkorbHerausnehmen(Kunde kunde, Artikel artikel) throws ArtikelExistiertNichtException, ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
+	public void ausDemWarenkorbHerausnehmen(Kunde kunde, Artikel artikel)
+			throws ArtikelExistiertNichtException,
+			ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
 		// TODO Auto-generated method stub
 		
 	}
 	
 	@Override
-	public void stueckzahlAendern(Kunde kunde, WarenkorbArtikel warenkorbArtikel, int neueStueckzahl) throws ArtikelBestandIstZuKleinException, ArtikelExistiertNichtException, ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
+	public void stueckzahlAendern(Kunde kunde,
+			WarenkorbArtikel warenkorbArtikel, int neueStueckzahl)
+			throws ArtikelBestandIstZuKleinException,
+			ArtikelExistiertNichtException,
+			ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public Rechnung kaufen(Kunde kunde) throws IOException, WarenkorbIstLeerException {
+	public Rechnung kaufen(Kunde kunde) throws IOException,
+			WarenkorbIstLeerException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void leeren(Kunde k) throws ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
+	public void leeren(Kunde k)
+			throws ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
 		// TODO Auto-generated method stub
 		
 	}
@@ -395,9 +278,6 @@ public class ShopFassade implements ShopInterface {
 		return p;
 	}
 
-	
-	//////// Ereignis Methoden ////////
-	
 	@Override
 	public void schreibeEreignisse() throws IOException {
 		// TODO Auto-generated method stub
@@ -422,36 +302,199 @@ public class ShopFassade implements ShopInterface {
 		return null;
 	}
 
+	@Override
+	public void artikelBestandVeraendern(Mitarbeiter mitarbeiter,
+			int artikelnummer, int anzahl)
+			throws ArtikelExistiertNichtException,
+			ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void artikelBearbeiten(int artikelnummer, double preis,
+			String bezeichnung) throws ArtikelExistiertNichtException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	//////////Mitarbeiter Methoden ////////// 
+
+	@Override
+	public Mitarbeiter sucheMitarbeiter(int id) throws MitarbeiterExistiertNichtException {
+		Mitarbeiter m = null;
+		sout.println("mf");
+		sout.println(id);
+		String antwort = "?";
+		try{
+			antwort = sin.readLine();
+			if(antwort.equals("MitarbeiterExistiertNicht"))
+				throw new MitarbeiterExistiertNichtException(id, " - beim Empfangen der Daten!");
+
+			//id
+			// Wird nicht gebraucht
+			//Username
+			String username = sin.readLine();
+			//Passwort
+			String passwort = sin.readLine();
+			//Name
+			String name = sin.readLine();
+			//Funktion
+			MitarbeiterFunktion funktion = MitarbeiterFunktion.valueOf(sin.readLine());
+			//Gehalt
+			double gehalt = Double.parseDouble(sin.readLine());
+			//Blockiert
+			boolean blockiert = Boolean.valueOf(sin.readLine());
+
+			m = new Mitarbeiter(id, username, passwort, name, funktion, gehalt);
+			m.setBlockiert(blockiert);
+		}catch(Exception e){
+			System.err.println(e.getMessage());
+			return null;
+		}
+		return m;
+	}
+
+	@Override
+	public Vector<Mitarbeiter> gibAlleMitarbeiter() {
+		Vector<Mitarbeiter> mitarbeiterListe = new Vector<Mitarbeiter>();
+		Mitarbeiter m = null;
+		sout.println("ma");
+
+		try{
+			int size = Integer.parseInt(sin.readLine());
+
+			for(int i = 0; i < size ; i++){
+				//id
+				int id = Integer.parseInt(sin.readLine());
+				//Username
+				String username = sin.readLine();
+				//Passwort
+				String passwort = sin.readLine();
+				//Name
+				String name = sin.readLine();
+				//Funktion
+				MitarbeiterFunktion funktion = MitarbeiterFunktion.valueOf(sin.readLine());
+				//Gehalt
+				double gehalt = Double.parseDouble(sin.readLine());
+				//Blockiert
+				boolean blockiert = Boolean.valueOf(sin.readLine());
+
+				m = new Mitarbeiter(id, username, passwort, name, funktion, gehalt);
+				m.setBlockiert(blockiert);
+				mitarbeiterListe.add(m);
+			}
+
+		}catch(Exception e){
+			System.err.println(e.getMessage());
+			return null;
+		}
+		return mitarbeiterListe;
+	}
+
+	@Override
+	public void fuegeMitarbeiterHinzu(String username, String passwort, String name, MitarbeiterFunktion funktion, double gehalt) throws MitarbeiterExistiertBereitsException, UsernameExistiertBereitsException {
+		sout.println("me");
+		sout.println(username);
+		sout.println(passwort);
+		sout.println(name);
+		sout.println(funktion);
+		sout.println(gehalt);
+
+		String antwort = "?";
+		try{
+			antwort = sin.readLine();
+			if(antwort.equals("MitarbeiterExistiertBereits")){
+				throw new MitarbeiterExistiertBereitsException(new Mitarbeiter(-1, "?", "?", "?", MitarbeiterFunktion.Mitarbeiter, 0), " - in ShopFassade (Einfugen von Mitarbeiter)!");
+			}else if(antwort.equals("UsernameExistiertBereits")){
+				throw new UsernameExistiertBereitsException(username, " - in ShopFassade (Einfugen von Mitarbeiter)!");
+			}
+			// OK
+
+		}catch(Exception e){
+			System.err.println(e.getMessage());
+			return;
+		}
+	}
+
+	@Override
+	public void mitarbeiterBearbeiten(int id, String passwort, String name, MitarbeiterFunktion funktion, double gehalt, boolean blockiert) throws MitarbeiterExistiertNichtException {
+		sout.println("mb");
+		sout.println(id);
+		sout.println(passwort);
+		sout.println(name);
+		sout.println(funktion);
+		sout.println(gehalt);
+		sout.println(blockiert);
+
+		String antwort = "?";
+		try{
+			antwort = sin.readLine();
+			if(antwort.equals("MitarbeiterExistiertNicht")){
+				throw new MitarbeiterExistiertNichtException(id, " - in ShopFassade (Mitarbeiter Bearbeiten)!");
+			}
+			// OK
+
+		}catch(Exception e){
+			System.err.println(e.getMessage());
+			return;
+		}
+	}
+
+	@Override
+	public void mitarbeiterLoeschen(Mitarbeiter m) {
+		sout.println("ml");
+		sout.println(m.getId());
+	}
 	
+
+	@Override
+	public void schreibeMitarbeiter() throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void kundenBearbeiten(int id, String passwort, String name,
+			String strasse, int plz, String wohnort, boolean blockiert)
+			throws KundeExistiertNichtException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void fuegeKundenHinzu(String username, String passwort, String name, String strasse, int plz, String wohnort)
+			throws KundeExistiertBereitsException,
+			UsernameExistiertBereitsException {
+		sout.println("ke");
+		sout.println(username);
+		sout.println(passwort);
+		sout.println(name);
+		sout.println(strasse);
+		sout.println("" + plz);
+		sout.println(wohnort);
+		String ergebnis = "?";
+		
+		try {
+			ergebnis = sin.readLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (ergebnis.equals("kee")) {
+//			Kunde erfolgreich eingefügt
+			System.out.println("Kunde erfolgreich eingefügt");
+		} else if (ergebnis.equals("keb")) {
+			System.out.println("Kunde existiert bereits");
+		} else if (ergebnis.equals("ueb")) {
+			System.out.println("Username existiert bereits");
+		}
+	}
+
 	
 	@Override
-	public void artikelBestandVeraendern(Mitarbeiter mitarbeiter, int artikelnummer, int anzahl) throws ArtikelExistiertNichtException, ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void artikelBearbeiten(int artikelnummer, double preis, String bezeichnung) throws ArtikelExistiertNichtException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void kundenBearbeiten(int id, String passwort, String name, String strasse, int plz, String wohnort, boolean blockiert) throws KundeExistiertNichtException {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void fuegeKundenHinzu(String username, String passwort, String name, String strasse, int plz, String wohnort) throws KundeExistiertBereitsException, UsernameExistiertBereitsException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	
-	@Override
-	public Kunde loginVergessen(String name, String strasse, int zip, String wohnort) {
+	public Kunde loginVergessen(String name, String strasse, int zip,
+			String wohnort) {
 		// TODO Auto-generated method stub
 		return null;
 	}
