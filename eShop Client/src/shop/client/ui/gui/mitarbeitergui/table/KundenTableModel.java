@@ -23,7 +23,11 @@ public class KundenTableModel extends AbstractTableModel{
 
 	@Override
 	public int getRowCount() {
-		return kundenListe.size();
+		if(kundenListe == null){
+			return 0;
+		}else{
+			return kundenListe.size();
+		}
 	}
 
 	@Override
@@ -33,16 +37,20 @@ public class KundenTableModel extends AbstractTableModel{
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Kunde k = kundenListe.get(rowIndex);
-		switch(columnIndex){
-		case 0: return k.getId();
-		case 1: return k.getUsername();
-		case 2: return k.getName();
-		case 3: return k.getStrasse();
-		case 4: return k.getWohnort();
-		case 5: return k.getPlz();
-		case 6: return k.getBlockiert() ? "Blockiert" : "Aktiv";
-		default: return null;
+		if(kundenListe != null && kundenListe.size() != 0){
+			Kunde k = kundenListe.get(rowIndex);
+			switch(columnIndex){
+			case 0: return k.getId();
+			case 1: return k.getUsername();
+			case 2: return k.getName();
+			case 3: return k.getStrasse();
+			case 4: return k.getWohnort();
+			case 5: return k.getPlz();
+			case 6: return k.getBlockiert() ? "Blockiert" : "Aktiv";
+			default: return null;
+			}
+		}else{
+			return null;
 		}
 		
 	}
@@ -54,7 +62,11 @@ public class KundenTableModel extends AbstractTableModel{
 	
 	@Override
 	public Class<?> getColumnClass(int c) {
-        return getValueAt(0, c).getClass();
+		if(getValueAt(0, c) != null){
+			return getValueAt(0, c).getClass();
+		}else{
+			return Object.class;
+		}
     }
 	
 	public Kunde getKunde(int row){
