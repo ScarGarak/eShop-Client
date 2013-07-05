@@ -36,6 +36,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import shop.client.ui.gui.LogInGUI;
 import shop.client.ui.gui.components.JAccountButton;
 import shop.client.ui.gui.components.JImagePanel;
 import shop.client.ui.gui.components.JWarenkorbButton;
@@ -119,10 +120,16 @@ public class KundeGUI extends JFrame {
 	private JButton inDenWarenkorbButton;
 	private JButton entfernenButton;
 	
-	public KundeGUI(ShopInterface shop, Kunde kunde) throws IOException {
+//	host/port info
+	private String host;
+	private int port;
+	
+	public KundeGUI(ShopInterface shop, Kunde kunde, String host, int port) throws IOException {
 		super("eShop - Kunde");
 		this.kunde = kunde;
 		this.shop = shop;
+		this.host = host;
+		this.port = port;
 		
 		initialize();
 	}
@@ -751,12 +758,12 @@ public class KundeGUI extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
 			if (ae.getSource().equals(logoutButton)) {
-//				dispose();
-//				try {
-//					new LogInGUI();
-//				} catch (IOException e) {
-//					JOptionPane.showConfirmDialog(null, "IOException: " + e.getMessage(), "eShop", JOptionPane.PLAIN_MESSAGE);
-//				}
+				dispose();
+				try {
+					new LogInGUI(host, port);
+				} catch (IOException e) {
+					JOptionPane.showConfirmDialog(null, "IOException: " + e.getMessage(), "eShop", JOptionPane.PLAIN_MESSAGE);
+				}
 			}
 		}
 	}

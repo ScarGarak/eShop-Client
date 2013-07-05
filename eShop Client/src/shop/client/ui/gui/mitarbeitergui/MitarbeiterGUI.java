@@ -72,6 +72,9 @@ public class MitarbeiterGUI extends JFrame{
 	
 	private Mitarbeiter mitarbeiter;
 	private ShopInterface shop;
+//	host/port info
+	private String host;
+	private int port;
 	
 	private JTabbedPane tabbedPane;
 	
@@ -174,10 +177,12 @@ public class MitarbeiterGUI extends JFrame{
 	private JButton logoutButton;
 	
 	
-	public MitarbeiterGUI(Mitarbeiter mitarbeiter, ShopInterface shop) throws IOException{
+	public MitarbeiterGUI(Mitarbeiter mitarbeiter, ShopInterface shop, String host, int port) throws IOException{
 		super("eShop - Mitarbeiter");
 		this.shop = shop;
 		this.mitarbeiter = mitarbeiter;
+		this.host = host;
+		this.port = port;
 		
 		initialize();
 	}
@@ -1494,12 +1499,12 @@ public class MitarbeiterGUI extends JFrame{
 		@Override
 		public void actionPerformed(ActionEvent ae) {
 			if (ae.getSource().equals(logoutButton)) {
-//				dispose();
-//				try {
-//					new LogInGUI();
-//				} catch (IOException e) {
-//					JOptionPane.showConfirmDialog(null, "IOException: " + e.getMessage(), "eShop", JOptionPane.PLAIN_MESSAGE);
-//				}
+				dispose();
+				try {
+					new LogInGUI(host, port);
+				} catch (IOException e) {
+					JOptionPane.showConfirmDialog(null, "IOException: " + e.getMessage(), "eShop", JOptionPane.PLAIN_MESSAGE);
+				}
 			}
 		}
 	}
