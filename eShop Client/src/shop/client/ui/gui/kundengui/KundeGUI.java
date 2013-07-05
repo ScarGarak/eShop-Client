@@ -60,6 +60,9 @@ public class KundeGUI extends JFrame {
 	
 	private ShopInterface shop;
 	private Kunde kunde;
+//	host/port info
+	private String host;
+	private int port;
 	
 	// Header
 	private JPanel headerPanel;
@@ -119,10 +122,6 @@ public class KundeGUI extends JFrame {
 	private JTextArea errorMessage;
 	private JButton inDenWarenkorbButton;
 	private JButton entfernenButton;
-	
-//	host/port info
-	private String host;
-	private int port;
 	
 	public KundeGUI(ShopInterface shop, Kunde kunde, String host, int port) throws IOException {
 		super("eShop - Kunde");

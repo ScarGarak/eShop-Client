@@ -33,11 +33,14 @@ import javax.swing.JTextField;
 
 import shop.client.net.ShopFassade;
 import shop.client.ui.gui.kundengui.KundeGUI;
+import shop.client.ui.gui.mitarbeitergui.MitarbeiterGUI;
 import shop.common.exceptions.KundeExistiertBereitsException;
 import shop.common.exceptions.UsernameExistiertBereitsException;
 import shop.common.interfaces.ShopInterface;
 import shop.common.valueobjects.Kunde;
+import shop.common.valueobjects.Mitarbeiter;
 import shop.common.valueobjects.Person;
+import shop.common.valueobjects.PersonTyp;
 
 /**
  * @author Mort
@@ -50,7 +53,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	public static final int DEFAULT_PORT = 6789;
 	
 	private ShopInterface shop;
-	private Person person;
+	private Person p;
 	private int key;
 	
 //	host/port info
@@ -496,26 +499,27 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		if (p != null) {
-//			if (p.getPersonTyp().equals(PersonTyp.Mitarbeiter)) {
-//				try {
-////					dispose();
-//					this.setVisible(false);
-//					new MitarbeiterGUI((Mitarbeiter)p, shop);
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//		} else
+		if (p != null) {
+			if (p.getPersonTyp().equals(PersonTyp.Mitarbeiter)) {
 				try {
 //					dispose();
 					this.setVisible(false);
-					new KundeGUI(shop, (Kunde) person, host, port);
+					new MitarbeiterGUI((Mitarbeiter) p, shop, host, port);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-//		}
+			} else {
+				try {
+//					dispose();
+					this.setVisible(false);
+					new KundeGUI(shop, (Kunde) p, host, port);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	private void logIn() throws IOException {
@@ -523,8 +527,8 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 			String username = usernameField.getText();
 			if (!passwordField.getText().equals("")) {
 				String password = passwordField.getText();
-				person = shop.pruefeLogin(username, password);
-				if (person == null) {
+				p = shop.pruefeLogin(username, password);
+				if (p == null) {
 //					pop up mit Hinweis aus falsche eingabe
 //					einfärben der Textfelder, Fokus auf usernameField
 //					tf.setText
