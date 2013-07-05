@@ -193,7 +193,6 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	private void registrierung() {
 //		prüfe welche id die letzte war dann +1
 		
-		int id = 3; // dient als platzhalter
 //		String strGebDat = gebDatField.getText();
 //		SimpleDateFormat sdfToDate = new SimpleDateFormat("dd.MM.yyyy");
 //		try {
@@ -212,7 +211,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		int plz = Integer.parseInt(strPlz);
 		String wohnort = cityField.getText();
 		try {
-			shop.fuegeKundenHinzu(id, username, passwort, name, strasse, plz, wohnort);
+			shop.fuegeKundenHinzu(username, passwort, name, strasse, plz, wohnort);
 			System.out.println("Kunde wurde hinzugefügt!");
 			zeichneLogin();
 			try {
