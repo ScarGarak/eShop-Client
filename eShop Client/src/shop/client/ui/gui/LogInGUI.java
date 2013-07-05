@@ -33,11 +33,14 @@ import javax.swing.JTextField;
 
 import shop.client.net.ShopFassade;
 import shop.client.ui.gui.kundengui.KundeGUI;
+import shop.client.ui.gui.mitarbeitergui.MitarbeiterGUI;
 import shop.common.exceptions.KundeExistiertBereitsException;
 import shop.common.exceptions.UsernameExistiertBereitsException;
 import shop.common.interfaces.ShopInterface;
 import shop.common.valueobjects.Kunde;
+import shop.common.valueobjects.Mitarbeiter;
 import shop.common.valueobjects.Person;
+import shop.common.valueobjects.PersonTyp;
 
 /**
  * @author Mort
@@ -50,8 +53,12 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	public static final int DEFAULT_PORT = 6789;
 	
 	private ShopInterface shop;
-	private Person person;
+	private Person p;
 	private int key;
+	
+//	host/port info
+	private static String host;
+	private static int port;
 	
 	//	GridBagLayout Variablen
 	private int gridx, gridy, gridwidth, gridheight, fill, anchor, ipadx, ipady;
@@ -109,6 +116,8 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	private JLabel rechts3 = new JLabel("");
 	private JLabel rechts4 = new JLabel("");
 	private JLabel rechts5 = new JLabel("");
+	private JLabel mitte5 = new JLabel("");
+	private JLabel mitte6 = new JLabel("");
 	private JLabel usernameError = new JLabel("<html><font color=#FF0000>Bitte Usernamen eingeben</font></html>");
 	private JLabel passwordError = new JLabel("<html><font color=#FF0000>Bitte Passwort eingeben</font></html>");
 	
@@ -159,6 +168,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		logInButton.addActionListener(this);
 		usernameField.addKeyListener(this);
 		passwordField.addKeyListener(this);
+		nameField.addKeyListener(this);
 		forgetLabel.addMouseListener(this);
 		registerLabel.addMouseListener(this);
 		regLab.addMouseListener(this);
@@ -191,39 +201,57 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
     }
 	
 	private void registrierung() {
-//		prüfe welche id die letzte war dann +1
-		
-//		String strGebDat = gebDatField.getText();
-//		SimpleDateFormat sdfToDate = new SimpleDateFormat("dd.MM.yyyy");
-//		try {
-//			Date dateGebDat = sdfToDate.parse(strGebDat);
-//			System.out.println("" + dateGebDat);
-//		} catch (ParseException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
-		String username = usernameField.getText();
-		String passwort = pwField.getText();
-		String wPasswort = wpwField.getText();
-		String name = nameField.getText();
-		String strasse = streetField.getText();
-		String strPlz = zipField.getText();
-		int plz = Integer.parseInt(strPlz);
-		String wohnort = cityField.getText();
-		try {
-			shop.fuegeKundenHinzu(username, passwort, name, strasse, plz, wohnort);
-			System.out.println("Kunde wurde hinzugefügt!");
-			zeichneLogin();
+		usernameField.setBackground(Color.WHITE);
+		pwField.setBackground(Color.WHITE);
+		wpwField.setBackground(Color.WHITE);
+		nameField.setBackground(Color.WHITE);
+		streetField.setBackground(Color.WHITE);
+		zipField.setBackground(Color.WHITE);
+		cityField.setBackground(Color.WHITE);
+//		überprüfung der Eingaben des Nutzers
+		if (usernameField.getText().equals(""))
+			usernameField.setBackground(new Color(250,240,230));
+		if (pwField.getText().equals(""))
+			pwField.setBackground(new Color(250,240,230));
+		if (wpwField.getText().equals(""))
+			wpwField.setBackground(new Color(250,240,230));
+		if (nameField.getText().equals(""))
+			nameField.setBackground(new Color(250,240,230));
+		if (streetField.getText().equals(""))
+			streetField.setBackground(new Color(250,240,230));
+		if (zipField.getText().equals(""))
+			zipField.setBackground(new Color(250,240,230));
+		if (cityField.getText().equals(""))
+			cityField.setBackground(new Color(250,240,230));
+//		kundenHinzu();
+		if (!usernameField.getText().equals("") && !pwField.getText().equals("") && !wpwField.getText().equals("") &&
+				!nameField.getText().equals("") && !streetField.getText().equals("") && !zipField.getText().equals("") &&
+				!cityField.getText().equals("")) {
+			String strasse = streetField.getText();
+			String name = nameField.getText();
+			String wPasswort = wpwField.getText();
+			String passwort = pwField.getText();
+			String strPlz = zipField.getText();
+			int plz = Integer.parseInt(strPlz);
+			String wohnort = cityField.getText();
+			String username = usernameField.getText();
 			try {
-				shop.schreibeKunden();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				shop.fuegeKundenHinzu(username, passwort, name, strasse, plz, wohnort);
+				System.out.println("Kunde wurde hinzugefügt!");
+				zeichneLogin();
+				try {
+					shop.schreibeKunden();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} catch (KundeExistiertBereitsException e) {
+				System.err.println(e.getMessage());
+			} catch (UsernameExistiertBereitsException e) {
+				System.err.println(e.getMessage());
 			}
-		} catch (KundeExistiertBereitsException e) {
-			System.err.println(e.getMessage());
-		} catch (UsernameExistiertBereitsException e) {
-			System.err.println(e.getMessage());
+		} else {
+			nameField.setText("eingaben prüfen!");
 		}
 	}
 	
@@ -295,6 +323,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		mittePan.add(passwordField);
 		passwordField.setText("");
 		mittePan.add(mitteUnten);
+		mittePan.repaint();
 		
 //		füge mitteUnten objekte hinzu
 		mitteUnten.setLayout(new GridLayout(1, 2, 10, 0));
@@ -313,6 +342,12 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		resizePan();
 		usernameField.setBackground(Color.WHITE);
 		usernameField.setText("");
+		pwField.setText("");
+		wpwField.setText("");
+		nameField.setText("");
+		streetField.setText("");
+		zipField.setText("");
+		cityField.setText("");
 		
 		JLabel nameLab = new JLabel("Name");
 		JLabel gebDatLab = new JLabel("Geburtsdatum");
@@ -393,6 +428,12 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		resizePan();
 		usernameField.setBackground(Color.WHITE);
 		usernameField.setText("");
+		pwField.setText("");
+		wpwField.setText("");
+		nameField.setText("");
+		streetField.setText("");
+		zipField.setText("");
+		cityField.setText("");		
 		pwField.enable();
 		wpwField.enable();
 		
@@ -412,21 +453,23 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		linksPan.add(nameLab);
 		linksPan.add(nameField);
 		nameField.requestFocus();
-		linksPan.add(gebDatLab);
-		linksPan.add(gebDatField);
 		linksPan.add(streetLab);
 		linksPan.add(streetField);
+		linksPan.add(zipLab);
+		linksPan.add(zipField);
 		linksPan.repaint();
 		linksPan.validate();
 		
 		mittePan.removeAll();
 		mittePan.setLayout(new GridLayout(6, 1));
-		mittePan.add(zipLab);
-		mittePan.add(zipField);
+//		mittePan.add(zipLab);
+//		mittePan.add(zipField);
 		mittePan.add(cityLab);
 		mittePan.add(cityField);
 		mittePan.add(usernameLabel);
 		mittePan.add(usernameField);
+		mittePan.add(mitte5);
+		mittePan.add(mitte6);
 		mittePan.repaint();
 		mittePan.validate();
 		
@@ -456,26 +499,27 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		if (p != null) {
-//			if (p.getPersonTyp().equals(PersonTyp.Mitarbeiter)) {
-//				try {
-////					dispose();
-//					this.setVisible(false);
-//					new MitarbeiterGUI((Mitarbeiter)p, shop);
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//		} else
+		if (p != null) {
+			if (p.getPersonTyp().equals(PersonTyp.Mitarbeiter)) {
 				try {
 //					dispose();
 					this.setVisible(false);
-					new KundeGUI(shop, (Kunde) person);
+					new MitarbeiterGUI((Mitarbeiter) p, shop, host, port);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-//		}
+			} else {
+				try {
+//					dispose();
+					this.setVisible(false);
+					new KundeGUI(shop, (Kunde) p, host, port);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	private void logIn() throws IOException {
@@ -483,8 +527,8 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 			String username = usernameField.getText();
 			if (!passwordField.getText().equals("")) {
 				String password = passwordField.getText();
-				person = shop.pruefeLogin(username, password);
-				if (person == null) {
+				p = shop.pruefeLogin(username, password);
+				if (p == null) {
 //					pop up mit Hinweis aus falsche eingabe
 //					einfärben der Textfelder, Fokus auf usernameField
 //					tf.setText
@@ -585,10 +629,13 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 //		if (usernameField.getText().equals("Usernamen eingeben!")) {
 //			usernameField.setText("");
 //		}
-//		if (passwordField.getText().equals("Passwort eingeben!")) {
-//			passwordField.setText("");
-//		}
-		// in arbeit
+		if (ke.getSource() == nameField) {
+			System.out.println("vor");
+			if (nameField.getText().equals("eingaben prüfen!")) {
+				System.out.println("nach");
+				nameField.setText("");
+			}
+		}
 		if (ke.getSource() == usernameField) {
 			if (key == KeyEvent.VK_ENTER) {
 				passwordField.requestFocus();
@@ -608,8 +655,8 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	 * Die main-Methode...
 	 */
 	public static void main(String[] args) {
-		int port = 0;
-		String host = null;
+		port = 0;
+		host = null;
 		InetAddress ia = null;
 
 		// ---
