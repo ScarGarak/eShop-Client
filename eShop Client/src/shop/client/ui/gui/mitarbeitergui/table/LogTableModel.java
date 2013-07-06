@@ -9,7 +9,10 @@ public class LogTableModel extends AbstractTableModel{
 	private String[] logDatei;
 	
 	public LogTableModel(String logDatei) {
-		this.logDatei = logDatei.split("\n");
+		if(logDatei != null)
+			this.logDatei = logDatei.split("\n");
+		else
+			this.logDatei = new String[0];
 	}
 	
 	@Override

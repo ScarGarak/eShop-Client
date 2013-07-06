@@ -26,9 +26,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
@@ -64,7 +66,7 @@ import shop.common.valueobjects.Mitarbeiter;
 import shop.common.valueobjects.MitarbeiterFunktion;
 
 @SuppressWarnings("serial")
-public class MitarbeiterGUI extends JFrame{
+public class MitarbeiterGUI extends JFrame {
 	
 	public static double MINDESTLOHN = 1800;
 	
@@ -72,6 +74,9 @@ public class MitarbeiterGUI extends JFrame{
 	
 	private Mitarbeiter mitarbeiter;
 	private ShopInterface shop;
+//	host/port info
+	private String host;
+	private int port;
 	
 	private JTabbedPane tabbedPane;
 	
@@ -168,16 +173,30 @@ public class MitarbeiterGUI extends JFrame{
 	
 	//////////// Header ////////////
 	private JPanel headerPanel;
+	private JPanel accountButtonPanel;
 	private JButton accountButton;
 	private JTextField searchField;
 	private JButton searchButton;
 	private JButton logoutButton;
 	
+	////////////Account Panel ////////////
+	private JPanel accountPanel;
+	private JTextField usernameFeld;
+	private JTextField altesPasswort;
+	private JTextField neuesPasswort;
+	private JTextField confirmPasswort;
+	private JButton accountAbbrechenButton;
+	private JButton accountSpeichernButton;
+	private JTextArea errorName;
+	private JTextArea errorPasswort;
 	
-	public MitarbeiterGUI(Mitarbeiter mitarbeiter, ShopInterface shop) throws IOException{
+	
+	public MitarbeiterGUI(Mitarbeiter mitarbeiter, ShopInterface shop, String host, int port) throws IOException{
 		super("eShop - Mitarbeiter");
 		this.shop = shop;
 		this.mitarbeiter = mitarbeiter;
+		this.host = host;
+		this.port = port;
 		
 		initialize();
 	}
@@ -191,6 +210,7 @@ public class MitarbeiterGUI extends JFrame{
 		
 		createHeader();
 		createTabbedPane();
+		createAccountPanel();
 		
 		add(headerPanel, BorderLayout.NORTH);
 		add(tabbedPane, BorderLayout.CENTER);
@@ -200,12 +220,13 @@ public class MitarbeiterGUI extends JFrame{
 	
 	private void createHeader(){
 		accountButton = new JAccountButton(mitarbeiter.getName());
+		accountButton.addActionListener(new AccountListener());
 		logoutButton = new JButton("Abmelden");
 		logoutButton.addActionListener(new LogoutListener());
-		JPanel accountPanel = new JPanel();
-		accountPanel.setLayout(new BoxLayout(accountPanel, BoxLayout.PAGE_AXIS));
-		accountPanel.add(accountButton);
-		accountPanel.add(logoutButton);
+		accountButtonPanel = new JPanel();
+		accountButtonPanel.setLayout(new BoxLayout(accountButtonPanel, BoxLayout.PAGE_AXIS));
+		accountButtonPanel.add(accountButton);
+		accountButtonPanel.add(logoutButton);
 		JPanel searchPanel = new JPanel();
 		searchPanel.setLayout(new BoxLayout(searchPanel, BoxLayout.LINE_AXIS));
 		searchPanel.setBorder(BorderFactory.createEmptyBorder(25, 0, 25, 0));
@@ -219,7 +240,7 @@ public class MitarbeiterGUI extends JFrame{
 		searchPanel.add(searchButton);
 		headerPanel = new JPanel();
 		headerPanel.setLayout(new BorderLayout());
-		headerPanel.add(accountPanel, BorderLayout.WEST);
+		headerPanel.add(accountButtonPanel, BorderLayout.WEST);
 		headerPanel.add(searchPanel, BorderLayout.CENTER);
 	}
 	
@@ -241,6 +262,8 @@ public class MitarbeiterGUI extends JFrame{
 		
 		tabbedPane.addChangeListener(new TabListener());
 	}
+	
+	
 	
 	//////////////////////  Artikel Panels  //////////////////////
 	
@@ -744,7 +767,6 @@ public class MitarbeiterGUI extends JFrame{
 		artikelTableScrollPane.setViewportView(artikelTable);
 	}
 	
-	
 	//////////////////////  Mitarbeiter Panels  //////////////////////
 	
 	private void createMitarbeiterPanel(){
@@ -1114,7 +1136,7 @@ public class MitarbeiterGUI extends JFrame{
 		kundenFooterWrapper.setVisible(false);
 	}
 	
-	//Kunden Helper Methoden
+		//Kunden Helper Methoden
 	
 	private void updateKundenTableModel(List<Kunde> kundenListe){
 		kundenTableModel = new KundenTableModel(kundenListe);
@@ -1161,8 +1183,71 @@ public class MitarbeiterGUI extends JFrame{
 		logScrollPane.setViewportView(logTable);
 	}
 	
-	////////////////////// Listener //////////////////////
 	
+	////////////////////// Account Panel //////////////////////
+	
+	private void createAccountPanel() {
+		usernameFeld = new JTextField();
+		usernameFeld.setText(mitarbeiter.getUsername());
+		usernameFeld.setEnabled(false);
+		JPanel namePanel = new JPanel();
+		namePanel.setLayout(new GridLayout(2,2));
+		namePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 30, 0));
+		namePanel.add(new JLabel("Name:"));
+		namePanel.add(mitarbeiterNameInput);
+		namePanel.add(new JLabel("Username:"));
+		namePanel.add(usernameFeld);
+		errorName = new JTextArea();
+		errorName.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+		errorName.setForeground(Color.RED);
+		errorName.setLineWrap(true);
+		errorName.setWrapStyleWord(true);
+		errorName.setEditable(false);
+		errorName.setOpaque(false);
+		JPanel errorPanel = new JPanel();
+		errorPanel.setLayout(new GridLayout(3,1));
+		errorPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+		altesPasswort = new JPasswordField();
+		neuesPasswort = new JPasswordField();
+		confirmPasswort = new JPasswordField();
+		JPanel passwortPanel = new JPanel();
+		passwortPanel.setLayout(new GridLayout(3,2));
+		passwortPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+		passwortPanel.add(new JLabel("Altes Passwort:"));
+		passwortPanel.add(altesPasswort);
+		passwortPanel.add(new JLabel("Neues Passwort:"));
+		passwortPanel.add(neuesPasswort);
+		passwortPanel.add(new JLabel("Best\u00e4tige neues Passwort:"));
+		passwortPanel.add(confirmPasswort);
+		errorPasswort = new JTextArea();
+		errorPasswort.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
+		errorPasswort.setForeground(Color.RED);
+		errorPasswort.setLineWrap(true);
+		errorPasswort.setWrapStyleWord(true);
+		errorPasswort.setEditable(false);
+		errorPasswort.setOpaque(false);
+		accountAbbrechenButton = new JButton("Abbrechen");
+		accountAbbrechenButton.addActionListener(new AccountListener());
+		accountSpeichernButton = new JButton("Speichern");
+		accountSpeichernButton.addActionListener(new AccountListener());
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
+		buttonPanel.setBorder(BorderFactory.createEmptyBorder(60, 60, 0, 0));
+		buttonPanel.add(accountAbbrechenButton);
+		buttonPanel.add(accountSpeichernButton);
+		accountPanel = new JPanel();
+		accountPanel.setLayout(new GridLayout(4,2));
+		accountPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.LIGHT_GRAY), BorderFactory.createEmptyBorder(20, 10, 10, 10)));
+		accountPanel.add(namePanel);
+		accountPanel.add(passwortPanel);
+		accountPanel.add(errorName);
+		accountPanel.add(errorPasswort);
+		accountPanel.add(errorPanel);
+		accountPanel.add(new JLabel());
+		accountPanel.add(buttonPanel);
+	}
+	
+	////////////////////// Listener //////////////////////
 	
 	class ArtikelPanelListener implements ActionListener {
 		@Override
@@ -1490,20 +1575,128 @@ public class MitarbeiterGUI extends JFrame{
 		}
 	}
 	
-	class LogoutListener implements ActionListener {
+	class AccountListener implements ActionListener {
 		@Override
-		public void actionPerformed(ActionEvent ae) {
-			if (ae.getSource().equals(logoutButton)) {
-//				dispose();
-//				try {
-//					new LogInGUI();
-//				} catch (IOException e) {
-//					JOptionPane.showConfirmDialog(null, "IOException: " + e.getMessage(), "eShop", JOptionPane.PLAIN_MESSAGE);
-//				}
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource().equals(accountButton)){
+				mitarbeiterNameInput.setText(mitarbeiter.getName());
+				remove(tabbedPane);
+				add(accountPanel, BorderLayout.CENTER);
+				//revalidate();
+				repaint();
+			}else if (e.getSource().equals(accountSpeichernButton)){
+				//Clear Error Messages
+				errorName.setText("");
+				mitarbeiterNameInput.setBackground(Color.WHITE);
+				errorPasswort.setText("");
+				altesPasswort.setBackground(Color.WHITE);
+				neuesPasswort.setBackground(Color.WHITE);
+				confirmPasswort.setBackground(Color.WHITE);
+				
+				boolean ok = true;
+				if (mitarbeiterNameInput.getText().isEmpty()) {
+					errorName.setText("Der Name darf nicht leer sein. Bitte geben Sie einen g\u00fcltigen Namen ein.");
+					mitarbeiterNameInput.setBackground(new Color(250,240,230));
+					ok = false;
+				}
+				
+				if (!(altesPasswort.getText().isEmpty() && neuesPasswort.getText().isEmpty() && confirmPasswort.getText().isEmpty())) {
+					if (!altesPasswort.getText().equals(mitarbeiter.getPasswort())) {
+						errorPasswort.setText("Das alte Passwort ist falsch.");
+						altesPasswort.setBackground(new Color(250, 240, 230));
+						ok = false;
+					} else
+					if (neuesPasswort.getText().equals(altesPasswort.getText())) {
+						errorPasswort.setText("Das neue Passwort darf nicht das Gleiche wie das alte Passwort sein.");
+						neuesPasswort.setBackground(new Color(250, 240, 230));
+						ok = false;
+					} else
+					if (!confirmPasswort.getText().equals(neuesPasswort.getText())) {
+						errorPasswort.setText("Bitte best\u00e4tigen Sie das neue Passwort.");
+						confirmPasswort.setBackground(new Color(250, 240, 230));
+						ok = false;
+					} else
+					if (altesPasswort.getText().isEmpty() || neuesPasswort.getText().isEmpty() || confirmPasswort.getText().isEmpty()) {
+						errorPasswort.setText("Bitte geben Sie das alte Passwort, das neue Passwort und dessen Best\u00e4tigung ein.");
+						if (altesPasswort.getText().isEmpty()) altesPasswort.setBackground(new Color(250, 240, 230));
+						if (neuesPasswort.getText().isEmpty()) neuesPasswort.setBackground(new Color(250, 240, 230));
+						if (confirmPasswort.getText().isEmpty()) confirmPasswort.setBackground(new Color(250, 240, 230));
+						ok = false;
+					}
+				}
+
+				if (ok) {
+					try {
+						if ((altesPasswort.getText().isEmpty() && neuesPasswort.getText().isEmpty() && confirmPasswort.getText().isEmpty())){
+							shop.mitarbeiterBearbeiten(mitarbeiter.getId(), mitarbeiter.getPasswort(), mitarbeiterNameInput.getText(), mitarbeiter.getFunktion(), mitarbeiter.getGehalt(), mitarbeiter.getBlockiert());
+							mitarbeiter.setName(mitarbeiterNameInput.getText());
+						}else{
+							shop.mitarbeiterBearbeiten(mitarbeiter.getId(), neuesPasswort.getText(), mitarbeiterNameInput.getText(), mitarbeiter.getFunktion(), mitarbeiter.getGehalt(), mitarbeiter.getBlockiert());
+							mitarbeiter.setName(mitarbeiterNameInput.getText());
+							mitarbeiter.setPasswort(neuesPasswort.getText());
+						}
+						accountButtonPanel.remove(accountButton);
+						accountButton = new JAccountButton(mitarbeiter.getName());
+						accountButton.addActionListener(new AccountListener());
+						accountButtonPanel.add(accountButton, 0);
+						accountButtonPanel.revalidate();
+						accountButtonPanel.repaint();
+					} catch (MitarbeiterExistiertNichtException e1) {
+						errorName.setText("Sie existieren nicht mehr...");
+					}
+					remove(accountPanel);
+					add(tabbedPane, BorderLayout.CENTER);
+					//revalidate();
+					repaint();
+
+					//Clear Error Messages
+					errorName.setText("");
+					mitarbeiterNameInput.setText("");
+					mitarbeiterNameInput.setBackground(Color.WHITE);
+					errorPasswort.setText("");
+					altesPasswort.setText("");
+					altesPasswort.setBackground(Color.WHITE);
+					neuesPasswort.setText("");
+					neuesPasswort.setBackground(Color.WHITE);
+					confirmPasswort.setText("");
+					confirmPasswort.setBackground(Color.WHITE);
+
+				}
+				
+			}else if (e.getSource().equals(accountAbbrechenButton)){
+				remove(accountPanel);
+				add(tabbedPane, BorderLayout.CENTER);
+				//revalidate();
+				repaint();
+				
+				//Clear Error Messages
+				errorName.setText("");
+				mitarbeiterNameInput.setText("");
+				mitarbeiterNameInput.setBackground(Color.WHITE);
+				errorPasswort.setText("");
+				altesPasswort.setText("");
+				altesPasswort.setBackground(Color.WHITE);
+				neuesPasswort.setText("");
+				neuesPasswort.setBackground(Color.WHITE);
+				confirmPasswort.setText("");
+				confirmPasswort.setBackground(Color.WHITE);
 			}
 		}
 	}
 	
+	class LogoutListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent ae) {
+			if (ae.getSource().equals(logoutButton)) {
+				dispose();
+				try {
+					new LogInGUI(host, port);
+				} catch (IOException e) {
+					JOptionPane.showConfirmDialog(null, "IOException: " + e.getMessage(), "eShop", JOptionPane.PLAIN_MESSAGE);
+				}
+			}
+		}
+	}
 	
 	class SearchListener implements ActionListener {
 		@Override
@@ -1555,7 +1748,6 @@ public class MitarbeiterGUI extends JFrame{
 			}
 		}
 	}
-	
 	
 	class TabListener implements ChangeListener{
 
@@ -1618,7 +1810,6 @@ public class MitarbeiterGUI extends JFrame{
 		}
 		
 	}
-	
 	
 	class ArtikelSelectionListener implements ListSelectionListener{
 

@@ -25,7 +25,11 @@ public class ArtikelTableModel extends AbstractTableModel {
 
 	@Override
 	public int getRowCount() {
-		return artikelListe.size();
+		if(artikelListe == null){
+			return 0;
+		}else{
+			return artikelListe.size();
+		}
 	}
 
 	@Override

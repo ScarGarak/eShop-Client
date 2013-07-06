@@ -31,7 +31,11 @@ public class MitarbeiterTableModel extends AbstractTableModel{
 
 	@Override
 	public int getRowCount() {
-		return mitarbeiterListe.size();
+		if(mitarbeiterListe == null){
+			return 0;
+		}else{
+			return mitarbeiterListe.size();
+		}
 	}
 
 	@Override
@@ -41,17 +45,20 @@ public class MitarbeiterTableModel extends AbstractTableModel{
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Mitarbeiter m = mitarbeiterListe.get(rowIndex);
-		switch(columnIndex){
-		case 0: return m.getId();
-		case 1: return m.getUsername();
-		case 2: return m.getName();
-		case 3: return m.getFunktion().toString();
-		case 4: return m.getGehalt();
-		case 5: return m.getBlockiert() ? "Blockiert" : "Aktiv";
-		default: return null;
+		if(mitarbeiterListe != null && mitarbeiterListe.size() != 0){
+			Mitarbeiter m = mitarbeiterListe.get(rowIndex);
+			switch(columnIndex){
+			case 0: return m.getId();
+			case 1: return m.getUsername();
+			case 2: return m.getName();
+			case 3: return m.getFunktion().toString();
+			case 4: return m.getGehalt();
+			case 5: return m.getBlockiert() ? "Blockiert" : "Aktiv";
+			default: return null;
+			}
+		}else{
+			return null;
 		}
-		
 	}
 	
 	@Override
@@ -61,7 +68,11 @@ public class MitarbeiterTableModel extends AbstractTableModel{
 	
 	@Override
 	public Class<?> getColumnClass(int c) {
-        return getValueAt(0, c).getClass();
+		if(getValueAt(0, c) != null){
+			return getValueAt(0, c).getClass();
+		}else{
+			return Object.class;
+		}
     }
 	
 	public Mitarbeiter getMitarbeiter(int row){
