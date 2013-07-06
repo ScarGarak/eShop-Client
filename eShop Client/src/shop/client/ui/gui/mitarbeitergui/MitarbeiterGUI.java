@@ -138,7 +138,7 @@ public class MitarbeiterGUI extends JFrame {
 	private JTextField mitarbeiterUsernameInput;
 	private JTextField mitarbeiterNameInput;
 	private JTextField mitarbeiterGehaltInput;
-	private JComboBox mitarbeiterFunktionInput;
+	private JComboBox<MitarbeiterFunktion> mitarbeiterFunktionInput;
 	
 		//Mitarbeiter Footer
 	private JPanel mitarbeiterFooterWrapper;
@@ -857,7 +857,7 @@ public class MitarbeiterGUI extends JFrame {
 		mitarbeiterUsernameInput = new JTextField(10);
 		mitarbeiterNameInput = new JTextField(10);
 		mitarbeiterGehaltInput = new JTextField(10);
-		mitarbeiterFunktionInput = new JComboBox();
+		mitarbeiterFunktionInput = new JComboBox<MitarbeiterFunktion>();
 		MitarbeiterFunktion[] funktionWerte = MitarbeiterFunktion.values();
 		for(MitarbeiterFunktion mf : funktionWerte){
 			mitarbeiterFunktionInput.addItem(mf);
@@ -1342,9 +1342,13 @@ public class MitarbeiterGUI extends JFrame {
 					
 					int[] yWerte = null;
 					try {
-						yWerte = shop.gibBestandsHistorieDaten(a);
+						yWerte = shop.gibBestandsHistorieDaten(a.getArtikelnummer());
 					} catch (IOException e1) {
 						setErrorMsg("Fehler beim Lesen der Log Datei aufgetreten!", artikelFooterWrapper);
+						return;
+					} catch (ArtikelExistiertNichtException e1) {
+						setErrorMsg("Dieser Artikel existiert nicht!", artikelFooterWrapper);
+						return;
 					}
 					
 					if(yWerte != null){
