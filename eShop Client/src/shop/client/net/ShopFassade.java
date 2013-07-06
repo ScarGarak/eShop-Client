@@ -32,7 +32,7 @@ import shop.common.valueobjects.PersonTyp;
 import shop.common.valueobjects.Rechnung;
 import shop.common.valueobjects.WarenkorbArtikel;
 
-/**
+/** 
  * Klasse mit Fassade des Shops auf Client-Seite.
  * Die Klasse stellt die von der GUI erwarteten Methoden zur Verfügung
  * und realisiert (transparent für die GUI) die Kommunikation mit dem 
@@ -1011,7 +1011,6 @@ public class ShopFassade implements ShopInterface {
 	public int[] gibBestandsHistorieDaten(int artikelnummer) throws IOException {
 		sout.println("gbhd");
 		sout.println(artikelnummer);
-		sin.readLine();
 		int anzahl = Integer.parseInt(sin.readLine());
 		int[] daten = new int[anzahl];
 		for(int i = 0; i < anzahl; i++){
