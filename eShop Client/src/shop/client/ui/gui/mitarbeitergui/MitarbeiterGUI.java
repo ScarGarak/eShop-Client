@@ -764,6 +764,7 @@ public class MitarbeiterGUI extends JFrame {
 	private void updateArtikelTableModel(List<Artikel> artikelListe){
 		artikelTableModel = new ArtikelTableModel(artikelListe);
 		artikelTable.setModel(artikelTableModel);
+		artikelTableModel.fireTableDataChanged();
 		artikelTableScrollPane.setViewportView(artikelTable);
 	}
 	
@@ -1008,6 +1009,7 @@ public class MitarbeiterGUI extends JFrame {
 							setErrorMsg(String.format("Der Mindestlohn f\u00fcr Mitarbeiter betr\u00e4gt: %.2f "+ Currency.getInstance(Locale.GERMANY), MINDESTLOHN) , mitarbeiterFooterWrapper);
 						}else{
 							shop.mitarbeiterBearbeiten(m.getId(), m.getPasswort(), m.getName(), (MitarbeiterFunktion)mitarbeiterFunktionInput.getSelectedItem(), gehalt, m.getBlockiert());
+							updateMitarbeiterTableModel(shop.gibAlleMitarbeiter());
 							success = true;
 						}
 					} catch (NumberFormatException nfe){
@@ -1776,8 +1778,9 @@ public class MitarbeiterGUI extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
 			if (ae.getSource().equals(logoutButton)) {
-				dispose();
 				try {
+					shop.disconnect();
+					dispose();
 					new LogInGUI(host, port);
 				} catch (IOException e) {
 					JOptionPane.showConfirmDialog(null, "IOException: " + e.getMessage(), "eShop", JOptionPane.PLAIN_MESSAGE);
@@ -2008,7 +2011,13 @@ public class MitarbeiterGUI extends JFrame {
 								JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE) == JOptionPane.NO_OPTION){
 					close = false;
 				}
-				System.err.println(e.getMessage());
+//				System.err.println(e.getMessage());
+			} finally {
+				try {
+					shop.disconnect();
+				} catch (IOException e) {
+					JOptionPane.showConfirmDialog(null, "IOException: " + e.getMessage(), "eShop", JOptionPane.PLAIN_MESSAGE);
+				}
 			}
 			
 			if(close){
