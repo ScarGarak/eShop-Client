@@ -616,7 +616,7 @@ public class ShopFassade implements ShopInterface {
 			e.printStackTrace();
 		}
 		if (k != null) {
-		return k;
+			return k;
 		} else {
 			return null;
 		}
@@ -669,7 +669,7 @@ public class ShopFassade implements ShopInterface {
 
 	@Override
 	public void schreibeKunden() throws IOException {
-		sout.println("sk");
+		sout.println("sck");
 	}
 
 	/**
