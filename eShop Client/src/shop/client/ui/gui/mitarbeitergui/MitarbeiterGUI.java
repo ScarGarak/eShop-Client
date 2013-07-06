@@ -182,9 +182,9 @@ public class MitarbeiterGUI extends JFrame{
 	////////////Account Panel ////////////
 	private JPanel accountPanel;
 	private JTextField usernameFeld;
-	private JPasswordField altesPasswort;
-	private JPasswordField neuesPasswort;
-	private JPasswordField confirmPasswort;
+	private JTextField altesPasswort;
+	private JTextField neuesPasswort;
+	private JTextField confirmPasswort;
 	private JButton accountAbbrechenButton;
 	private JButton accountSpeichernButton;
 	private JTextArea errorName;
@@ -1576,7 +1576,6 @@ public class MitarbeiterGUI extends JFrame{
 	}
 	
 	class AccountListener implements ActionListener {
-		@SuppressWarnings("deprecation")
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource().equals(accountButton)){

@@ -239,7 +239,11 @@ public class ShopFassade implements ShopInterface {
 		try {
 			// PersonTyp
 			antwort = sin.readLine();
-			PersonTyp personTyp = PersonTyp.valueOf(antwort);
+			PersonTyp personTyp = null;
+			if(!antwort.equals("Fehler"))
+				personTyp = PersonTyp.valueOf(antwort);
+			else
+				return null;
 			// ID
 			antwort = sin.readLine();
 			int id = Integer.parseInt(antwort);
