@@ -31,7 +31,11 @@ public class WarenkorbArtikelTableModel extends AbstractTableModel {
 
 	@Override
 	public int getRowCount() {
-		return data.size();
+		if (data != null) {
+			return data.size();
+		} else {
+			return 0;
+		}
 	}
 	
 	@Override

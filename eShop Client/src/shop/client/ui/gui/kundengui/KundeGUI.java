@@ -61,7 +61,6 @@ public class KundeGUI extends JFrame {
 	
 	private ShopInterface shop;
 	private Kunde kunde;
-//	host/port info
 	private String host;
 	private int port;
 	
@@ -126,8 +125,8 @@ public class KundeGUI extends JFrame {
 	
 	public KundeGUI(ShopInterface shop, Kunde kunde, String host, int port) throws IOException {
 		super("eShop - Kunde");
-		this.kunde = kunde;
 		this.shop = shop;
+		this.kunde = kunde;
 		this.host = host;
 		this.port = port;
 		
@@ -300,7 +299,7 @@ public class KundeGUI extends JFrame {
 	}
 	
 	private void createTableWarenkorb() {
-		warenkorbTable = new JTable(new WarenkorbArtikelTableModel(kunde.getWarenkorb()));
+		warenkorbTable = new JTable(new WarenkorbArtikelTableModel(shop.gibWarenkorb(kunde)));
 		warenkorbTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		warenkorbTable.getSelectionModel().addListSelectionListener(new SelectionDetailListener());
 		setTableCellAlignment(new WarenkorbArtikelTableCellRenderer(warenkorbTable), warenkorbTable, JLabel.LEFT);
@@ -412,7 +411,7 @@ public class KundeGUI extends JFrame {
 	 * @return double Den Gesamtpreis aller Warenkorb Artikel.
 	 */
 	private double getGesamtpreis(Kunde kunde) {
-		Iterator<WarenkorbArtikel> iter = kunde.getWarenkorb().iterator();
+		Iterator<WarenkorbArtikel> iter = shop.gibWarenkorb(kunde).iterator();
 		double summe = 0.0;
 		while (iter.hasNext()) {
 			WarenkorbArtikel warenkorbArtikel = iter.next();
@@ -451,7 +450,7 @@ public class KundeGUI extends JFrame {
 	}
 	
 	private void updateArtikelanzahl() {
-		((JWarenkorbButton) warenkorbButton).setArtikelanzahl(kunde.getWarenkorb().size());
+		((JWarenkorbButton) warenkorbButton).setArtikelanzahl(shop.gibWarenkorb(kunde).size());
 		if (((JWarenkorbButton) warenkorbButton).getArtikelanzahl() == 0) {
 			artikelanzahl.setText("Ihr Warenkorb ist leer.");
 		} else 
@@ -530,7 +529,7 @@ public class KundeGUI extends JFrame {
 				tablePanel.add(warenkorbScrollPane, BorderLayout.CENTER);
 				warenkorbTable.clearSelection();
 				updateArtikelanzahl();
-				updateWarenkorbTable(kunde.getWarenkorb());
+				updateWarenkorbTable(shop.gibWarenkorb(kunde));
 				updateGesamtpreis();
 				tablePanel.add(tableFooterPanel, BorderLayout.SOUTH);
 				tablePanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
@@ -548,7 +547,7 @@ public class KundeGUI extends JFrame {
 					Rechnung r = shop.kaufen(kunde);
 					rechnung.setText(r.toString());
 					updateArtikelanzahl();
-					updateWarenkorbTable(kunde.getWarenkorb());
+					updateWarenkorbTable(shop.gibWarenkorb(kunde));
 					warenkorbPanel.remove(kaufenLeerenPanel);
 					warenkorbTable.clearSelection();
 					tablePanel.remove(warenkorbScrollPane);
@@ -575,7 +574,7 @@ public class KundeGUI extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
 			if (ae.getSource().equals(leerenButton)) {
-				if (kunde.getWarenkorb().isEmpty()) {
+				if (shop.gibWarenkorb(kunde).isEmpty()) {
 					JOptionPane.showConfirmDialog(null,
 						"Ihr Warenkorb ist leer.\n" +
 						"Bitte f\u00fcgen Sie zuerst einige Artikel in ihren Warenkorb.", "Warenkorb leeren",
@@ -588,7 +587,7 @@ public class KundeGUI extends JFrame {
 					try {
 						shop.leeren(kunde);
 						updateArtikelanzahl();
-						updateWarenkorbTable(kunde.getWarenkorb());
+						updateWarenkorbTable(shop.gibWarenkorb(kunde));
 						updateGesamtpreis();
 						warenkorbTable.clearSelection();
 						tablePanel.validate();
@@ -661,7 +660,7 @@ public class KundeGUI extends JFrame {
 				ArtikelTableModel atm = (ArtikelTableModel) searchTable.getModel();
 				Artikel a = atm.getRowValue(searchTable.convertRowIndexToModel(searchTable.getSelectedRow()));
 				try {
-					shop.inDenWarenkorbLegen(kunde, a, (Integer) menge.getItemAt(menge.getSelectedIndex()));
+					shop.inDenWarenkorbLegen(kunde, a.getArtikelnummer(), (Integer) menge.getItemAt(menge.getSelectedIndex()));
 					updateArtikelanzahl();
 					tablePanel.validate();
 					tablePanel.repaint();
@@ -686,9 +685,9 @@ public class KundeGUI extends JFrame {
 				WarenkorbArtikelTableModel watm = (WarenkorbArtikelTableModel) warenkorbTable.getModel();
 				WarenkorbArtikel wa = watm.getRowValue(warenkorbTable.convertRowIndexToModel(warenkorbTable.getSelectedRow()));
 				try {
-					shop.ausDemWarenkorbHerausnehmen(kunde, wa.getArtikel());
+					shop.ausDemWarenkorbHerausnehmen(kunde, wa.getArtikel().getArtikelnummer());
 					updateArtikelanzahl();
-					updateWarenkorbTable(kunde.getWarenkorb());
+					updateWarenkorbTable(shop.gibWarenkorb(kunde));
 					updateGesamtpreis();
 					warenkorbTable.clearSelection();
 					tablePanel.validate();
@@ -710,7 +709,7 @@ public class KundeGUI extends JFrame {
 				WarenkorbArtikel wa = watm.getRowValue(warenkorbTable.convertRowIndexToModel(warenkorbTable.getSelectedRow()));
 				try {
 					if (stueckzahl.getSelectedIndex() != -1) {
-						shop.stueckzahlAendern(kunde, wa, (Integer) stueckzahl.getItemAt(stueckzahl.getSelectedIndex()));
+						shop.stueckzahlAendern(kunde, wa.getArtikel().getArtikelnummer(), (Integer) stueckzahl.getItemAt(stueckzahl.getSelectedIndex()));
 						updateGesamtpreis();
 						tablePanel.validate();
 						tablePanel.repaint();
