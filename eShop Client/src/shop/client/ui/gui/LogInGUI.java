@@ -170,6 +170,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		registerLabel.addMouseListener(this);
 		regLab.addMouseListener(this);
 		backLab.addMouseListener(this);
+		changeLab.addMouseListener(this);
 		
 		setLocationRelativeTo(null);
 		setVisible(true);
@@ -196,6 +197,60 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	private void addGB(Component component, int gridx, int gridy, int width, int ipadx, int ipady) {
         addGB(component, gridx, gridy, width, 1, GridBagConstraints.BOTH, 0.0, 0.0, CENTER, new Insets(5, 5, 5, 5), ipadx, ipady);
     }
+	
+	private void loginVergessen(){
+		pwField.setBackground(Color.WHITE);
+		wpwField.setBackground(Color.WHITE);
+		nameField.setBackground(Color.WHITE);
+		streetField.setBackground(Color.WHITE);
+		zipField.setBackground(Color.WHITE);
+		cityField.setBackground(Color.WHITE);
+		Kunde k = null;
+		if (nameField.getText().equals(""))
+			nameField.setBackground(new Color(250,240,230));
+		if (streetField.getText().equals(""))
+			streetField.setBackground(new Color(250,240,230));
+		if (zipField.getText().equals(""))
+			zipField.setBackground(new Color(250,240,230));
+		if (cityField.getText().equals(""))
+			cityField.setBackground(new Color(250,240,230));
+		if (!nameField.getText().equals("") && !streetField.getText().equals("") && !zipField.getText().equals("") &&
+				!cityField.getText().equals("")) {
+			String name = nameField.getText();
+			String strasse = streetField.getText();
+			String zipStr = zipField.getText();
+			String stadt = cityField.getText();
+		
+			String passwort = pwField.getText();
+			String passwortWiederholung = wpwField.getText();
+		
+			try{
+				int zip = Integer.parseInt(zipStr);
+				k = shop.loginVergessen(name, strasse, zip, stadt);
+			} catch (NumberFormatException nfe){
+				//TODO
+				System.err.println("Bitte geben Sie fŸr die Postleitzahl nur Ziffern ein!");
+				zipField.setBackground(new Color(250,240,230));
+			}
+		
+			if(k != null){
+				usernameField.setText(k.getUsername());
+				if(passwort.equals(passwortWiederholung)){
+					k.setPasswort(passwort);
+					zeichneLogin();
+				}else{
+					//TODO
+					System.err.println("Das Passwort und die Passwort Wiederholung m/u00fcssen gleich sein!");
+					pwField.setBackground(new Color(250,240,230));
+					wpwField.setBackground(new Color(250,240,230));
+				}
+			}else{
+				//TODO
+				System.err.println("Kein Account mit diesen Angaben gefunden!");
+			}
+		}
+		
+	}
 	
 	private void registrierung() {
 		usernameField.setBackground(Color.WHITE);
@@ -288,6 +343,13 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 //		berechnung von ipadx in abhängigkeit zum Label
 		panBreite = 1;
 		resizePan();
+		usernameField.setBackground(Color.WHITE);
+		pwField.setBackground(Color.WHITE);
+		wpwField.setBackground(Color.WHITE);
+		nameField.setBackground(Color.WHITE);
+		streetField.setBackground(Color.WHITE);
+		zipField.setBackground(Color.WHITE);
+		cityField.setBackground(Color.WHITE);
 		
 //		hinzufügen der objekte zum frame
 		addGB(frameHeader, gridx = 1, gridy = 1, gridwidth = 3, ipadx = 400, ipady = 150);
@@ -364,21 +426,25 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		linksPan.add(nameLab);
 		linksPan.add(nameField);
 		nameField.requestFocus();
-		linksPan.add(gebDatLab);
-		linksPan.add(gebDatField);
+//		linksPan.add(gebDatLab);
+//		linksPan.add(gebDatField);
 		linksPan.add(streetLab);
 		linksPan.add(streetField);
+		linksPan.add(zipLab);
+		linksPan.add(zipField);
 		linksPan.repaint();
 		linksPan.validate();
 		
 		mittePan.removeAll();
 		mittePan.setLayout(new GridLayout(6, 1));
-		mittePan.add(zipLab);
-		mittePan.add(zipField);
+//		mittePan.add(zipLab);
+//		mittePan.add(zipField);
 		mittePan.add(cityLab);
 		mittePan.add(cityField);
 		mittePan.add(usernameLabel);
 		mittePan.add(usernameField);
+		mittePan.add(new JLabel (""));
+		mittePan.add(new JLabel (""));
 		usernameField.disable();
 		mittePan.repaint();
 		mittePan.validate();
@@ -608,6 +674,8 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		if (comp.equals(backLab)) {
 			zeichneLogin();
 		}
+		if (comp.equals(changeLab)) {
+			loginVergessen();		}
 	}
 	
 	public void keyPressed(KeyEvent kp) {
@@ -627,9 +695,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 //			usernameField.setText("");
 //		}
 		if (ke.getSource() == nameField) {
-			System.out.println("vor");
 			if (nameField.getText().equals("eingaben prüfen!")) {
-				System.out.println("nach");
 				nameField.setText("");
 			}
 		}
