@@ -566,10 +566,8 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 			if (p.getPersonTyp().equals(PersonTyp.Mitarbeiter)) {
 				try {
 //					dispose();
-					if(!p.getBlockiert()){
-						this.setVisible(false);
-						new MitarbeiterGUI((Mitarbeiter) p, shop, host, port);
-					}
+					this.setVisible(false);
+					new MitarbeiterGUI((Mitarbeiter) p, shop, host, port);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -577,10 +575,8 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 			} else {
 				try {
 //					dispose();
-					if(!p.getBlockiert()){
-						this.setVisible(false);
-						new KundeGUI(shop, (Kunde) p, host, port);
-					}
+					this.setVisible(false);
+					new KundeGUI(shop, (Kunde) p, host, port);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -599,9 +595,6 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 //					pop up mit Hinweis aus falsche eingabe
 //					einfärben der Textfelder, Fokus auf usernameField
 //					tf.setText
-				}else if (p.getBlockiert()){
-//					Person ist blockiert
-					System.out.println("Ihr Account ist zur Zeit blockiert!");
 				}
 			} else {
 				passwordField.setBackground(new Color(250,240,230));
