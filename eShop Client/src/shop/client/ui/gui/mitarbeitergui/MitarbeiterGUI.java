@@ -138,7 +138,7 @@ public class MitarbeiterGUI extends JFrame {
 	private JTextField mitarbeiterUsernameInput;
 	private JTextField mitarbeiterNameInput;
 	private JTextField mitarbeiterGehaltInput;
-	private JComboBox mitarbeiterFunktionInput;
+	private JComboBox<MitarbeiterFunktion> mitarbeiterFunktionInput;
 	
 		//Mitarbeiter Footer
 	private JPanel mitarbeiterFooterWrapper;
@@ -858,7 +858,7 @@ public class MitarbeiterGUI extends JFrame {
 		mitarbeiterUsernameInput = new JTextField(10);
 		mitarbeiterNameInput = new JTextField(10);
 		mitarbeiterGehaltInput = new JTextField(10);
-		mitarbeiterFunktionInput = new JComboBox();
+		mitarbeiterFunktionInput = new JComboBox<MitarbeiterFunktion>();
 		MitarbeiterFunktion[] funktionWerte = MitarbeiterFunktion.values();
 		for(MitarbeiterFunktion mf : funktionWerte){
 			mitarbeiterFunktionInput.addItem(mf);
@@ -1778,8 +1778,9 @@ public class MitarbeiterGUI extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
 			if (ae.getSource().equals(logoutButton)) {
-				dispose();
 				try {
+					shop.disconnect();
+					dispose();
 					new LogInGUI(host, port);
 				} catch (IOException e) {
 					JOptionPane.showConfirmDialog(null, "IOException: " + e.getMessage(), "eShop", JOptionPane.PLAIN_MESSAGE);
@@ -2010,7 +2011,13 @@ public class MitarbeiterGUI extends JFrame {
 								JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE) == JOptionPane.NO_OPTION){
 					close = false;
 				}
-				System.err.println(e.getMessage());
+//				System.err.println(e.getMessage());
+			} finally {
+				try {
+					shop.disconnect();
+				} catch (IOException e) {
+					JOptionPane.showConfirmDialog(null, "IOException: " + e.getMessage(), "eShop", JOptionPane.PLAIN_MESSAGE);
+				}
 			}
 			
 			if(close){
