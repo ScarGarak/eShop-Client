@@ -239,7 +239,11 @@ public class ShopFassade implements ShopInterface {
 		try {
 			// PersonTyp
 			antwort = sin.readLine();
-			PersonTyp personTyp = PersonTyp.valueOf(antwort);
+			PersonTyp personTyp = null;
+			if(!antwort.equals("Fehler"))
+				personTyp = PersonTyp.valueOf(antwort);
+			else
+				return null;
 			// ID
 			antwort = sin.readLine();
 			int id = Integer.parseInt(antwort);
@@ -257,7 +261,11 @@ public class ShopFassade implements ShopInterface {
 					// Wohnort
 					antwort = sin.readLine();
 					String wohnort = antwort;
+					//Blockiert
+					antwort = sin.readLine();
+					boolean kblockiert = Boolean.valueOf(antwort);
 					p = new Kunde(id, username, password, name, strasse, plz, wohnort); 
+					p.setBlockiert(kblockiert);
 					break;
 				case Mitarbeiter: 
 					// MitarbeiterFunktion
@@ -266,7 +274,11 @@ public class ShopFassade implements ShopInterface {
 					// Gehalt
 					antwort = sin.readLine();
 					double gehalt = Double.valueOf(antwort);
+					//Blockiert
+					antwort = sin.readLine();
+					boolean mblockiert = Boolean.valueOf(antwort);
 					p = new Mitarbeiter(id, username, password, name, funktion, gehalt);
+					p.setBlockiert(mblockiert);
 					break;
 				default: 
 					break;
@@ -473,8 +485,14 @@ public class ShopFassade implements ShopInterface {
 	public void kundenBearbeiten(int id, String passwort, String name,
 			String strasse, int plz, String wohnort, boolean blockiert)
 			throws KundeExistiertNichtException {
-		// TODO Auto-generated method stub
-		
+		sout.println("kb");
+		sout.println(id);
+		sout.println(passwort);
+		sout.println(name);
+		sout.println(strasse);
+		sout.println("" + plz);
+		sout.println(wohnort);
+		sout.println(blockiert);		
 	}
 
 	@Override
@@ -508,10 +526,52 @@ public class ShopFassade implements ShopInterface {
 
 	
 	@Override
-	public Kunde loginVergessen(String name, String strasse, int zip,
-			String wohnort) {
-		// TODO Auto-generated method stub
+	public Kunde loginVergessen(String name, String strasse, int zip, String wohnort) {
+		Kunde k = null;
+		sout.println("lv");
+		sout.println(name);
+		sout.println(strasse);
+		sout.println("" + zip);
+		sout.println(wohnort);
+//		hgf
+		String antwort = "?";
+		
+			try {
+				antwort = sin.readLine();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			if(antwort.equals("ken")) {
+//				System.out.println("ken");
+			} else if (antwort.equals("kse")) {
+//				System.out.println("kse");
+				k = empfangeKunde();
+				System.out.println("kunde: " + k);
+				return k;
+			}
 		return null;
+	}
+	
+	public Kunde empfangeKunde() {
+		Kunde k = null;
+			try {
+				int id = Integer.parseInt(sin.readLine());
+				String username = sin.readLine();
+				String passwort = sin.readLine();
+				String name = sin.readLine();
+				String strasse = sin.readLine();
+				int plz = Integer.parseInt(sin.readLine());
+				String wohnort = sin.readLine();
+				k = new Kunde(id, username, passwort, name, strasse, plz, wohnort);
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return k;
 	}
 
 }

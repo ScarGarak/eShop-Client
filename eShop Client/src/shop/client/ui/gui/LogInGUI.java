@@ -24,6 +24,7 @@ import java.net.InetAddress;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -32,6 +33,7 @@ import shop.client.net.ShopFassade;
 import shop.client.ui.gui.kundengui.KundeGUI;
 import shop.client.ui.gui.mitarbeitergui.MitarbeiterGUI;
 import shop.common.exceptions.KundeExistiertBereitsException;
+import shop.common.exceptions.KundeExistiertNichtException;
 import shop.common.exceptions.UsernameExistiertBereitsException;
 import shop.common.interfaces.ShopInterface;
 import shop.common.valueobjects.Kunde;
@@ -236,7 +238,12 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 			if(k != null){
 				usernameField.setText(k.getUsername());
 				if(passwort.equals(passwortWiederholung)){
-					k.setPasswort(passwort);
+					try {
+						shop.kundenBearbeiten(k.getId(), pwField.getText(), k.getName(), k.getStrasse(), k.getPlz(), k.getWohnort(), k.getBlockiert());
+					} catch (KundeExistiertNichtException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					zeichneLogin();
 				}else{
 					//TODO
@@ -400,6 +407,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		panBreite = 2;
 		resizePan();
 		usernameField.setBackground(Color.WHITE);
+		passwordField.setBackground(Color.WHITE);
 		usernameField.setText("");
 		pwField.setText("");
 		wpwField.setText("");
@@ -455,10 +463,10 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 //		rechtsPan.add(opwField);
 		rechtsPan.add(passwordLabel);
 		rechtsPan.add(pwField);
-		pwField.disable();
+//		pwField.disable();
 		rechtsPan.add(wpwLab);
 		rechtsPan.add(wpwField);
-		wpwField.disable();
+//		wpwField.disable();
 		rechtsPan.add(rechts3);
 		rechtsPan.add(rechts4);
 		rechtsPan.repaint();
@@ -490,6 +498,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		panBreite = 2;
 		resizePan();
 		usernameField.setBackground(Color.WHITE);
+		passwordField.setBackground(Color.WHITE);
 		usernameField.setText("");
 		pwField.setText("");
 		wpwField.setText("");
@@ -497,8 +506,8 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		streetField.setText("");
 		zipField.setText("");
 		cityField.setText("");		
-		pwField.enable();
-		wpwField.enable();
+//		pwField.enable();
+//		wpwField.enable();
 		
 		JLabel nameLab = new JLabel("Name");
 		JLabel gebDatLab = new JLabel("Geburtsdatum");
@@ -566,8 +575,10 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 			if (p.getPersonTyp().equals(PersonTyp.Mitarbeiter)) {
 				try {
 //					dispose();
-					this.setVisible(false);
-					new MitarbeiterGUI((Mitarbeiter) p, shop, host, port);
+					if(!p.getBlockiert()){
+						this.setVisible(false);
+						new MitarbeiterGUI((Mitarbeiter) p, shop, host, port);
+					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -575,8 +586,10 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 			} else {
 				try {
 //					dispose();
-					this.setVisible(false);
-					new KundeGUI(shop, (Kunde) p, host, port);
+					if(!p.getBlockiert()){
+						this.setVisible(false);
+						new KundeGUI(shop, (Kunde) p, host, port);
+					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -592,11 +605,20 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 				String password = passwordField.getText();
 				p = shop.pruefeLogin(username, password);
 				if (p == null) {
-//					pop up mit Hinweis aus falsche eingabe
-//					einfärben der Textfelder, Fokus auf usernameField
-//					tf.setText
+					passwordError.setText("<html><font color=#FF0000>Bitte richtiges Passwort eingeben</font></html>");
+					usernameError.setText("<html><font color=#FF0000>Bitte richtiger Usernamen eingeben</font></html>");
+					passwordField.setBackground(new Color(250,240,230));
+					usernameField.setBackground(new Color(250,240,230));
+					usernameField.requestFocus();
+					rechtsPan.removeAll();
+					zeichneError();
+					rechtsPan.repaint();
+					rechtsPan.validate();
+				}else if(p.getBlockiert()){
+					JOptionPane.showMessageDialog(null, "Sie sind gesperrt!", "Blockiert", JOptionPane.ERROR_MESSAGE);
 				}
 			} else {
+				passwordError.setText("<html><font color=#FF0000>Bitte Passwort eingeben</font></html>");
 				passwordField.setBackground(new Color(250,240,230));
 				passwordField.requestFocus();
 				usernameField.setBackground(Color.WHITE);
@@ -610,6 +632,8 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 			}
 		} else {
 			if (passwordField.getText().equals("")) {
+				passwordError.setText("<html><font color=#FF0000>Bitte Passwort eingeben</font></html>");
+				usernameError.setText("<html><font color=#FF0000>Bitte Usernamen eingeben</font></html>");
 				passwordField.setBackground(new Color(250,240,230));
 				usernameField.setBackground(new Color(250,240,230));
 				usernameField.requestFocus();
@@ -619,6 +643,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 				rechtsPan.validate();
 				System.out.println("e");
 			} else {
+				usernameError.setText("<html><font color=#FF0000>Bitte Usernamen eingeben</font></html>");
 				usernameField.setBackground(new Color(250,240,230));
 				usernameField.requestFocus();
 				passwordField.setBackground(Color.WHITE);
