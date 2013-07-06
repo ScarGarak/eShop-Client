@@ -257,7 +257,11 @@ public class ShopFassade implements ShopInterface {
 					// Wohnort
 					antwort = sin.readLine();
 					String wohnort = antwort;
+					//Blockiert
+					antwort = sin.readLine();
+					boolean kblockiert = Boolean.valueOf(antwort);
 					p = new Kunde(id, username, password, name, strasse, plz, wohnort); 
+					p.setBlockiert(kblockiert);
 					break;
 				case Mitarbeiter: 
 					// MitarbeiterFunktion
@@ -266,7 +270,11 @@ public class ShopFassade implements ShopInterface {
 					// Gehalt
 					antwort = sin.readLine();
 					double gehalt = Double.valueOf(antwort);
+					//Blockiert
+					antwort = sin.readLine();
+					boolean mblockiert = Boolean.valueOf(antwort);
 					p = new Mitarbeiter(id, username, password, name, funktion, gehalt);
+					p.setBlockiert(mblockiert);
 					break;
 				default: 
 					break;
