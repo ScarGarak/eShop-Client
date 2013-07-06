@@ -161,6 +161,39 @@ public class ShopFassade implements ShopInterface {
 	}
 
 	/**
+	 * Methode zum verändern des Bestands eines Artikels.
+	 * 
+	 * @param mitarbeiter Mitarbeiter der den Bestand eines Artikels verändern will
+	 * @param artikelnummer Artikelnummer des zu verändernden Artikels
+	 * @param anzahl Anzahl des neuen Bestands
+	 * @throws ArtikelExistiertNichtException
+	 * @throws ArtikelBestandIstKeineVielfacheDerPackungsgroesseException
+	 */
+	public void artikelBestandVeraendern(Mitarbeiter mitarbeiter, int artikelnummer, int anzahl) throws ArtikelExistiertNichtException, ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
+		// Kennzeichen für gewählte Aktion senden
+		sout.println("abv");
+		// Parameter für Aktion senden
+		sout.println(mitarbeiter.getId());
+		sout.println(artikelnummer);
+		sout.println(anzahl);
+		
+		// Antwort vom Server lesen:
+		String antwort = "?";
+		try {
+			antwort = sin.readLine();
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		
+		if (antwort.equals("ArtikelExistiertNichtException")) {
+			throw new ArtikelExistiertNichtException(" - in 'artikelBestandVeraendern()'");
+		} else
+		if (antwort.equals("ArtikelBestandIstKeineVielfacheDerPackungsgroesseException")) {
+			throw new ArtikelBestandIstKeineVielfacheDerPackungsgroesseException(" - in 'artikelBestandVeraendern()'");
+		}
+	}
+	
+	/**
 	 * Methode, die eine Liste aller im Bestand befindlichen Artikel, 
 	 * nach ihrer Artikelnummer sortiert, zurückgibt.
 	 * 
@@ -392,6 +425,35 @@ public class ShopFassade implements ShopInterface {
 	}
 
 	/**
+	 * Methode zum bearbeiten eines Artikels.
+	 * 
+	 * @param artikelnumme Artikelnummer des Artikels
+	 * @param preis Preis des Artikels
+	 * @param bezeichnung Bezeichnung des Artikels
+	 * @thorws ArtikelExistiertNichtException
+	 */
+	public void artikelBearbeiten(int artikelnummer, double preis, String bezeichnung) throws ArtikelExistiertNichtException {
+		// Kennzeichen für gewählte Aktion senden
+		sout.println("ab");
+		// Parameter für Aktion senden
+		sout.println(artikelnummer);
+		sout.println(preis);
+		sout.println(bezeichnung);
+		
+		// Antwort vom Server lesen:
+		String antwort = "?";
+		try {
+			antwort = sin.readLine();
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		
+		if (antwort.equals("ArtikelExistiertNichtException")) {
+			throw new ArtikelExistiertNichtException(" - in 'artikelBearbeiten()'");
+		} 
+	}
+	
+	/**
 	 * Methode zum Entfernen eines Artikels aus dem Bestand.
 	 * 
 	 * @param mitarbeiter Mitarbeiter der den Artikel aus dem Bestand entfernen will
@@ -531,26 +593,83 @@ public class ShopFassade implements ShopInterface {
 
 	@Override
 	public Kunde sucheKunde(int id) throws KundeExistiertNichtException {
-		// TODO Auto-generated method stub
-		return null;
+		Kunde k = null;
+		sout.println("sk");
+		sout.println("" + id);
+		
+		try {
+			if (sin.readLine().equals("kse")) {
+			id = Integer.parseInt(sin.readLine());
+			String username = sin.readLine();
+			String passwort = sin.readLine();
+			String name = sin.readLine();
+			String strasse = sin.readLine();
+			int plz = Integer.parseInt(sin.readLine());
+			String wohnort = sin.readLine();
+			k = new Kunde(id, username, passwort, name, strasse, plz, wohnort);
+			}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (k != null) {
+		return k;
+		} else {
+			return null;
+		}
 	}
 
 	@Override
 	public Vector<Kunde> gibAlleKunden() {
-		// TODO Auto-generated method stub
-		return null;
+		Vector<Kunde> kundenListe = new Vector<Kunde>();
+		Kunde k = null;
+		sout.println("gak");
+
+		try{
+			int size = Integer.parseInt(sin.readLine());
+
+			for(int i = 0; i < size ; i++){
+				//id
+				int id = Integer.parseInt(sin.readLine());
+				//Username
+				String username = sin.readLine();
+				//Passwort
+				String passwort = sin.readLine();
+				//Name
+				String name = sin.readLine();
+				//Strasse
+				String strasse = sin.readLine();
+				//plz
+				int plz = Integer.parseInt(sin.readLine());
+				//Wohnort
+				String wohnort = sin.readLine();
+				//Blockiert
+				boolean blockiert = Boolean.valueOf(sin.readLine());
+
+				k = new Kunde(id, username, passwort, name, strasse, plz, wohnort);
+				k.setBlockiert(blockiert);
+				kundenListe.add(k);
+			}
+
+		}catch(Exception e){
+			System.err.println(e.getMessage());
+			return null;
+		}
+		return kundenListe;
 	}
 
 	@Override
 	public void kundenLoeschen(Kunde k) {
-		// TODO Auto-generated method stub
-		
+		sout.println("kl");
+		sout.println(k.getId());
 	}
 
 	@Override
 	public void schreibeKunden() throws IOException {
-		// TODO Auto-generated method stub
-		
+		sout.println("sk");
 	}
 
 	/**
@@ -911,22 +1030,6 @@ public class ShopFassade implements ShopInterface {
 			logDatei += sin.readLine()+"\n";
 		}
 		return logDatei;
-	}
-
-	@Override
-	public void artikelBestandVeraendern(Mitarbeiter mitarbeiter,
-			int artikelnummer, int anzahl)
-			throws ArtikelExistiertNichtException,
-			ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void artikelBearbeiten(int artikelnummer, double preis,
-			String bezeichnung) throws ArtikelExistiertNichtException {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
