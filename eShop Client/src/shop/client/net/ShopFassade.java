@@ -279,30 +279,6 @@ public class ShopFassade implements ShopInterface {
 	}
 
 	@Override
-	public void schreibeEreignisse() throws IOException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String gibBestandsHistorie(Artikel artikel) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int[] gibBestandsHistorieDaten(Artikel artikel) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String gibLogDatei() throws IOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void artikelBestandVeraendern(Mitarbeiter mitarbeiter,
 			int artikelnummer, int anzahl)
 			throws ArtikelExistiertNichtException,
@@ -318,7 +294,7 @@ public class ShopFassade implements ShopInterface {
 		
 	}
 
-	//////////Mitarbeiter Methoden ////////// 
+	////////// Mitarbeiter Methoden ////////// 
 
 	@Override
 	public Mitarbeiter sucheMitarbeiter(int id) throws MitarbeiterExistiertNichtException {
@@ -450,10 +426,49 @@ public class ShopFassade implements ShopInterface {
 
 	@Override
 	public void schreibeMitarbeiter() throws IOException {
-		// TODO Auto-generated method stub
+		sout.println("sm");
+	}
+
+	////////// Ereignis Methoden ////////// 
+	
+	@Override
+	public void schreibeEreignisse() throws IOException {
+		sout.println("se");
+	}
+
+	@Override
+	public String gibBestandsHistorie(Artikel artikel) throws IOException {
+		sout.println("gbh");
+		return sin.readLine();
+	}
+
+	@Override
+	public int[] gibBestandsHistorieDaten(Artikel artikel) throws IOException {
+		sout.println("gbhd");
+		sout.println(artikel.getArtikelnummer());
+		sin.readLine();
+		int anzahl = Integer.parseInt(sin.readLine());
+		int[] daten = new int[anzahl];
+		for(int i = 0; i < anzahl; i++){
+			daten[i] = Integer.parseInt(sin.readLine());
+		}
+		
+		return daten;
 		
 	}
 
+	@Override
+	public String gibLogDatei() throws IOException {
+		sout.println("gl");
+		int anzahl = Integer.parseInt(sin.readLine());
+		String logDatei = "";
+		for(int i = 0; i < anzahl; i++){
+			logDatei += sin.readLine()+"\n";
+		}
+		return logDatei;
+	}
+	
+	
 	@Override
 	public void kundenBearbeiten(int id, String passwort, String name,
 			String strasse, int plz, String wohnort, boolean blockiert)
