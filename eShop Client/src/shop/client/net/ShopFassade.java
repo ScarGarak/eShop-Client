@@ -49,41 +49,41 @@ public class ShopFassade implements ShopInterface {
 	private Socket socket = null;
 	private BufferedReader sin; // server-input stream
 	private PrintStream sout; // server-output stream
-	
-	/**
-	 * Konstruktor, der die Verbindung zum Server aufbaut (Socket) und dieser
-	 * Grundlage Eingabe- und Ausgabestreams für die Kommunikation mit dem
-	 * Server erzeugt.
-	 * 
-	 * @param host Rechner, auf dem der Server läuft
-	 * @param port Port, auf dem der Server auf Verbindungsanfragen warten
-	 * @throws IOException
-	 */
-	public ShopFassade(String host, int port) throws IOException {
-		try {
-			// Socket-Objekt fuer die Kommunikation mit Host/Port erstellen
-			socket = new Socket(host, port);
 
-			// Stream-Objekt fuer Text-I/O ueber Socket erzeugen
-			InputStream is = socket.getInputStream();
-			sin = new BufferedReader(new InputStreamReader(is));
-			sout = new PrintStream(socket.getOutputStream());
-		} catch (IOException e) {
-			System.err.println("Fehler beim Socket-Stream oeffnen: " + e);
-			// Wenn im "try"-Block Fehler auftreten, dann Socket schlieﬂen:
-			if (socket != null)
-				socket.close();
-			System.err.println("Socket geschlossen");
-			System.exit(0);
+
+	@Override
+	public Mitarbeiter sucheMitarbeiter(int id) throws MitarbeiterExistiertNichtException {
+		Mitarbeiter m = null;
+		sout.println("mf");
+		sout.println(id);
+		String antwort = "?";
+		try{
+			antwort = sin.readLine();
+			if(antwort.equals("MitarbeiterExistiertNicht"))
+				throw new MitarbeiterExistiertNichtException(id, " - beim Empfangen der Daten!");
+
+			//id
+			// Wird nicht gebraucht
+			//Username
+			String username = sin.readLine();
+			//Passwort
+			String passwort = sin.readLine();
+			//Name
+			String name = sin.readLine();
+			//Funktion
+			MitarbeiterFunktion funktion = MitarbeiterFunktion.valueOf(sin.readLine());
+			//Gehalt
+			double gehalt = Double.parseDouble(sin.readLine());
+			//Blockiert
+			boolean blockiert = Boolean.valueOf(sin.readLine());
+
+			m = new Mitarbeiter(id, username, passwort, name, funktion, gehalt);
+			m.setBlockiert(blockiert);
+		}catch(Exception e){
+			System.err.println(e.getMessage());
+			return null;
 		}
-		
-		// Verbindung erfolgreich hergestellt: IP-Adresse und Port ausgeben
-		System.err.println("Verbunden: " + socket.getInetAddress() + ":"
-				+ socket.getPort());	
-
-		// Begrüßungsmeldung vom Server lesen
-		String message = sin.readLine();
-		System.out.println(message);
+		return m;
 	}
 
 	/**
@@ -267,7 +267,6 @@ public class ShopFassade implements ShopInterface {
 			}
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
-			e.printStackTrace();
 			return null;
 		}
 		return liste;
@@ -444,40 +443,6 @@ public class ShopFassade implements ShopInterface {
 			throw new IOException();
 		}
 	}
-	@Override
-	public Mitarbeiter sucheMitarbeiter(int id) throws MitarbeiterExistiertNichtException {
-		Mitarbeiter m = null;
-		sout.println("mf");
-		sout.println(id);
-		String antwort = "?";
-		try{
-			antwort = sin.readLine();
-			if(antwort.equals("MitarbeiterExistiertNicht"))
-				throw new MitarbeiterExistiertNichtException(id, " - beim Empfangen der Daten!");
-
-			//id
-			// Wird nicht gebraucht
-			//Username
-			String username = sin.readLine();
-			//Passwort
-			String passwort = sin.readLine();
-			//Name
-			String name = sin.readLine();
-			//Funktion
-			MitarbeiterFunktion funktion = MitarbeiterFunktion.valueOf(sin.readLine());
-			//Gehalt
-			double gehalt = Double.parseDouble(sin.readLine());
-			//Blockiert
-			boolean blockiert = Boolean.valueOf(sin.readLine());
-
-			m = new Mitarbeiter(id, username, passwort, name, funktion, gehalt);
-			m.setBlockiert(blockiert);
-		}catch(Exception e){
-			System.err.println(e.getMessage());
-			return null;
-		}
-		return m;
-	}
 	
 	@Override
 	public Vector<Mitarbeiter> gibAlleMitarbeiter() {
@@ -526,6 +491,92 @@ public class ShopFassade implements ShopInterface {
 	@Override
 	public void schreibeMitarbeiter() throws IOException {
 		sout.println("sm");
+	}
+
+	@Override
+	public void schreibeEreignisse() throws IOException {
+		sout.println("se");
+	}
+
+	@Override
+	public String gibBestandsHistorie(int artikelnummer) throws IOException {
+		sout.println("gbh");
+		return sin.readLine();
+	}
+
+	@Override
+	public int[] gibBestandsHistorieDaten(int artikelnummer) throws IOException {
+		sout.println("gbhd");
+		sout.println(artikelnummer);
+		sin.readLine();
+		int anzahl = Integer.parseInt(sin.readLine());
+		int[] daten = new int[anzahl];
+		for(int i = 0; i < anzahl; i++){
+			daten[i] = Integer.parseInt(sin.readLine());
+		}
+	
+		return daten;
+	
+	}
+
+	@Override
+	public String gibLogDatei() throws IOException {
+		sout.println("gl");
+		int anzahl = Integer.parseInt(sin.readLine());
+		String logDatei = "";
+		for(int i = 0; i < anzahl; i++){
+			logDatei += sin.readLine()+"\n";
+		}
+		return logDatei;
+	}
+
+	@Override
+	public void fuegeMitarbeiterHinzu(String username, String passwort, String name, MitarbeiterFunktion funktion, double gehalt) throws MitarbeiterExistiertBereitsException, UsernameExistiertBereitsException {
+		sout.println("me");
+		sout.println(username);
+		sout.println(passwort);
+		sout.println(name);
+		sout.println(funktion);
+		sout.println(gehalt);
+	
+		String antwort = "?";
+		try{
+			antwort = sin.readLine();
+			if(antwort.equals("MitarbeiterExistiertBereits")){
+				throw new MitarbeiterExistiertBereitsException(new Mitarbeiter(-1, "?", "?", "?", MitarbeiterFunktion.Mitarbeiter, 0), " - in ShopFassade (Einfugen von Mitarbeiter)!");
+			}else if(antwort.equals("UsernameExistiertBereits")){
+				throw new UsernameExistiertBereitsException(username, " - in ShopFassade (Einfugen von Mitarbeiter)!");
+			}
+			// OK
+	
+		}catch(Exception e){
+			System.err.println(e.getMessage());
+			return;
+		}
+	}
+
+	@Override
+	public void mitarbeiterBearbeiten(int id, String passwort, String name, MitarbeiterFunktion funktion, double gehalt, boolean blockiert) throws MitarbeiterExistiertNichtException {
+		sout.println("mb");
+		sout.println(id);
+		sout.println(passwort);
+		sout.println(name);
+		sout.println(funktion);
+		sout.println(gehalt);
+		sout.println(blockiert);
+	
+		String antwort = "?";
+		try{
+			antwort = sin.readLine();
+			if(antwort.equals("MitarbeiterExistiertNicht")){
+				throw new MitarbeiterExistiertNichtException(id, " - in ShopFassade (Mitarbeiter Bearbeiten)!");
+			}
+			// OK
+	
+		}catch(Exception e){
+			System.err.println(e.getMessage());
+			return;
+		}
 	}
 	
 	@Override
@@ -869,43 +920,6 @@ public class ShopFassade implements ShopInterface {
 	}
 
 	@Override
-	public void schreibeEreignisse() throws IOException {
-		sout.println("se");
-	}
-
-	@Override
-	public String gibBestandsHistorie(int artikelnummer) throws IOException {
-		sout.println("gbh");
-		return sin.readLine();
-	}
-
-	@Override
-	public int[] gibBestandsHistorieDaten(int artikelnummer) throws IOException {
-		sout.println("gbhd");
-		sout.println(artikelnummer);
-		sin.readLine();
-		int anzahl = Integer.parseInt(sin.readLine());
-		int[] daten = new int[anzahl];
-		for(int i = 0; i < anzahl; i++){
-			daten[i] = Integer.parseInt(sin.readLine());
-		}
-	
-		return daten;
-	
-	}
-
-	@Override
-	public String gibLogDatei() throws IOException {
-		sout.println("gl");
-		int anzahl = Integer.parseInt(sin.readLine());
-		String logDatei = "";
-		for(int i = 0; i < anzahl; i++){
-			logDatei += sin.readLine()+"\n";
-		}
-		return logDatei;
-	}
-	
-	@Override
 	public void artikelBestandVeraendern(Mitarbeiter mitarbeiter,
 			int artikelnummer, int anzahl)
 			throws ArtikelExistiertNichtException,
@@ -921,55 +935,7 @@ public class ShopFassade implements ShopInterface {
 		
 	}
 
-	@Override
-	public void fuegeMitarbeiterHinzu(String username, String passwort, String name, MitarbeiterFunktion funktion, double gehalt) throws MitarbeiterExistiertBereitsException, UsernameExistiertBereitsException {
-		sout.println("me");
-		sout.println(username);
-		sout.println(passwort);
-		sout.println(name);
-		sout.println(funktion);
-		sout.println(gehalt);
-	
-		String antwort = "?";
-		try{
-			antwort = sin.readLine();
-			if(antwort.equals("MitarbeiterExistiertBereits")){
-				throw new MitarbeiterExistiertBereitsException(new Mitarbeiter(-1, "?", "?", "?", MitarbeiterFunktion.Mitarbeiter, 0), " - in ShopFassade (Einfugen von Mitarbeiter)!");
-			}else if(antwort.equals("UsernameExistiertBereits")){
-				throw new UsernameExistiertBereitsException(username, " - in ShopFassade (Einfugen von Mitarbeiter)!");
-			}
-			// OK
-	
-		}catch(Exception e){
-			System.err.println(e.getMessage());
-			return;
-		}
-	}
 
-	@Override
-	public void mitarbeiterBearbeiten(int id, String passwort, String name, MitarbeiterFunktion funktion, double gehalt, boolean blockiert) throws MitarbeiterExistiertNichtException {
-		sout.println("mb");
-		sout.println(id);
-		sout.println(passwort);
-		sout.println(name);
-		sout.println(funktion);
-		sout.println(gehalt);
-		sout.println(blockiert);
-	
-		String antwort = "?";
-		try{
-			antwort = sin.readLine();
-			if(antwort.equals("MitarbeiterExistiertNicht")){
-				throw new MitarbeiterExistiertNichtException(id, " - in ShopFassade (Mitarbeiter Bearbeiten)!");
-			}
-			// OK
-	
-		}catch(Exception e){
-			System.err.println(e.getMessage());
-			return;
-		}
-	}
-	
 	@Override
 	public void kundenBearbeiten(int id, String passwort, String name,
 			String strasse, int plz, String wohnort, boolean blockiert)
@@ -1010,14 +976,4 @@ public class ShopFassade implements ShopInterface {
 		}
 		System.out.println(antwort);
 	}
-
-//////////Mitarbeiter Methoden ////////// 
-
-
-
-
-	
-	////////// Ereignis Methoden ////////// 
-	
-	
 }

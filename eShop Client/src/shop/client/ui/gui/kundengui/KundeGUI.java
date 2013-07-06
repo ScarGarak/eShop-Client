@@ -47,6 +47,7 @@ import shop.client.ui.gui.kundengui.table.WarenkorbArtikelTableModel;
 import shop.common.exceptions.ArtikelBestandIstKeineVielfacheDerPackungsgroesseException;
 import shop.common.exceptions.ArtikelBestandIstZuKleinException;
 import shop.common.exceptions.ArtikelExistiertNichtException;
+import shop.common.exceptions.KundeExistiertNichtException;
 import shop.common.exceptions.WarenkorbIstLeerException;
 import shop.common.interfaces.ShopInterface;
 import shop.common.valueobjects.Artikel;
@@ -853,6 +854,12 @@ public class KundeGUI extends JFrame {
 					}
 					if (!neuesPasswort.getText().isEmpty()) {
 						kunde.setPasswort(neuesPasswort.getText());
+					}
+					try {
+						shop.kundenBearbeiten(kunde.getId(), kunde.getPasswort(), kunde.getName(), kunde.getStrasse(), kunde.getPlz(), kunde.getWohnort(), kunde.getBlockiert());
+					} catch (KundeExistiertNichtException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
 					kaufenButton.setEnabled(true);
 					leerenButton.setEnabled(true);

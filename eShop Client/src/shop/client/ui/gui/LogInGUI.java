@@ -33,6 +33,7 @@ import shop.client.net.ShopFassade;
 import shop.client.ui.gui.kundengui.KundeGUI;
 import shop.client.ui.gui.mitarbeitergui.MitarbeiterGUI;
 import shop.common.exceptions.KundeExistiertBereitsException;
+import shop.common.exceptions.KundeExistiertNichtException;
 import shop.common.exceptions.UsernameExistiertBereitsException;
 import shop.common.interfaces.ShopInterface;
 import shop.common.valueobjects.Kunde;
@@ -237,7 +238,12 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 			if(k != null){
 				usernameField.setText(k.getUsername());
 				if(passwort.equals(passwortWiederholung)){
-					k.setPasswort(passwort);
+					try {
+						shop.kundenBearbeiten(k.getId(), pwField.getText(), k.getName(), k.getStrasse(), k.getPlz(), k.getWohnort(), k.getBlockiert());
+					} catch (KundeExistiertNichtException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					zeichneLogin();
 				}else{
 					//TODO
@@ -457,10 +463,10 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 //		rechtsPan.add(opwField);
 		rechtsPan.add(passwordLabel);
 		rechtsPan.add(pwField);
-		pwField.disable();
+//		pwField.disable();
 		rechtsPan.add(wpwLab);
 		rechtsPan.add(wpwField);
-		wpwField.disable();
+//		wpwField.disable();
 		rechtsPan.add(rechts3);
 		rechtsPan.add(rechts4);
 		rechtsPan.repaint();
@@ -500,8 +506,8 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		streetField.setText("");
 		zipField.setText("");
 		cityField.setText("");		
-		pwField.enable();
-		wpwField.enable();
+//		pwField.enable();
+//		wpwField.enable();
 		
 		JLabel nameLab = new JLabel("Name");
 		JLabel gebDatLab = new JLabel("Geburtsdatum");
