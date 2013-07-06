@@ -267,6 +267,7 @@ public class ShopFassade implements ShopInterface {
 			}
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
+			e.printStackTrace();
 			return null;
 		}
 		return liste;
@@ -848,6 +849,10 @@ public class ShopFassade implements ShopInterface {
 					antwort = sin.readLine();
 					String wohnort = antwort;
 					p = new Kunde(id, username, password, name, strasse, plz, wohnort); 
+					// Blockiert
+					antwort = sin.readLine();
+					boolean kBlockiert = Boolean.valueOf(antwort);
+					p.setBlockiert(kBlockiert);
 					break;
 				case Mitarbeiter: 
 					// MitarbeiterFunktion
@@ -856,7 +861,11 @@ public class ShopFassade implements ShopInterface {
 					// Gehalt
 					antwort = sin.readLine();
 					double gehalt = Double.valueOf(antwort);
+					// Blockiert
+					antwort = sin.readLine();
+					boolean mBlockiert = Boolean.valueOf(antwort);
 					p = new Mitarbeiter(id, username, password, name, funktion, gehalt);
+					p.setBlockiert(mBlockiert);
 					break;
 				default: 
 					break;
