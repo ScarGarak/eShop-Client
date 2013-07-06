@@ -45,7 +45,7 @@ public class JAccountButton extends JButton {
 	public void paint(Graphics g) {
 		int width = (int) this.getSize().getWidth();
 		int height = (int) this.getSize().getHeight();
-		Font myFont = new Font(Font.SANS_SERIF, Font.PLAIN, 13);
+		Font myFont = new Font(Font.SANS_SERIF, Font.BOLD, 13);
 		FontMetrics fm = g.getFontMetrics();
 		int textWidth = fm.stringWidth(name);
 		int textHeight = fm.getHeight();

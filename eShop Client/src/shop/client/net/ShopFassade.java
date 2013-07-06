@@ -593,26 +593,83 @@ public class ShopFassade implements ShopInterface {
 
 	@Override
 	public Kunde sucheKunde(int id) throws KundeExistiertNichtException {
-		// TODO Auto-generated method stub
-		return null;
+		Kunde k = null;
+		sout.println("sk");
+		sout.println("" + id);
+		
+		try {
+			if (sin.readLine().equals("kse")) {
+			id = Integer.parseInt(sin.readLine());
+			String username = sin.readLine();
+			String passwort = sin.readLine();
+			String name = sin.readLine();
+			String strasse = sin.readLine();
+			int plz = Integer.parseInt(sin.readLine());
+			String wohnort = sin.readLine();
+			k = new Kunde(id, username, passwort, name, strasse, plz, wohnort);
+			}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (k != null) {
+		return k;
+		} else {
+			return null;
+		}
 	}
 
 	@Override
 	public Vector<Kunde> gibAlleKunden() {
-		// TODO Auto-generated method stub
-		return null;
+		Vector<Kunde> kundenListe = new Vector<Kunde>();
+		Kunde k = null;
+		sout.println("gak");
+
+		try{
+			int size = Integer.parseInt(sin.readLine());
+
+			for(int i = 0; i < size ; i++){
+				//id
+				int id = Integer.parseInt(sin.readLine());
+				//Username
+				String username = sin.readLine();
+				//Passwort
+				String passwort = sin.readLine();
+				//Name
+				String name = sin.readLine();
+				//Strasse
+				String strasse = sin.readLine();
+				//plz
+				int plz = Integer.parseInt(sin.readLine());
+				//Wohnort
+				String wohnort = sin.readLine();
+				//Blockiert
+				boolean blockiert = Boolean.valueOf(sin.readLine());
+
+				k = new Kunde(id, username, passwort, name, strasse, plz, wohnort);
+				k.setBlockiert(blockiert);
+				kundenListe.add(k);
+			}
+
+		}catch(Exception e){
+			System.err.println(e.getMessage());
+			return null;
+		}
+		return kundenListe;
 	}
 
 	@Override
 	public void kundenLoeschen(Kunde k) {
-		// TODO Auto-generated method stub
-		
+		sout.println("kl");
+		sout.println(k.getId());
 	}
 
 	@Override
 	public void schreibeKunden() throws IOException {
-		// TODO Auto-generated method stub
-		
+		sout.println("sk");
 	}
 
 	/**
