@@ -1342,9 +1342,13 @@ public class MitarbeiterGUI extends JFrame {
 					
 					int[] yWerte = null;
 					try {
-						yWerte = shop.gibBestandsHistorieDaten(a);
+						yWerte = shop.gibBestandsHistorieDaten(a.getArtikelnummer());
 					} catch (IOException e1) {
 						setErrorMsg("Fehler beim Lesen der Log Datei aufgetreten!", artikelFooterWrapper);
+						return;
+					} catch (ArtikelExistiertNichtException e1) {
+						setErrorMsg("Dieser Artikel existiert nicht!", artikelFooterWrapper);
+						return;
 					}
 					
 					if(yWerte != null){
