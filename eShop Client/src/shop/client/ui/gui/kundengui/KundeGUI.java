@@ -756,8 +756,9 @@ public class KundeGUI extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
 			if (ae.getSource().equals(logoutButton)) {
-				dispose();
 				try {
+					shop.disconnect();
+					dispose();
 					new LogInGUI(host, port);
 				} catch (IOException e) {
 					JOptionPane.showConfirmDialog(null, "IOException: " + e.getMessage(), "eShop", JOptionPane.PLAIN_MESSAGE);
@@ -879,9 +880,14 @@ public class KundeGUI extends JFrame {
 		public void windowClosing(WindowEvent we) {
 			Window w = we.getWindow();
 			if (((JWarenkorbButton) warenkorbButton).getArtikelanzahl() == 0) {
-				w.setVisible(false);
-				w.dispose();
-				System.exit(0);
+				try {
+					shop.disconnect();
+					w.setVisible(false);
+					w.dispose();
+					System.exit(0);
+				} catch (IOException e) {
+					JOptionPane.showConfirmDialog(null, "IOException: " + e.getMessage(), "eShop", JOptionPane.PLAIN_MESSAGE);
+				}
 			} else {
 				if (JOptionPane.showConfirmDialog(null,
 					"Sind Sie sich sicher dass Sie die Anwendung beenden wollen?\n" +
@@ -894,9 +900,14 @@ public class KundeGUI extends JFrame {
 								"Der Bestand eines Artikels ist keine Vielfache der Packungsgr\u00f6\u00dfe.", "Anwendung beenden",
 				                JOptionPane.PLAIN_MESSAGE);
 					}
-					w.setVisible(false);
-					w.dispose();
-					System.exit(0);
+					try {
+						shop.disconnect();
+						w.setVisible(false);
+						w.dispose();
+						System.exit(0);
+					} catch (IOException e) {
+						JOptionPane.showConfirmDialog(null, "IOException: " + e.getMessage(), "eShop", JOptionPane.PLAIN_MESSAGE);
+					}
 				} else {
 					w.setVisible(true);
 				}

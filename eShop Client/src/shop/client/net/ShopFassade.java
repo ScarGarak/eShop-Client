@@ -160,13 +160,37 @@ public class ShopFassade implements ShopInterface {
 		}
 	}
 
-	@Override
-	public void artikelBestandVeraendern(Mitarbeiter mitarbeiter,
-			int artikelnummer, int anzahl)
-			throws ArtikelExistiertNichtException,
-			ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
-		// TODO Auto-generated method stub
-		//sfbadshbfhadbskhfbadhsbfadbhkfbadshkbfhkadb
+	/**
+	 * Methode zum verändern des Bestands eines Artikels.
+	 * 
+	 * @param mitarbeiter Mitarbeiter der den Bestand eines Artikels verändern will
+	 * @param artikelnummer Artikelnummer des zu verändernden Artikels
+	 * @param anzahl Anzahl des neuen Bestands
+	 * @throws ArtikelExistiertNichtException
+	 * @throws ArtikelBestandIstKeineVielfacheDerPackungsgroesseException
+	 */
+	public void artikelBestandVeraendern(Mitarbeiter mitarbeiter, int artikelnummer, int anzahl) throws ArtikelExistiertNichtException, ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
+		// Kennzeichen für gewählte Aktion senden
+		sout.println("abv");
+		// Parameter für Aktion senden
+		sout.println(mitarbeiter.getId());
+		sout.println(artikelnummer);
+		sout.println(anzahl);
+		
+		// Antwort vom Server lesen:
+		String antwort = "?";
+		try {
+			antwort = sin.readLine();
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		
+		if (antwort.equals("ArtikelExistiertNichtException")) {
+			throw new ArtikelExistiertNichtException(" - in 'artikelBestandVeraendern()'");
+		} else
+		if (antwort.equals("ArtikelBestandIstKeineVielfacheDerPackungsgroesseException")) {
+			throw new ArtikelBestandIstKeineVielfacheDerPackungsgroesseException(" - in 'artikelBestandVeraendern()'");
+		}
 	}
 	
 	/**
