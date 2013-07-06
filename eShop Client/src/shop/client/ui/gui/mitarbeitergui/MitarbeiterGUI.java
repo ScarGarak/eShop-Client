@@ -1668,6 +1668,90 @@ public class MitarbeiterGUI extends JFrame {
 				add(tabbedPane, BorderLayout.CENTER);
 				//revalidate();
 				repaint();
+			}else if (e.getSource().equals(accountSpeichernButton)){
+				//Clear Error Messages
+				errorName.setText("");
+				mitarbeiterNameInput.setBackground(Color.WHITE);
+				errorPasswort.setText("");
+				altesPasswort.setBackground(Color.WHITE);
+				neuesPasswort.setBackground(Color.WHITE);
+				confirmPasswort.setBackground(Color.WHITE);
+				
+				boolean ok = true;
+				if (mitarbeiterNameInput.getText().isEmpty()) {
+					errorName.setText("Der Name darf nicht leer sein. Bitte geben Sie einen g\u00fcltigen Namen ein.");
+					mitarbeiterNameInput.setBackground(new Color(250,240,230));
+					ok = false;
+				}
+				
+				if (!(altesPasswort.getText().isEmpty() && neuesPasswort.getText().isEmpty() && confirmPasswort.getText().isEmpty())) {
+					if (!altesPasswort.getText().equals(mitarbeiter.getPasswort())) {
+						errorPasswort.setText("Das alte Passwort ist falsch.");
+						altesPasswort.setBackground(new Color(250, 240, 230));
+						ok = false;
+					} else
+					if (neuesPasswort.getText().equals(altesPasswort.getText())) {
+						errorPasswort.setText("Das neue Passwort darf nicht das Gleiche wie das alte Passwort sein.");
+						neuesPasswort.setBackground(new Color(250, 240, 230));
+						ok = false;
+					} else
+					if (!confirmPasswort.getText().equals(neuesPasswort.getText())) {
+						errorPasswort.setText("Bitte best\u00e4tigen Sie das neue Passwort.");
+						confirmPasswort.setBackground(new Color(250, 240, 230));
+						ok = false;
+					} else
+					if (altesPasswort.getText().isEmpty() || neuesPasswort.getText().isEmpty() || confirmPasswort.getText().isEmpty()) {
+						errorPasswort.setText("Bitte geben Sie das alte Passwort, das neue Passwort und dessen Best\u00e4tigung ein.");
+						if (altesPasswort.getText().isEmpty()) altesPasswort.setBackground(new Color(250, 240, 230));
+						if (neuesPasswort.getText().isEmpty()) neuesPasswort.setBackground(new Color(250, 240, 230));
+						if (confirmPasswort.getText().isEmpty()) confirmPasswort.setBackground(new Color(250, 240, 230));
+						ok = false;
+					}
+				}
+
+				if (ok) {
+					try {
+						if ((altesPasswort.getText().isEmpty() && neuesPasswort.getText().isEmpty() && confirmPasswort.getText().isEmpty())){
+							shop.mitarbeiterBearbeiten(mitarbeiter.getId(), mitarbeiter.getPasswort(), mitarbeiterNameInput.getText(), mitarbeiter.getFunktion(), mitarbeiter.getGehalt(), mitarbeiter.getBlockiert());
+							mitarbeiter.setName(mitarbeiterNameInput.getText());
+						}else{
+							shop.mitarbeiterBearbeiten(mitarbeiter.getId(), neuesPasswort.getText(), mitarbeiterNameInput.getText(), mitarbeiter.getFunktion(), mitarbeiter.getGehalt(), mitarbeiter.getBlockiert());
+							mitarbeiter.setName(mitarbeiterNameInput.getText());
+							mitarbeiter.setPasswort(neuesPasswort.getText());
+						}
+						accountButtonPanel.remove(accountButton);
+						accountButton = new JAccountButton(mitarbeiter.getName());
+						accountButton.addActionListener(new AccountListener());
+						accountButtonPanel.add(accountButton, 0);
+						accountButtonPanel.revalidate();
+						accountButtonPanel.repaint();
+					} catch (MitarbeiterExistiertNichtException e1) {
+						errorName.setText("Sie existieren nicht mehr...");
+					}
+					remove(accountPanel);
+					add(tabbedPane, BorderLayout.CENTER);
+					//revalidate();
+					repaint();
+
+					//Clear Error Messages
+					errorName.setText("");
+					mitarbeiterNameInput.setText("");
+					mitarbeiterNameInput.setBackground(Color.WHITE);
+					errorPasswort.setText("");
+					altesPasswort.setText("");
+					altesPasswort.setBackground(Color.WHITE);
+					neuesPasswort.setText("");
+					neuesPasswort.setBackground(Color.WHITE);
+					confirmPasswort.setText("");
+					confirmPasswort.setBackground(Color.WHITE);
+
+				}
+				
+			}else if (e.getSource().equals(accountAbbrechenButton)){
+				remove(accountPanel);
+				add(tabbedPane, BorderLayout.CENTER);
+				//revalidate();
+				repaint();
 				
 				//Clear Error Messages
 				errorName.setText("");
