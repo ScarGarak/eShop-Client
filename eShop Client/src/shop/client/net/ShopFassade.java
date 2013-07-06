@@ -977,3 +977,5 @@ public class ShopFassade implements ShopInterface {
 		System.out.println(antwort);
 	}
 }
+
+
