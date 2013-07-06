@@ -892,7 +892,6 @@ public class ShopFassade implements ShopInterface {
 	public int[] gibBestandsHistorieDaten(int artikelnummer) throws IOException {
 		sout.println("gbhd");
 		sout.println(artikelnummer);
-		sin.readLine();
 		int anzahl = Integer.parseInt(sin.readLine());
 		int[] daten = new int[anzahl];
 		for(int i = 0; i < anzahl; i++){

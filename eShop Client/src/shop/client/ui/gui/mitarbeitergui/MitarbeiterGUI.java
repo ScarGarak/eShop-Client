@@ -764,6 +764,7 @@ public class MitarbeiterGUI extends JFrame {
 	private void updateArtikelTableModel(List<Artikel> artikelListe){
 		artikelTableModel = new ArtikelTableModel(artikelListe);
 		artikelTable.setModel(artikelTableModel);
+		artikelTableModel.fireTableDataChanged();
 		artikelTableScrollPane.setViewportView(artikelTable);
 	}
 	
@@ -1008,6 +1009,7 @@ public class MitarbeiterGUI extends JFrame {
 							setErrorMsg(String.format("Der Mindestlohn f\u00fcr Mitarbeiter betr\u00e4gt: %.2f "+ Currency.getInstance(Locale.GERMANY), MINDESTLOHN) , mitarbeiterFooterWrapper);
 						}else{
 							shop.mitarbeiterBearbeiten(m.getId(), m.getPasswort(), m.getName(), (MitarbeiterFunktion)mitarbeiterFunktionInput.getSelectedItem(), gehalt, m.getBlockiert());
+							updateMitarbeiterTableModel(shop.gibAlleMitarbeiter());
 							success = true;
 						}
 					} catch (NumberFormatException nfe){
