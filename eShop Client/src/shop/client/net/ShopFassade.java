@@ -166,7 +166,7 @@ public class ShopFassade implements ShopInterface {
 			throws ArtikelExistiertNichtException,
 			ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
 		// TODO Auto-generated method stub
-		
+		//sfbadshbfhadbskhfbadhsbfadbhkfbadshkbfhkadb
 	}
 	
 	/**
