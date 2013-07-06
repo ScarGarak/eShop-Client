@@ -161,6 +161,39 @@ public class ShopFassade implements ShopInterface {
 	}
 
 	/**
+	 * Methode zum verändern des Bestands eines Artikels.
+	 * 
+	 * @param mitarbeiter Mitarbeiter der den Bestand eines Artikels verändern will
+	 * @param artikelnummer Artikelnummer des zu verändernden Artikels
+	 * @param anzahl Anzahl des neuen Bestands
+	 * @throws ArtikelExistiertNichtException
+	 * @throws ArtikelBestandIstKeineVielfacheDerPackungsgroesseException
+	 */
+	public void artikelBestandVeraendern(Mitarbeiter mitarbeiter, int artikelnummer, int anzahl) throws ArtikelExistiertNichtException, ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
+		// Kennzeichen für gewählte Aktion senden
+		sout.println("abv");
+		// Parameter für Aktion senden
+		sout.println(mitarbeiter.getId());
+		sout.println(artikelnummer);
+		sout.println(anzahl);
+		
+		// Antwort vom Server lesen:
+		String antwort = "?";
+		try {
+			antwort = sin.readLine();
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		
+		if (antwort.equals("ArtikelExistiertNichtException")) {
+			throw new ArtikelExistiertNichtException(" - in 'artikelBestandVeraendern()'");
+		} else
+		if (antwort.equals("ArtikelBestandIstKeineVielfacheDerPackungsgroesseException")) {
+			throw new ArtikelBestandIstKeineVielfacheDerPackungsgroesseException(" - in 'artikelBestandVeraendern()'");
+		}
+	}
+	
+	/**
 	 * Methode, die eine Liste aller im Bestand befindlichen Artikel, 
 	 * nach ihrer Artikelnummer sortiert, zurückgibt.
 	 * 
@@ -391,6 +424,35 @@ public class ShopFassade implements ShopInterface {
 		return liste;
 	}
 
+	/**
+	 * Methode zum bearbeiten eines Artikels.
+	 * 
+	 * @param artikelnumme Artikelnummer des Artikels
+	 * @param preis Preis des Artikels
+	 * @param bezeichnung Bezeichnung des Artikels
+	 * @thorws ArtikelExistiertNichtException
+	 */
+	public void artikelBearbeiten(int artikelnummer, double preis, String bezeichnung) throws ArtikelExistiertNichtException {
+		// Kennzeichen für gewählte Aktion senden
+		sout.println("ab");
+		// Parameter für Aktion senden
+		sout.println(artikelnummer);
+		sout.println(preis);
+		sout.println(bezeichnung);
+		
+		// Antwort vom Server lesen:
+		String antwort = "?";
+		try {
+			antwort = sin.readLine();
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+		
+		if (antwort.equals("ArtikelExistiertNichtException")) {
+			throw new ArtikelExistiertNichtException(" - in 'artikelBearbeiten()'");
+		} 
+	}
+	
 	/**
 	 * Methode zum Entfernen eines Artikels aus dem Bestand.
 	 * 
@@ -910,22 +972,6 @@ public class ShopFassade implements ShopInterface {
 			logDatei += sin.readLine()+"\n";
 		}
 		return logDatei;
-	}
-
-	@Override
-	public void artikelBestandVeraendern(Mitarbeiter mitarbeiter,
-			int artikelnummer, int anzahl)
-			throws ArtikelExistiertNichtException,
-			ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void artikelBearbeiten(int artikelnummer, double preis,
-			String bezeichnung) throws ArtikelExistiertNichtException {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
