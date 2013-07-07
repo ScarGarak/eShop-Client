@@ -739,6 +739,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	}
 	
 	public void keyPressed(KeyEvent kp) {
+		key = kp.getKeyCode();
 	}
 
 	public void keyReleased(KeyEvent arg0) {
