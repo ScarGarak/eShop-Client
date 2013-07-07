@@ -64,7 +64,6 @@ public class ShopFassade implements ShopInterface {
 		try {
 			// Socket-Objekt fuer die Kommunikation mit Host/Port erstellen
 			socket = new Socket(host, port);
-
 			// Stream-Objekt fuer Text-I/O ueber Socket erzeugen
 			InputStream is = socket.getInputStream();
 			sin = new BufferedReader(new InputStreamReader(is));
@@ -297,7 +296,6 @@ public class ShopFassade implements ShopInterface {
 			}
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
-			e.printStackTrace();
 			return null;
 		}
 		return liste;
@@ -1201,6 +1199,7 @@ public class ShopFassade implements ShopInterface {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		System.out.println("antwort: " + antwort);
 		if(antwort.equals("ken")) {
 			//				System.out.println("ken");
 		} else if (antwort.equals("kse")) {
@@ -1246,6 +1245,7 @@ public class ShopFassade implements ShopInterface {
 		}
 		System.out.println(antwort);
 	}
+	
 }
 
 
