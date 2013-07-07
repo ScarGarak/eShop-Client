@@ -138,6 +138,13 @@ public class KundeGUI extends JFrame {
 		this.host = host;
 		this.port = port;
 		
+		/*
+		// ServerUpdateRequestProcessor erstellen und als neuen Thread starten
+		ServerUpdateKundenGUIRequestProcessor s = new ServerUpdateKundenGUIRequestProcessor(host, 6790, shop, this);
+		Thread t = new Thread(s);
+		t.start();
+		*/
+		
 		initialize();
 	}
 	
@@ -675,9 +682,13 @@ public class KundeGUI extends JFrame {
 				try {
 					shop.inDenWarenkorbLegen(kunde, a.getArtikelnummer(), (Integer) menge.getItemAt(menge.getSelectedIndex()));
 					updateArtikelanzahl();
+					updateSearchTable(shop.gibAlleArtikelSortiertNachBezeichnung());
+					remove(detailsPanel);
 					tablePanel.validate();
 					tablePanel.repaint();
 					updateArtikelMenge(a);
+					//revalidate();
+					repaint();
 				} catch (NullPointerException e) {
 					errorMessage.setText("Bitte w\u00e4hlen Sie unten eine g\u00fcltige Menge aus.");
 				} catch (ArtikelBestandIstZuKleinException e) {

@@ -8,16 +8,28 @@ import javax.swing.table.AbstractTableModel;
 import shop.common.valueobjects.Artikel;
 import shop.common.valueobjects.Massengutartikel;
 
+/**
+ * Diese Methode implementiert das Table-Model von den Artikeln.
+ * @author Migliosi Angelo
+ *
+ */
 @SuppressWarnings("serial")
 public class ArtikelTableModel extends AbstractTableModel {
 
 	private String[] columnNames = {"Artikelnummer", "Bezeichnung", "Preis", "Packungsgr\u00f6\u00dfe", "Bestand"};
 	private List<Artikel> artikelListe;
 	
+	/**
+	 * Konstruktor
+	 * @param artikelListe
+	 */
 	public ArtikelTableModel(List<Artikel> artikelListe) {
 		this.artikelListe = artikelListe;
 	}
 	
+	/**
+	 * Die Zellen koennen nicht veraendert werden!
+	 */
 	@Override
 	public boolean isCellEditable(int row, int column){
 		return false;
@@ -37,6 +49,11 @@ public class ArtikelTableModel extends AbstractTableModel {
 		return 5;
 	}
 
+	/**
+	 * Diese Methode gibt den Wert fuer die Zelle mit den angegebenen Koordinaten zurueck.
+	 * Fuer die Kolonne 1 wird die Artikelnummer, Kolonne 2 die Artikelbezeichnung, Kolonne 
+	 * 3 den Preis, Kolonne 4 die Packungsgroesse und Kolonne 5 den Bestand.
+	 */
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		if(artikelListe != null && artikelListe.size() != 0){
@@ -63,6 +80,10 @@ public class ArtikelTableModel extends AbstractTableModel {
 	    return columnNames[column];
 	}
 	
+	/**
+	 * Diese Methode gibt den Datentyp der angegebenen Kolonne zurueck. Wenn keine Daten in 
+	 * dieser Kolonne zur Verfuegung stehen wird "Object" zurueckgegeben.
+	 */
 	@Override
 	public Class<?> getColumnClass(int c) {
 		if(getValueAt(0, c) != null){
@@ -72,10 +93,20 @@ public class ArtikelTableModel extends AbstractTableModel {
 		}
     }
 	
+	/**
+	 * Diese Methode gibt die Artikelinstanz zurueck, die sich in der angegebenen Zeile befindet.
+	 * @param row
+	 * @return
+	 */
 	public Artikel getArtikel(int row){
 		return artikelListe.get(row);
 	}
 	
+	/**
+	 * Diese Methode gibt die Zeilennummer des Artikels mit der angegebenen Artikelnummer zurueck.
+	 * @param artikelnummer
+	 * @return
+	 */
 	public int getRowIndex(int artikelnummer){
 		Iterator<Artikel> iter = artikelListe.iterator();
 		while(iter.hasNext()){

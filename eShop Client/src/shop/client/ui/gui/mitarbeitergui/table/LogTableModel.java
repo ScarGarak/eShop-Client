@@ -2,12 +2,21 @@ package shop.client.ui.gui.mitarbeitergui.table;
 
 import javax.swing.table.AbstractTableModel;
 
+/**
+ * Diese Methode implementiert das Table-Model von der Logdatei.
+ * @author Migliosi Angelo
+ *
+ */
 @SuppressWarnings("serial")
 public class LogTableModel extends AbstractTableModel{
 
 	private String[] columnNames = {"Datum", "Uhrzeit", "Personentyp", "Person ID", "St\u00fcckzahl", "Artikel ID", "Aktion"};
 	private String[] logDatei;
 	
+	/**
+	 * Konstruktor
+	 * @param logDatei
+	 */
 	public LogTableModel(String logDatei) {
 		if(logDatei != null)
 			this.logDatei = logDatei.split("\n");
@@ -15,6 +24,9 @@ public class LogTableModel extends AbstractTableModel{
 			this.logDatei = new String[0];
 	}
 	
+	/**
+	 * Die Zellen koennen nicht veraendert werden!
+	 */
 	@Override
 	public boolean isCellEditable(int row, int column){
 		return false;
@@ -54,6 +66,10 @@ public class LogTableModel extends AbstractTableModel{
 	    return columnNames[column];
 	}
 	
+	/**
+	 * Diese Methode gibt den Datentyp der angegebenen Kolonne zurueck. Wenn keine Daten in 
+	 * dieser Kolonne zur Verfuegung stehen wird "Object" zurueckgegeben.
+	 */
 	@Override
 	public Class<?> getColumnClass(int c) {
 		if(getValueAt(0, c) != null){
