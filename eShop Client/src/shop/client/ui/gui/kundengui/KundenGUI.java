@@ -57,7 +57,7 @@ import shop.common.valueobjects.Rechnung;
 import shop.common.valueobjects.WarenkorbArtikel;
 
 @SuppressWarnings("serial")
-public class KundeGUI extends JFrame {
+public class KundenGUI extends JFrame {
 	
 	private ShopInterface shop;
 	private Kunde kunde;
@@ -123,12 +123,19 @@ public class KundeGUI extends JFrame {
 	private JButton inDenWarenkorbButton;
 	private JButton entfernenButton;
 	
-	public KundeGUI(ShopInterface shop, Kunde kunde, String host, int port) throws IOException {
+	public KundenGUI(ShopInterface shop, Kunde kunde, String host, int port) throws IOException {
 		super("eShop - Kunde");
 		this.shop = shop;
 		this.kunde = kunde;
 		this.host = host;
 		this.port = port;
+		
+		/*
+		// ServerUpdateRequestProcessor erstellen und als neuen Thread starten
+		ServerUpdateKundenGUIRequestProcessor s = new ServerUpdateKundenGUIRequestProcessor(host, 6790, shop, this);
+		Thread t = new Thread(s);
+		t.start();
+		*/
 		
 		initialize();
 	}
@@ -384,13 +391,13 @@ public class KundeGUI extends JFrame {
 		detailsPanel.setLayout(new BorderLayout());
 	}
 	
-	private void updateSearchTable(List<Artikel> artikel) {
+	public void updateSearchTable(List<Artikel> artikel) {
 		artikelTableModel = new ArtikelTableModel(artikel);
 		searchTable.setModel(artikelTableModel);
 		artikelTableModel.fireTableDataChanged();
 	}
 	
-	private void updateWarenkorbTable(List<WarenkorbArtikel> warenkorbArtikel) {
+	public void updateWarenkorbTable(List<WarenkorbArtikel> warenkorbArtikel) {
 		warenkorbArtikelTableModel = new WarenkorbArtikelTableModel(warenkorbArtikel);
 		warenkorbTable.setModel(warenkorbArtikelTableModel);
 		warenkorbArtikelTableModel.fireTableDataChanged();
@@ -403,6 +410,10 @@ public class KundeGUI extends JFrame {
 		}
 		table.updateUI();
 	} 
+	
+	public Kunde getKunde() {
+		return kunde;
+	}
 	
 	/**
 	 * Methode zum berechnen des Gesamtpreises aller Warenkorb Artikel.

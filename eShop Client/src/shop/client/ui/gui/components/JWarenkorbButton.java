@@ -53,7 +53,8 @@ public class JWarenkorbButton extends JButton {
 		int textWidth = fm.stringWidth(String.valueOf(artikelanzahl));
 		int textHeight = fm.getHeight();
 		g.drawImage(image, width / 2 - (image.getWidth() + textWidth) / 2, height / 2 - image.getHeight() / 2, null);
-		textWidth = fm.stringWidth("Warenkorb");
+		g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 13));
+		textWidth = g.getFontMetrics().stringWidth("Warenkorb");
 		g.drawString("Warenkorb", (width - textWidth) / 2, height);
 		textWidth = fm.stringWidth(String.valueOf(artikelanzahl));
 		g.setColor(Color.ORANGE);

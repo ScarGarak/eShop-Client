@@ -11,6 +11,13 @@ import javax.swing.JPanel;
 
 import shop.common.valueobjects.Artikel;
 
+/**
+ * Diese Klasse malt eine Graphik mit X und Y-Axe. Die Graphik wird in Form eines Integer Arrays
+ * uebergeben. Dieser Array enthaelt die Y-Koordinaten. Die X-Koordinaten werden in einer Schritten
+ * den Y-Koordinaten angepasst.
+ * @author Migliosi Angelo
+ *
+ */
 @SuppressWarnings("serial")
 public class BestandshistorieGraphik extends JPanel{
 	
@@ -21,6 +28,11 @@ public class BestandshistorieGraphik extends JPanel{
 	private int[] yWerte;
 	private Artikel artikel;
 	
+	/**
+	 * Konstruktor der BestandshistorieGraphik.
+	 * @param yWerte Die Y-Axe-Werte der Bestandshistorie
+	 * @param artikel Das Artikel fuer die Bestandshistorie
+	 */
 	public BestandshistorieGraphik(int[] yWerte, Artikel artikel){
 		this.yWerte = yWerte;
 		this.artikel = artikel;
@@ -29,9 +41,19 @@ public class BestandshistorieGraphik extends JPanel{
 		super.setBorder(BorderFactory.createEtchedBorder());
 	}
 	
+	/**
+	 * Diese Methode malt die Y- und X-Axe der Graphik passend zur Groesse des JPanels. Es werden
+	 * die Einheiten der Axen dynamisch hinzugefuegt, abhängig von den Punkten der Graphik.
+	 * Zum Beispiel:
+	 * 	Ist der maximal Wert der Y-Werte 45, wird die Y-Axe in 5er Schritte eingeteilt.
+	 * Ausserdem wird der Abstand der Einheiten immer der Laenger, respektiv der Breite des Panels
+	 * angepasst.
+	 * Diese Methode bildet jedes Mal eine tiefe Kopie des yWerte Arrays, um Probleme beim mehrfachen
+	 * neubrechnens zu vermeiden.
+	 */
 	@Override
 	public void paintComponent(Graphics g){
-super.paintComponent(g);
+		super.paintComponent(g);
 		
 		Graphics2D g2D = (Graphics2D)g;
 		int[] yWerteKopie = yWerte.clone();

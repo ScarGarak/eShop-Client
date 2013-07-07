@@ -30,7 +30,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import shop.client.net.ShopFassade;
-import shop.client.ui.gui.kundengui.KundeGUI;
+import shop.client.ui.gui.kundengui.KundenGUI;
 import shop.client.ui.gui.mitarbeitergui.MitarbeiterGUI;
 import shop.common.exceptions.KundeExistiertBereitsException;
 import shop.common.exceptions.KundeExistiertNichtException;
@@ -54,7 +54,6 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	private ShopInterface shop;
 	private Person p;
 	private int key;
-	
 //	host/port info
 	private static String host;
 	private static int port;
@@ -588,7 +587,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 //					dispose();
 					if(!p.getBlockiert()){
 						this.setVisible(false);
-						new KundeGUI(shop, (Kunde) p, host, port);
+						new KundenGUI(shop, (Kunde) p, host, port);
 					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
