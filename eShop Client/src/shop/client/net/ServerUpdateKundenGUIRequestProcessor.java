@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-import shop.client.ui.gui.kundengui.KundenGUI;
+import shop.client.ui.gui.kundengui.KundeGUI;
 import shop.common.interfaces.ShopInterface;
 
 public class ServerUpdateKundenGUIRequestProcessor implements KundenGUIObserver, Runnable {
@@ -18,9 +18,9 @@ public class ServerUpdateKundenGUIRequestProcessor implements KundenGUIObserver,
 	// ShopVerwaltung
 	private ShopInterface shop;
 	// KundenGUI
-	private KundenGUI gui;	
+	private KundeGUI gui;	
 	
-	public ServerUpdateKundenGUIRequestProcessor(String host, int port, ShopInterface shop, KundenGUI gui) throws IOException {
+	public ServerUpdateKundenGUIRequestProcessor(String host, int port, ShopInterface shop, KundeGUI gui) throws IOException {
 		
 		this.shop = shop;
 		this.gui = gui;
@@ -80,11 +80,11 @@ public class ServerUpdateKundenGUIRequestProcessor implements KundenGUIObserver,
 	}
 
 	public void updateArtikelTable() {
-		gui.updateSearchTable(shop.gibAlleArtikelSortiertNachBezeichnung());
+//		gui.updateSearchTable(shop.gibAlleArtikelSortiertNachBezeichnung());
 	}
 
 	public void updateWarenkorbArtikelTable() {
-		gui.updateWarenkorbTable(shop.gibWarenkorb(gui.getKunde()));
+//		gui.updateWarenkorbTable(shop.gibWarenkorb(gui.getKunde()));
 	}
 
 	private void disconnect() {

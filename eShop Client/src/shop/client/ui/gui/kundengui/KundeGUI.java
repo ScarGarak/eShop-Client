@@ -57,7 +57,7 @@ import shop.common.valueobjects.Rechnung;
 import shop.common.valueobjects.WarenkorbArtikel;
 
 @SuppressWarnings("serial")
-public class KundenGUI extends JFrame {
+public class KundeGUI extends JFrame {
 	
 	private ShopInterface shop;
 	private Kunde kunde;
@@ -123,7 +123,7 @@ public class KundenGUI extends JFrame {
 	private JButton inDenWarenkorbButton;
 	private JButton entfernenButton;
 	
-	public KundenGUI(ShopInterface shop, Kunde kunde, String host, int port) throws IOException {
+	public KundeGUI(ShopInterface shop, Kunde kunde, String host, int port) throws IOException {
 		super("eShop - Kunde");
 		this.shop = shop;
 		this.kunde = kunde;
@@ -391,13 +391,13 @@ public class KundenGUI extends JFrame {
 		detailsPanel.setLayout(new BorderLayout());
 	}
 	
-	public void updateSearchTable(List<Artikel> artikel) {
+	private void updateSearchTable(List<Artikel> artikel) {
 		artikelTableModel = new ArtikelTableModel(artikel);
 		searchTable.setModel(artikelTableModel);
 		artikelTableModel.fireTableDataChanged();
 	}
 	
-	public void updateWarenkorbTable(List<WarenkorbArtikel> warenkorbArtikel) {
+	private void updateWarenkorbTable(List<WarenkorbArtikel> warenkorbArtikel) {
 		warenkorbArtikelTableModel = new WarenkorbArtikelTableModel(warenkorbArtikel);
 		warenkorbTable.setModel(warenkorbArtikelTableModel);
 		warenkorbArtikelTableModel.fireTableDataChanged();
@@ -410,10 +410,6 @@ public class KundenGUI extends JFrame {
 		}
 		table.updateUI();
 	} 
-	
-	public Kunde getKunde() {
-		return kunde;
-	}
 	
 	/**
 	 * Methode zum berechnen des Gesamtpreises aller Warenkorb Artikel.
@@ -672,9 +668,13 @@ public class KundenGUI extends JFrame {
 				try {
 					shop.inDenWarenkorbLegen(kunde, a.getArtikelnummer(), (Integer) menge.getItemAt(menge.getSelectedIndex()));
 					updateArtikelanzahl();
+					updateSearchTable(shop.gibAlleArtikelSortiertNachBezeichnung());
+					remove(detailsPanel);
 					tablePanel.validate();
 					tablePanel.repaint();
 					updateArtikelMenge(a);
+					//revalidate();
+					repaint();
 				} catch (NullPointerException e) {
 					errorMessage.setText("Bitte w\u00e4hlen Sie unten eine g\u00fcltige Menge aus.");
 				} catch (ArtikelBestandIstZuKleinException e) {
