@@ -56,6 +56,14 @@ import shop.common.valueobjects.Massengutartikel;
 import shop.common.valueobjects.Rechnung;
 import shop.common.valueobjects.WarenkorbArtikel;
 
+/**
+ * Grafische Oberfläche (GUI) die dem Kunden alle benötigten
+ * Interaktionsmglichkeiten zur verfügung stellt um den eShop
+ * nutzen zu können.
+ * 
+ * @author Torres
+ *
+ */
 @SuppressWarnings("serial")
 public class KundeGUI extends JFrame {
 	
@@ -115,9 +123,9 @@ public class KundeGUI extends JFrame {
 	private JLabel bezeichnung;
 	private JTextArea details;
 	private JPanel auswahlPanel;
-	private JComboBox menge;
+	private JComboBox<Integer> menge;
 	private JPanel mengePanel;
-	private JComboBox stueckzahl;
+	private JComboBox<Integer> stueckzahl;
 	private JPanel stueckzahlPanel;
 	private JTextArea errorMessage;
 	private JButton inDenWarenkorbButton;
@@ -154,7 +162,10 @@ public class KundeGUI extends JFrame {
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
-
+	
+	/**
+	 * Methode die alle Header Objekte implementiert, diesen Events hinzufügt und dies an den Header anfügt.
+	 */
 	private void createHeader() {
 		accountButton = new JAccountButton(kunde.getName());
 		accountButton.addActionListener(new AccountButtonListener());
@@ -199,6 +210,9 @@ public class KundeGUI extends JFrame {
 		headerPanel.add(warenkorbPanel, BorderLayout.EAST);
 	}
 	
+	/**
+	 * Methode die alle Account Objekte implementiert, diesen Events hinzufügt und dies an das Account Panel anfügt.
+	 */
 	public void createAccount() {
 		name = new JTextField();
 		JTextField username = new JTextField();
@@ -354,7 +368,7 @@ public class KundeGUI extends JFrame {
 		errorMessage.setEditable(false);
 		errorMessage.setOpaque(false);
 		errorMessage.setPreferredSize(new Dimension(150, 50));
-		menge = new JComboBox();
+		menge = new JComboBox<Integer>();
 		mengePanel = new JPanel();
 		mengePanel.setLayout(new GridLayout(1,2));
 		mengePanel.add(new JLabel("  Menge:"));
@@ -364,7 +378,7 @@ public class KundeGUI extends JFrame {
 		stueckzahlLabel.setLineWrap(true);
 		stueckzahlLabel.setOpaque(false);
 		stueckzahlLabel.setPreferredSize(new Dimension(60, 20));
-		stueckzahl = new JComboBox();
+		stueckzahl = new JComboBox<Integer>();
 		stueckzahl.addItemListener(new StueckzahlListener());
 		stueckzahlPanel = new JPanel();
 		stueckzahlPanel.setLayout(new GridLayout(1,2));

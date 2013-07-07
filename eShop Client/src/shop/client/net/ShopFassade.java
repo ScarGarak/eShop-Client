@@ -1,5 +1,5 @@
 package shop.client.net;
-// push comment
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,6 +50,7 @@ public class ShopFassade implements ShopInterface {
 	private BufferedReader sin; // server-input stream
 	private PrintStream sout; // server-output stream
 	
+	
 	/**
 	 * Konstruktor, der die Verbindung zum Server aufbaut (Socket) und dieser
 	 * Grundlage Eingabe- und Ausgabestreams für die Kommunikation mit dem
@@ -63,7 +64,6 @@ public class ShopFassade implements ShopInterface {
 		try {
 			// Socket-Objekt fuer die Kommunikation mit Host/Port erstellen
 			socket = new Socket(host, port);
-
 			// Stream-Objekt fuer Text-I/O ueber Socket erzeugen
 			InputStream is = socket.getInputStream();
 			sin = new BufferedReader(new InputStreamReader(is));
@@ -80,7 +80,7 @@ public class ShopFassade implements ShopInterface {
 		// Verbindung erfolgreich hergestellt: IP-Adresse und Port ausgeben
 		System.err.println("Verbunden: " + socket.getInetAddress() + ":"
 				+ socket.getPort());	
-
+		
 		// Begrüßungsmeldung vom Server lesen
 		String message = sin.readLine();
 		System.out.println(message);
@@ -161,14 +161,10 @@ public class ShopFassade implements ShopInterface {
 	}
 
 	/**
-	 * Methode zum verändern des Bestands eines Artikels.
-	 * 
-	 * @param mitarbeiter Mitarbeiter der den Bestand eines Artikels verändern will
-	 * @param artikelnummer Artikelnummer des zu verändernden Artikels
-	 * @param anzahl Anzahl des neuen Bestands
-	 * @throws ArtikelExistiertNichtException
-	 * @throws ArtikelBestandIstKeineVielfacheDerPackungsgroesseException
+	 * Diese Methode wird zum Veraendern des Bestands des Artikels auf dem Server genutzt.
+	 * Sie sendet dem Server die Informationen gemaess des Protokolls.
 	 */
+	@Override
 	public void artikelBestandVeraendern(Mitarbeiter mitarbeiter, int artikelnummer, int anzahl) throws ArtikelExistiertNichtException, ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
 		// Kennzeichen für gewählte Aktion senden
 		sout.println("abv");
@@ -300,7 +296,6 @@ public class ShopFassade implements ShopInterface {
 			}
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
-			e.printStackTrace();
 			return null;
 		}
 		return liste;
@@ -425,13 +420,10 @@ public class ShopFassade implements ShopInterface {
 	}
 
 	/**
-	 * Methode zum bearbeiten eines Artikels.
-	 * 
-	 * @param artikelnumme Artikelnummer des Artikels
-	 * @param preis Preis des Artikels
-	 * @param bezeichnung Bezeichnung des Artikels
-	 * @thorws ArtikelExistiertNichtException
+	 * Diese Methode wird zum Bearbeiten von Artikeln auf dem Server genutzt.
+	 * Sie sendet dem Server die Informationen gemaess des Protokolls.
 	 */
+	@Override
 	public void artikelBearbeiten(int artikelnummer, double preis, String bezeichnung) throws ArtikelExistiertNichtException {
 		// Kennzeichen für gewählte Aktion senden
 		sout.println("ab");
@@ -455,12 +447,8 @@ public class ShopFassade implements ShopInterface {
 	
 	/**
 	 * Methode zum Entfernen eines Artikels aus dem Bestand.
-	 * 
-	 * @param mitarbeiter Mitarbeiter der den Artikel aus dem Bestand entfernen will
-	 * @param artikelnummer Artikelnummer des zu entfernenden Artikels
-	 * @throws ArtikelExistiertNichtException
-	 * @throws IOException
 	 */
+	@Override
 	public void entferneArtikel(Mitarbeiter mitarbeiter, int artikelnummer) throws ArtikelExistiertNichtException, IOException {
 		// Kennzeichen für gewählte Aktion senden
 		sout.println("ea");
@@ -543,6 +531,10 @@ public class ShopFassade implements ShopInterface {
 		return m;
 	}
 
+	/**
+	 * Diese Methode wird dazu genutzt um die Liste der Mitarbeiter auf dem Server zu bekommen.
+	 * Sie sendet und empfaengt Informationen gemaess des Protokolls.
+	 */
 	@Override
 	public Vector<Mitarbeiter> gibAlleMitarbeiter() {
 		Vector<Mitarbeiter> mitarbeiterListe = new Vector<Mitarbeiter>();
@@ -1011,6 +1003,11 @@ public class ShopFassade implements ShopInterface {
 		sout.println("se");
 	}
 
+	/**
+	 * Diese Methode wird dazu genutzt um die Bestandshistorie des Artikels mit der angegebenen Artikelnummer
+	 * zu bekommen.
+	 * Sie sendet und empfaengt Informationen gemaess des Protokolls.
+	 */
 	@Override
 	public int[] gibBestandsHistorieDaten(int artikelnummer) throws IOException {
 		sout.println("gbhd");
@@ -1024,6 +1021,10 @@ public class ShopFassade implements ShopInterface {
 		return daten;
 	}
 
+	/**
+	 * Diese Methode wird dazu genutzt um die Logdatei zu bekommen.
+	 * Sie sendet und empfaengt Informationen gemaess des Protokolls.
+	 */
 	@Override
 	public String gibLogDatei() throws IOException {
 		sout.println("gl");
@@ -1047,6 +1048,10 @@ public class ShopFassade implements ShopInterface {
 		}
 	}
 
+	/**
+	 * Diese Methode wird zum Hinzufuegen von Mitarbeitern genutzt.
+	 * Sie sendet und empfaengt Informationen gemaess des Protokolls.
+	 */
 	@Override
 	public void fuegeMitarbeiterHinzu(String username, String passwort,
 			String name, MitarbeiterFunktion funktion, double gehalt)
@@ -1075,6 +1080,10 @@ public class ShopFassade implements ShopInterface {
 		}
 	}
 
+	/**
+	 * Diese Methode wird zum Bearbeiten von Mitarbeitern genutzt
+	 * Sie sendet und empfaengt Informationen gemaess des Protokolls.
+	 */
 	@Override
 	public void mitarbeiterBearbeiten(int id, String passwort, String name,
 			MitarbeiterFunktion funktion, double gehalt, boolean blockiert)
@@ -1164,6 +1173,7 @@ public class ShopFassade implements ShopInterface {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		System.out.println("antwort: " + antwort);
 		if(antwort.equals("ken")) {
 			//				System.out.println("ken");
 		} else if (antwort.equals("kse")) {
@@ -1198,10 +1208,7 @@ public class ShopFassade implements ShopInterface {
 	
 	@Override
 	public void disconnect() throws IOException {
-		// Kennzeichen fuer gewaehlte Aktion senden
 		sout.println("q");
-		// (Parameter sind hier nicht zu senden)
-
 		// Antwort vom Server lesen:
 		String antwort = "Fehler";
 		try {
@@ -1212,7 +1219,7 @@ public class ShopFassade implements ShopInterface {
 		}
 		System.out.println(antwort);
 	}
-
+	
 }
 
 
