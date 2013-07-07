@@ -190,7 +190,16 @@ public class MitarbeiterGUI extends JFrame {
 	private JTextArea errorName;
 	private JTextArea errorPasswort;
 	
-	
+	/**
+	 * Der Konstruktor der MitarbeiterGUI speichert alle angegebenen Variablen in globale Attribute, und 
+	 * initialisiert das Fenster mit dem Methodenaufruf von "initialize()".
+	 * @see MitarbeiterGUI#initialize()
+	 * @param mitarbeiter
+	 * @param shop
+	 * @param host
+	 * @param port
+	 * @throws IOException
+	 */
 	public MitarbeiterGUI(Mitarbeiter mitarbeiter, ShopInterface shop, String host, int port) throws IOException{
 		super("eShop - Mitarbeiter");
 		this.shop = shop;
@@ -201,6 +210,13 @@ public class MitarbeiterGUI extends JFrame {
 		initialize();
 	}
 	
+	/**
+	 * Diese Methode initialisiert alle noetigen Elemente der MitarbeiterGUI.
+	 * @see MitarbeiterGUI#createHeader()
+	 * @see MitarbeiterGUI#createTabbedPane()
+	 * @see MitarbeiterGUI#createAccountPanel()
+	 * @throws IOException
+	 */
 	private void initialize() throws IOException{
 		setMinimumSize(new Dimension(700, 500));
 		setSize(new Dimension(700, 500));
@@ -218,6 +234,9 @@ public class MitarbeiterGUI extends JFrame {
 		setVisible(true);
 	}
 	
+	/**
+	 * Diese Methode bildet alle Elemente die zum Header gehoeren.
+	 */
 	private void createHeader(){
 		accountButton = new JAccountButton(mitarbeiter.getName());
 		accountButton.addActionListener(new AccountListener());
@@ -244,6 +263,17 @@ public class MitarbeiterGUI extends JFrame {
 		headerPanel.add(searchPanel, BorderLayout.CENTER);
 	}
 	
+	/**
+	 * Diese Methode bildet die Tabs der MitarbeiterGUI, die sich im Zentrum befinden.
+	 * Es gibt ein Tab fuer Artikel, Mitarbeiter, Kunden und das Log. Alle besitzen
+	 * eine Tabelle mit passenden Informationen. Das Log-Tab wird nur fuer Admins 
+	 * angezeigt.
+	 * @see MitarbeiterGUI#createArtikelPanel()
+	 * @see MitarbeiterGUI#createMitarbeiterPanel()
+	 * @see MitarbeiterGUI#createKundenPanel()
+	 * @see MitarbeiterGUI#createLogPanel()
+	 * @throws IOException
+	 */
 	private void createTabbedPane() throws IOException{
 		tabbedPane = new JTabbedPane();
 		
@@ -267,6 +297,16 @@ public class MitarbeiterGUI extends JFrame {
 	
 	//////////////////////  Artikel Panels  //////////////////////
 	
+	/**
+	 * Diese Methode bildet das Artikel-Panel welches ins Artikel Tab kommt. Es besteht
+	 * aus einem Center-Panel was sich im Zentrum befindet, und einem FooterWrapper. 
+	 * Das Center-Panel enthaelt eine Tabelle von Artikeln und einem Buttons-Panel fuer
+	 * verschiedene Funktionen bezueglich der Artikel. Der FooterWrapper enthaelt einen
+	 * Footer, welches zum einblenden von Elementen bezueglich der Aktionen an den Artikeln
+	 * benutzt wird. Der FooterWrapper wird auch genutzt um die Error-Nachrichten anzeigen
+	 * zu lassen.
+	 * @see MitarbeiterGUI#createArtikelFooterWrapper()
+	 */
 	private void createArtikelPanel(){
 		artikelPanel = new JPanel(new BorderLayout());
 		
@@ -339,6 +379,12 @@ public class MitarbeiterGUI extends JFrame {
 		artikelPanel.add(artikelFooterWrapper, BorderLayout.SOUTH);
 	}
 	
+	
+	/**
+	 * Diese Methode bildet das Artikel-FooterWrapper-Panel, welches den Footer fuer das Artikel-Tab
+	 * beinhaltet und die Moeglichkeit gibt Fehlermeldungen anzeigen zu lassen.
+	 * @see MitarbeiterGUI#createArtikelFooterPanel()
+	 */
 	private void createArtikelFooterWrapper(){
 		artikelFooterWrapper = new JPanel();
 		artikelFooterWrapper.setLayout(new BoxLayout(artikelFooterWrapper, BoxLayout.Y_AXIS));
@@ -353,6 +399,18 @@ public class MitarbeiterGUI extends JFrame {
 		artikelFooterWrapper.setVisible(false);
 	}
 	
+	
+	/**
+	 * Diese Methode bildet das ArtikelFooter-Panel welches verschiedene Komponente waehrend
+	 * der Laufzeit beinhaltet. Diese Elemente wechseln je nach dem welche Aufgabe an den
+	 * Artikeln zu erfuellen ist.
+	 * @see MitarbeiterGUI#createArtikelEingabeFeldKomponenten()
+	 * @see MitarbeiterGUI#rebuildArtikelHinzufuegenEingabeFeld()
+	 * @see MitarbeiterGUI#createArtikelHinzufuegenButtonsPanel()
+	 * @see MitarbeiterGUI#createArtikelBearbeitenButtonsPanel()
+	 * @see MitarbeiterGUI#createArtikelEinlagernButtonsPanel()
+	 * @see MitarbeiterGUI#createArtikelAuslagernButtonsPanel()
+	 */
 	private void createArtikelFooterPanel(){
 		artikelFooterPanel = new JPanel();
 		artikelFooterPanel.setLayout(new BoxLayout(artikelFooterPanel, BoxLayout.X_AXIS));
@@ -367,6 +425,11 @@ public class MitarbeiterGUI extends JFrame {
 		createArtikelAuslagernButtonsPanel();
 	}
 
+	
+	/**
+	 * Diese Methode bildet die Eingabefelder, die zur Eingabe von verschiedenen Artikel Informationen
+	 * genutzt werden.
+	 */
 	private void createArtikelEingabeFeldKomponenten(){
 		artikelNummerInput = new JTextField(10);
 		artikelBezeichnungInput = new JTextField(30);
@@ -376,6 +439,10 @@ public class MitarbeiterGUI extends JFrame {
 	}
 	
 		//Hinzufuegen
+	/**
+	 * Diese Methode bildet und implementiert das Button, das zum Hinzufuegen von Artikeln genutzt
+	 * wird, so wie ein Abbrechen Button.
+	 */
 	private void createArtikelHinzufuegenButtonsPanel(){
 		artikelHinzufuegenButtonsPanel = new JPanel();
 		artikelHinzufuegenButtonsPanel.setLayout(new BoxLayout(artikelHinzufuegenButtonsPanel, BoxLayout.Y_AXIS));
@@ -457,6 +524,11 @@ public class MitarbeiterGUI extends JFrame {
 		artikelHinzufuegenButtonsPanel.add(abbrechen);
 	}
 	
+	
+	/**
+	 * Diese Methode bildet das Panel mit den Eingabefelder neu. Somit koennen diese Felder
+	 * auch anderswo genutzt werden.
+	 */
 	private void rebuildArtikelHinzufuegenEingabeFeld(){
 		artikelHinzufuegenEingabeFeld = new JPanel(new GridLayout(0, 4));
 		artikelHinzufuegenEingabeFeld.setPreferredSize(new Dimension(500, 90));
@@ -480,6 +552,10 @@ public class MitarbeiterGUI extends JFrame {
 	}
 	
 		//Bearbeiten
+	/**
+	 * Diese Methode bildet und implementiert das Button, das zum Bearbeiten von Artikeln genutzt
+	 * wird, so wie ein Abbrechen Button.
+	 */
 	private void createArtikelBearbeitenButtonsPanel(){
 		artikelBearbeitenButtonsPanel = new JPanel();
 		artikelBearbeitenButtonsPanel.setLayout(new BoxLayout(artikelBearbeitenButtonsPanel, BoxLayout.Y_AXIS));
@@ -552,6 +628,11 @@ public class MitarbeiterGUI extends JFrame {
 		artikelBearbeitenButtonsPanel.add(abbrechen);
 	}
 	
+	
+	/**
+	 * Diese Methode bildet das Panel mit den Eingabefelder neu. Somit koennen diese Felder
+	 * auch anderswo genutzt werden.
+	 */
 	private void rebuildArtikelBearbeitenEingabeFeld(Artikel a){
 		artikelBearbeitenEingabeFeld = new JPanel(new GridLayout(0, 2));
 		artikelBearbeitenEingabeFeld.setPreferredSize(new Dimension(250, 80));
@@ -574,6 +655,10 @@ public class MitarbeiterGUI extends JFrame {
 	}
 	
 		//Einlagern
+	/**
+	 * Diese Methode bildet und implementiert das Button, das zum Einlagern von Artikeln genutzt
+	 * wird, so wie ein Abbrechen Button.
+	 */
 	private void createArtikelEinlagernButtonsPanel(){
 		artikelEinlagernButtonsPanel = new JPanel();
 		artikelEinlagernButtonsPanel.setLayout(new BoxLayout(artikelEinlagernButtonsPanel, BoxLayout.Y_AXIS));
@@ -646,6 +731,10 @@ public class MitarbeiterGUI extends JFrame {
 		artikelEinlagernButtonsPanel.add(abbrechen);
 	}
 	
+	/**
+	 * Diese Methode bildet das Panel mit den Eingabefelder neu. Somit koennen diese Felder
+	 * auch anderswo genutzt werden.
+	 */
 	private void rebuildEinlagernEingabeFeld(){
 		artikelEinlagernEingabeFeld = new JPanel(new GridLayout(0, 2));
 		artikelEinlagernEingabeFeld.setPreferredSize(new Dimension(150, 20));
@@ -657,6 +746,10 @@ public class MitarbeiterGUI extends JFrame {
 	}
 	
 		//Auslagern
+	/**
+	 * Diese Methode bildet und implementiert das Button, das zum Auslagern von Artikeln genutzt
+	 * wird, so wie ein Abbrechen Button.
+	 */
 	private void createArtikelAuslagernButtonsPanel(){
 		artikelAuslagernButtonsPanel = new JPanel();
 		artikelAuslagernButtonsPanel.setLayout(new BoxLayout(artikelAuslagernButtonsPanel, BoxLayout.Y_AXIS));
@@ -731,6 +824,10 @@ public class MitarbeiterGUI extends JFrame {
 		artikelAuslagernButtonsPanel.add(abbrechen);
 	}
 	
+	/**
+	 * Diese Methode bildet das Panel mit den Eingabefelder neu. Somit koennen diese Felder
+	 * auch anderswo genutzt werden.
+	 */
 	private void rebuildAuslagernEingabeFeld(){
 		artikelAuslagernEingabeFeld = new JPanel(new GridLayout(0, 2));
 		artikelAuslagernEingabeFeld.setPreferredSize(new Dimension(150, 20));
@@ -743,6 +840,9 @@ public class MitarbeiterGUI extends JFrame {
 	
 	
 	//Artikel Helper Methoden
+	/**
+	 * Diese Methode setzt alle Eingabefelder fuer Artikel zurueck!
+	 */
 	private void clearEingabeFelder(){
 		artikelNummerInput.setText("");
 		artikelBezeichnungInput.setText("");
@@ -751,6 +851,10 @@ public class MitarbeiterGUI extends JFrame {
 		artikelBestandInput.setText("");
 	}
 	
+	/**
+	 * Diese Methode loescht die Auswahl der Artikel-Tabelle und disabled alle Buttons, die eine
+	 * ausgewaehlte Zeile voraussetzen/ benoetigen.
+	 */
 	private void clearArtikelTableSelection(){
 		artikelTable.clearSelection();
 		
@@ -761,6 +865,12 @@ public class MitarbeiterGUI extends JFrame {
 		artikelEntfernen.setEnabled(false);
 	}
 	
+	/**
+	 * Diese Methode updated die Artikelliste indem sie ein neues Model bildet, welches dann der Tabelle
+	 * uebergeben wird. Anschliessend wird dann noch die View des ScrollPanes erneuert, um die Veraenderung
+	 * sichtbar zu machen.
+	 * @param artikelListe Liste von Artikeln
+	 */
 	private void updateArtikelTableModel(List<Artikel> artikelListe){
 		artikelTableModel = new ArtikelTableModel(artikelListe);
 		artikelTable.setModel(artikelTableModel);
@@ -770,6 +880,17 @@ public class MitarbeiterGUI extends JFrame {
 	
 	//////////////////////  Mitarbeiter Panels  //////////////////////
 	
+	
+	/**
+	 * Diese Methode bildet das Mitarbeiter-Panel welches ins Mitarbeiter Tab kommt. Es besteht
+	 * aus einem Center-Panel was sich im Zentrum befindet, und einem FooterWrapper. 
+	 * Das Center-Panel enthaelt eine Tabelle von Mitarbeitern und einem Buttons-Panel fuer
+	 * verschiedene Funktionen bezueglich der Mitarbeiter. Der FooterWrapper enthaelt einen
+	 * Footer, welches zum einblenden von Elementen bezueglich der Aktionen an den Mitarbeitern
+	 * benutzt wird. Der FooterWrapper wird auch genutzt um die Error-Nachrichten anzeigen
+	 * zu lassen.
+	 * @see MitarbeiterGUI#createMitarbeiterFooterWrapper()
+	 */
 	private void createMitarbeiterPanel(){
 		mitarbeiterPanel = new JPanel(new BorderLayout());
 		
@@ -787,7 +908,7 @@ public class MitarbeiterGUI extends JFrame {
 		mitarbeiterTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		mitarbeiterTable.getTableHeader().setReorderingAllowed(false);
 		mitarbeiterTable.getSelectionModel().addListSelectionListener(new MitarbeiterSelectionListener());
-		MitarbeiterTableCellRenderer mitarbeiterTableCellRenderer = new MitarbeiterTableCellRenderer(artikelTable);
+		MitarbeiterTableCellRenderer mitarbeiterTableCellRenderer = new MitarbeiterTableCellRenderer(mitarbeiterTable);
 		setTableCellAlignment(mitarbeiterTableCellRenderer, mitarbeiterTable, JLabel.LEFT);
 		
 		mitarbeiterTableScrollPane = new JScrollPane(mitarbeiterTable);
@@ -832,6 +953,11 @@ public class MitarbeiterGUI extends JFrame {
 		mitarbeiterPanel.add(north, BorderLayout.CENTER);
 	}
 	
+	/**
+	 * Diese Methode bildet das Mitarbeiter-FooterWrapper-Panel, welches den Footer fuer das Mitarbeiter-Tab
+	 * beinhaltet und die Moeglichkeit gibt Fehlermeldungen anzeigen zu lassen.
+	 * @see MitarbeiterGUI#createMitarbeiterFooterPanel()
+	 */
 	private void createMitarbeiterFooterWrapper(){
 		mitarbeiterFooterWrapper = new JPanel();
 		mitarbeiterFooterWrapper.setLayout(new BoxLayout(mitarbeiterFooterWrapper, BoxLayout.Y_AXIS));
@@ -842,18 +968,33 @@ public class MitarbeiterGUI extends JFrame {
 		mitarbeiterFooterWrapper.setVisible(false);
 	}
 	
+	
+	/**
+	 * Diese Methode bildet das MitarbeiterFooter-Panel welches verschiedene Komponente waehrend
+	 * der Laufzeit beinhaltet. Diese Elemente wechseln je nach dem welche Aufgabe an den
+	 * Mitarbeitern zu erfuellen ist.
+	 * @see MitarbeiterGUI#createMitarbeiterEingabeFeldKomponenten()
+	 * @see MitarbeiterGUI#rebuildMitarbeiterHinzufuegenEingabeFeld()
+	 * @see MitarbeiterGUI#createMitarbeiterHinzufuegenButtonsPanel()
+	 * @see MitarbeiterGUI#createMitarbeiterBearbeitenButtonsPanel()
+	 */
 	private void createMitarbeiterFooterPanel(){
 		mitarbeiterFooterPanel = new JPanel();
 		mitarbeiterFooterPanel.setLayout(new BoxLayout(mitarbeiterFooterPanel, BoxLayout.X_AXIS));
 		mitarbeiterFooterPanel.setAlignmentX(LEFT_ALIGNMENT);
 		
 		createMitarbeiterEingabeFeldKomponenten();
-		rebuildArtikelHinzufuegenEingabeFeld();
+		rebuildMitarbeiterHinzufuegenEingabeFeld();
 		
 		createMitarbeiterHinzufuegenButtonsPanel();
 		createMitarbeiterBearbeitenButtonsPanel();
 	}
 	
+	
+	/**
+	 * Diese Methode bildet die Eingabefelder, die zur Eingabe von verschiedenen Mitarbeiter Informationen
+	 * genutzt werden.
+	 */
 	private void createMitarbeiterEingabeFeldKomponenten(){
 		mitarbeiterUsernameInput = new JTextField(10);
 		mitarbeiterNameInput = new JTextField(10);
@@ -867,6 +1008,10 @@ public class MitarbeiterGUI extends JFrame {
 	
 	
 		//Hinzufuegen
+	/**
+	 * Diese Methode bildet das Panel mit den Eingabefelder neu. Somit koennen diese Felder
+	 * auch anderswo genutzt werden.
+	 */
 	private void rebuildMitarbeiterHinzufuegenEingabeFeld(){
 		mitarbeiterHinzufuegenEingabeFeld = new JPanel(new GridLayout(0, 4));
 		mitarbeiterHinzufuegenEingabeFeld.setPreferredSize(new Dimension(500, 60));
@@ -887,6 +1032,10 @@ public class MitarbeiterGUI extends JFrame {
 		
 	}
 	
+	/**
+	 * Diese Methode bildet und implementiert das Button, das zum Hinzufuegen von Mitarbeitern genutzt
+	 * wird, so wie ein Abbrechen Button.
+	 */
 	private void createMitarbeiterHinzufuegenButtonsPanel(){
 		mitarbeiterHinzufuegenButtonsPanel = new JPanel(new GridLayout(0,1));
 		mitarbeiterHinzufuegenButtonsPanel.setMaximumSize(new Dimension(100, 2*25));
@@ -969,6 +1118,10 @@ public class MitarbeiterGUI extends JFrame {
 	}
 	
 		//Bearbeiten
+	/**
+	 * Diese Methode bildet das Panel mit den Eingabefelder neu. Somit koennen diese Felder
+	 * auch anderswo genutzt werden.
+	 */
 	private void rebuildMitarbeiterBearbeitenEingabeFeld(Mitarbeiter m){
 		mitarbeiterBearbeitenEingabeFeld = new JPanel(new GridLayout(0, 4));
 		mitarbeiterBearbeitenEingabeFeld.setPreferredSize(new Dimension(500, 30));
@@ -984,6 +1137,10 @@ public class MitarbeiterGUI extends JFrame {
 		mitarbeiterFunktionInput.setSelectedItem(m.getFunktion());
 	}
 	
+	/**
+	 * Diese Methode bildet und implementiert das Button, das zum Bearbeiten von Mitarbeitern genutzt
+	 * wird, so wie ein Abbrechen Button.
+	 */
 	private void createMitarbeiterBearbeitenButtonsPanel(){
 		mitarbeiterBearbeitenButtonsPanel = new JPanel(new GridLayout(0,1));
 		mitarbeiterBearbeitenButtonsPanel.setMaximumSize(new Dimension(100, 2*25));
@@ -1049,12 +1206,20 @@ public class MitarbeiterGUI extends JFrame {
 	}
 	
 	//Mitarbeiter Helper Methoden
+	
+	/**
+	 * Diese Methode setzt alle Eingabefelder fuer Mitarbeiter zurueck!
+	 */
 	private void clearMitarbeiterEingabeFelder(){
 		mitarbeiterUsernameInput.setText("");
 		mitarbeiterNameInput.setText("");
 		mitarbeiterGehaltInput.setText("");
 	}
 
+	/**
+	 * Diese Methode loescht die Auswahl der Mitarbeiter-Tabelle und disabled alle Buttons, die eine
+	 * ausgewaehlte Zeile voraussetzen/ benoetigen.
+	 */
 	private void clearMitarbeiterTableSelection(){
 		mitarbeiterTable.clearSelection();
 
@@ -1064,6 +1229,12 @@ public class MitarbeiterGUI extends JFrame {
 		mitarbeiterBlockieren.setText("Blockieren");
 	}
 
+	/**
+	 * Diese Methode updated die Mitarbeiterliste indem sie ein neues Model bildet, welches dann der Tabelle
+	 * uebergeben wird. Anschliessend wird dann noch die View des ScrollPanes erneuert, um die Veraenderung
+	 * sichtbar zu machen.
+	 * @param mitarbeiterListe
+	 */
 	private void updateMitarbeiterTableModel(List<Mitarbeiter> mitarbeiterListe){
 		mitarbeiterTableModel = new MitarbeiterTableModel(mitarbeiterListe, mitarbeiter.getFunktion());
 		mitarbeiterSorter.setModel(mitarbeiterTableModel);
@@ -1073,6 +1244,16 @@ public class MitarbeiterGUI extends JFrame {
 	
 	//////////////////////  Kunden Panels  //////////////////////
 	
+	/**
+	 * Diese Methode bildet das Kunden-Panel welches ins Kunden Tab kommt. Es besteht
+	 * aus einem Center-Panel was sich im Zentrum befindet, und einem FooterWrapper. 
+	 * Das Center-Panel enthaelt eine Tabelle von Kunden und einem Buttons-Panel fuer
+	 * verschiedene Funktionen bezueglich der Kunden. Der FooterWrapper enthaelt einen
+	 * Footer, welches zum einblenden von Elementen bezueglich der Aktionen an den Kunden
+	 * benutzt wird. Der FooterWrapper wird auch genutzt um die Error-Nachrichten anzeigen
+	 * zu lassen.
+	 * @see MitarbeiterGUI#createKundenFooterWrapper()
+	 */
 	private void createKundenPanel(){
 		kundenPanel = new JPanel(new BorderLayout());
 		
@@ -1130,6 +1311,11 @@ public class MitarbeiterGUI extends JFrame {
 		kundenPanel.add(kundenFooterWrapper, BorderLayout.SOUTH);
 	}
 
+	/**
+	 * Diese Methode bildet das Kunden-FooterWrapper-Panel, welches den Footer fuer das Kunden-Tab
+	 * beinhaltet und die Moeglichkeit gibt Fehlermeldungen anzeigen zu lassen.
+	 * 
+	 */
 	private void createKundenFooterWrapper(){
 		kundenFooterWrapper = new JPanel();
 		kundenFooterWrapper.setLayout(new BoxLayout(kundenFooterWrapper, BoxLayout.Y_AXIS));
@@ -1140,6 +1326,12 @@ public class MitarbeiterGUI extends JFrame {
 	
 		//Kunden Helper Methoden
 	
+	/**
+	 * Diese Methode updated die Kundenliste indem sie ein neues Model bildet, welches dann der Tabelle
+	 * uebergeben wird. Anschliessend wird dann noch die View des ScrollPanes erneuert, um die Veraenderung
+	 * sichtbar zu machen.
+	 * @param kundenListe
+	 */
 	private void updateKundenTableModel(List<Kunde> kundenListe){
 		kundenTableModel = new KundenTableModel(kundenListe);
 		kundenSorter.setModel(kundenTableModel);
@@ -1147,6 +1339,10 @@ public class MitarbeiterGUI extends JFrame {
 		kundenTableScrollPane.setViewportView(kundenTable);
 	}
 	
+	/**
+	 * Diese Methode loescht die Auswahl der Kunden-Tabelle und disabled alle Buttons, die eine
+	 * ausgewaehlte Zeile voraussetzen/ benoetigen.
+	 */
 	private void clearKundenTableSelection(){
 		kundenTable.clearSelection();
 
@@ -1157,6 +1353,11 @@ public class MitarbeiterGUI extends JFrame {
 	
 	//////////////////////  Log Panels  //////////////////////
 	
+	/**
+	 * Diese Methode bildet das Log-Panel welches ins Log Tab kommt. Es besteht nur
+	 * aus einem Center-Panel was sich im Zentrum befindet. Dieses enthaelt eine Tabelle 
+	 * von Logeintraegen.
+	 */
 	private void createLogPanel() throws IOException{
 		logPanel = new JPanel(new BorderLayout());
 		
@@ -1178,6 +1379,12 @@ public class MitarbeiterGUI extends JFrame {
 		logPanel.add(logScrollPane, BorderLayout.CENTER);
 	}
 
+	/**
+	 * Diese Methode updated die Logtabelle indem sie ein neues Model bildet, welches dann der Tabelle
+	 * uebergeben wird. Anschliessend wird dann noch die View des ScrollPanes erneuert, um die Veraenderung
+	 * sichtbar zu machen.
+	 * @param logDatei
+	 */
 	private void updateLogTableModel(String logDatei){
 		LogTableModel logTableModel = new LogTableModel(logDatei);
 		logSorter.setModel(logTableModel);
@@ -1187,7 +1394,13 @@ public class MitarbeiterGUI extends JFrame {
 	
 	
 	////////////////////// Account Panel //////////////////////
-	
+	/**
+	 * Diese Methode bildet das Account-Panel, welches alle notwendigen Elemente zu Account-Einstellungen
+	 * von Mitarbeiter beinhaltet. Es ist mit einem Gridlayout bestueckt und beherbergt ein Panel mit
+	 * Username Feld und Label, sowie einem passenden Fehlernachricht-Label, ein Panel mit Passwort
+	 * Feldern (altes, neues und wiederholung), sowie einem passenden Fehlernachricht-Label, und ein
+	 * Panel mit Buttons zum Speichern oder Abbrechen.
+	 */
 	private void createAccountPanel() {
 		usernameFeld = new JTextField();
 		usernameFeld.setText(mitarbeiter.getUsername());
@@ -1251,6 +1464,13 @@ public class MitarbeiterGUI extends JFrame {
 	
 	////////////////////// Listener //////////////////////
 	
+	/**
+	 * Hier findet man die Aktionen die ausgefuehrt werden, wenn ein Button im Artikel-Panel gedrueckt wird.
+	 * Diese Buttons sind fuer Artikel hinzufuegen, bearbeiten, einlagern, auslagern, bestandshistorie anzeigen
+	 * und entfernen.
+	 * @author Migliosi Angelo
+	 *
+	 */
 	class ArtikelPanelListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -1411,6 +1631,11 @@ public class MitarbeiterGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Hier wird der ActionListener fuer das Vergroessern von der Bestandshistorie implementiert.
+	 * @author Migliosi Angelo
+	 *
+	 */
 	class BestandshistorieVergroessernListener implements ActionListener{
 
 		private BestandshistorieGraphik g;
@@ -1447,6 +1672,12 @@ public class MitarbeiterGUI extends JFrame {
 		
 	}
 	
+	/**
+	 * Hier findet man die Aktionen die ausgefuehrt werden, wenn ein Button im Mitarbeiter-Panel gedrueckt wird.
+	 * Diese Buttons sind fuer Mitarbeiter hinzufuegen, bearbeiten, blockieren und entfernen.
+	 * @author Migliosi Angelo
+	 *
+	 */
 	class MitarbeiterPanelListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -1534,6 +1765,12 @@ public class MitarbeiterGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Hier findet man die Aktionen die ausgefuehrt werden, wenn ein Button im Kunden-Panel gedrueckt wird.
+	 * Diese Buttons sind fuer Kunden blockieren und entfernen.
+	 * @author Migliosi Angelo
+	 *
+	 */
 	class KundenPanelListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -1581,6 +1818,12 @@ public class MitarbeiterGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Hier wird der ActionListener zum Speichern der Account-Einstellungen implementiert. Der Mitarbeiter
+	 * kann hier nur seinen Namen und sein Passwort veraendern.
+	 * @author Migliosi Angelo
+	 *
+	 */
 	class AccountListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -1774,6 +2017,11 @@ public class MitarbeiterGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Hier wird der ActionListener fuer das Logout vom Mitarbeiter implementiert.
+	 * @author Torres Christof
+	 *
+	 */
 	class LogoutListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
@@ -1789,6 +2037,12 @@ public class MitarbeiterGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Hier wird der ActionListener des SearchFeldes implementiert. Je nach dem welches Tab gerade aktiv ist
+	 * wird der Such-String auf die passende Tabelle angewandt.
+	 * @author Migliosi Angelo
+	 *
+	 */
 	class SearchListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
@@ -1840,6 +2094,12 @@ public class MitarbeiterGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Dieser ChangeListener setzt bei jedem Tab-Wechsel, die Zeilenauswahl und die davon abhaengenden Buttons 
+	 * zurueck.
+	 * @author Migliosi Angelo
+	 *
+	 */
 	class TabListener implements ChangeListener{
 
 		@Override
@@ -1902,6 +2162,12 @@ public class MitarbeiterGUI extends JFrame {
 		
 	}
 	
+	/**
+	 * Hier wird der ListSelectionListener für die Artikeltabelle implementiert. Er aktiviert alle Buttons, die
+	 * sich auf ein Artikel beziehen, d.h. die eine Auswahl in der Tabelle benoetigen.
+	 * @author Migliosi Angelo
+	 *
+	 */
 	class ArtikelSelectionListener implements ListSelectionListener{
 
 		@Override
@@ -1918,6 +2184,12 @@ public class MitarbeiterGUI extends JFrame {
 		
 	}
 	
+	/**
+	 * Hier wird der ListSelectionListener für die Mitarbeitertabelle implementiert. Er aktiviert alle Buttons, die
+	 * sich auf einen Mitarbeiter beziehen, d.h. die eine Auswahl in der Tabelle benoetigen.
+	 * @author Migliosi Angelo
+	 *
+	 */
 	class MitarbeiterSelectionListener implements ListSelectionListener{
 
 		@Override
@@ -1942,6 +2214,12 @@ public class MitarbeiterGUI extends JFrame {
 		
 	}
 
+	/**
+	 * Hier wird der ListSelectionListener für die Kundentabelle implementiert. Er aktiviert alle Buttons, die
+	 * sich auf einen Kunden beziehen, d.h. die eine Auswahl in der Tabelle benoetigen.
+	 * @author Migliosi Angelo
+	 *
+	 */
 	class KundenSelectionListener implements ListSelectionListener{
 
 		@Override
@@ -1966,6 +2244,13 @@ public class MitarbeiterGUI extends JFrame {
 
 	////////////////////// Helper Methods //////////////////////
 	
+	/**
+	 * Diese Methode setzt fuer jede Zelle der angegebenen Tabelle einen CellRenderer fest und setzt
+	 * direkt dessen Alignment auf Links.
+	 * @param renderer Eine CellRenderer vom Typ DefaultTableCellRenderer
+	 * @param table Eine Tabelle vom Typ JTable
+	 * @param alignment z.B. JLabel.LEFT
+	 */
 	private void setTableCellAlignment(DefaultTableCellRenderer renderer, JTable table, int alignment) {
 		renderer.setHorizontalAlignment(alignment);
 		for (int i=0; i < table.getColumnCount();i++){
@@ -1975,6 +2260,13 @@ public class MitarbeiterGUI extends JFrame {
 		table.updateUI();
 	} 
 	
+	/**
+	 * Diese Methode setzt den Text des Fehlernachrichten-Labels auf den angegebenen Text und fuegt das Label
+	 * dem angegebenen Panels hinzu. Bevor das Label dem Panel hinzugefuegt wird, wird noch kontrolliert ob
+	 * das Label nicht woanders schon benutzt wird.
+	 * @param text Fehlermeldung
+	 * @param p Panel wo die Fehlermeldung angezeigt werden soll
+	 */
 	private void setErrorMsg(String text, JPanel p){
 		errorMsg.setText("   "+text);
 		if(errorMsg.getParent() == null)
@@ -1982,6 +2274,9 @@ public class MitarbeiterGUI extends JFrame {
 		p.revalidate();
 	}
 	
+	/**
+	 * Diese Methode entnimmt das Parent-Element des Fehlernachrichten-Labels und entfernt dann das Label.
+	 */
 	private void clearErrorMsg(){
 		if(errorMsg.getParent() != null){
 			JPanel p = (JPanel)errorMsg.getParent();
@@ -1991,7 +2286,13 @@ public class MitarbeiterGUI extends JFrame {
 	}
 	
 	/////////////////////// Window Closer ///////////////////////
-	
+	/**
+	 * Wenn das Fenster geschlossen wird, werden die Daten abgespeichert.
+	 * Client-Server update:
+	 * Ein disconnect wurde noch hinzugefuegt.
+	 * @author Migliosi Angelo
+	 *
+	 */
 	class WindowCloser extends WindowAdapter {
 		@Override
 		public void windowClosing(WindowEvent we) {

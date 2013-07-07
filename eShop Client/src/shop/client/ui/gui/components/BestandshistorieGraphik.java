@@ -31,7 +31,7 @@ public class BestandshistorieGraphik extends JPanel{
 	
 	@Override
 	public void paintComponent(Graphics g){
-super.paintComponent(g);
+		super.paintComponent(g);
 		
 		Graphics2D g2D = (Graphics2D)g;
 		int[] yWerteKopie = yWerte.clone();
