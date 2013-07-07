@@ -9,6 +9,12 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
+/**
+ * Diese Klasse implementiert den DefaultTableCellRenderer der Artikeltabelle.
+ * @see DefaultTableCellRenderer
+ * @author Migliosi Angelo
+ *
+ */
 @SuppressWarnings("serial")
 public class ArtikelTableCellRenderer extends DefaultTableCellRenderer{
 	
@@ -17,6 +23,13 @@ public class ArtikelTableCellRenderer extends DefaultTableCellRenderer{
         renderer.setHorizontalAlignment(JLabel.LEFT);
     }
 	
+	/**
+	 * Diese Methode veraendert die Hintergrund- und Textfarbe. Per default setzt er die Hintergrundfarbe auf Weiß
+	 * und die Textfarbe auf Schwarz. Wenn die Zeile ausgewählt wurde, wird die Hintergrundfarbe auf Orange gesetzt.
+	 * Fuer die Kolonne 4 (= Bestand) wird die Hintergrundfarbe auf Gruen gesetzt, wenn der Wert groesser als 0 ist,
+	 * ist der Wert 0 wird sie auf Rot gesetzt.
+	 * Hinzu kommt noch, dass der Wert der Kolonne 2 (= Preis) formatiert und die Currency hinzugefuegt wird.
+	 */
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) { 
 		Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 		

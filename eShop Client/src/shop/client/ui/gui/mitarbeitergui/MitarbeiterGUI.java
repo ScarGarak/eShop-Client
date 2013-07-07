@@ -65,6 +65,14 @@ import shop.common.valueobjects.Massengutartikel;
 import shop.common.valueobjects.Mitarbeiter;
 import shop.common.valueobjects.MitarbeiterFunktion;
 
+
+/**
+ * Diese Klasse erstellt die graphishe Oberflaesche fuer Mitarbeiter. Sie ermoeglicht es die Artikel, Mitarbeiter und
+ * Kunden des eShops zu verwalten, sowie die LogDatei anzusehen. 
+ * Einige Funktion dieser MitarbeiterGUI werden abhängig von der Funktion des Mitarbeiters ausgeblendet.
+ * @author Migliosi Angelo
+ *
+ */
 @SuppressWarnings("serial")
 public class MitarbeiterGUI extends JFrame {
 	
@@ -74,7 +82,8 @@ public class MitarbeiterGUI extends JFrame {
 	
 	private Mitarbeiter mitarbeiter;
 	private ShopInterface shop;
-//	host/port info
+	
+	//host/port info
 	private String host;
 	private int port;
 	

@@ -661,9 +661,13 @@ public class KundeGUI extends JFrame {
 				try {
 					shop.inDenWarenkorbLegen(kunde, a.getArtikelnummer(), (Integer) menge.getItemAt(menge.getSelectedIndex()));
 					updateArtikelanzahl();
+					updateSearchTable(shop.gibAlleArtikelSortiertNachBezeichnung());
+					remove(detailsPanel);
 					tablePanel.validate();
 					tablePanel.repaint();
 					updateArtikelMenge(a);
+					revalidate();
+					repaint();
 				} catch (NullPointerException e) {
 					errorMessage.setText("Bitte w\u00e4hlen Sie unten eine g\u00fcltige Menge aus.");
 				} catch (ArtikelBestandIstZuKleinException e) {
