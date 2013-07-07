@@ -1120,7 +1120,29 @@ public class ShopFassade implements ShopInterface {
 			String strasse, int plz, String wohnort)
 			throws KundeExistiertBereitsException,
 			UsernameExistiertBereitsException {
-		// TODO Auto-generated method stub
+		sout.println("ke");
+		sout.println(username);
+		sout.println(passwort);
+		sout.println(name);
+		sout.println(strasse);
+		sout.println("" + plz);
+		sout.println(wohnort);
+		String ergebnis = "?";
+		
+		try {
+			ergebnis = sin.readLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (ergebnis.equals("kee")) {
+//			Kunde erfolgreich eingefügt
+			System.out.println("Kunde erfolgreich eingefügt");
+		} else if (ergebnis.equals("keb")) {
+			System.out.println("Kunde existiert bereits");
+		} else if (ergebnis.equals("ueb")) {
+			System.out.println("Username existiert bereits");
+		}
 		
 	}
 	
