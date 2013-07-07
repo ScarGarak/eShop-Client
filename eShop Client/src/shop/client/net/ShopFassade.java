@@ -50,6 +50,7 @@ public class ShopFassade implements ShopInterface {
 	private BufferedReader sin; // server-input stream
 	private PrintStream sout; // server-output stream
 	
+	
 	/**
 	 * Konstruktor, der die Verbindung zum Server aufbaut (Socket) und dieser
 	 * Grundlage Eingabe- und Ausgabestreams fŸr die Kommunikation mit dem
@@ -80,7 +81,7 @@ public class ShopFassade implements ShopInterface {
 		// Verbindung erfolgreich hergestellt: IP-Adresse und Port ausgeben
 		System.err.println("Verbunden: " + socket.getInetAddress() + ":"
 				+ socket.getPort());	
-
+		
 		// BegrŸ§ungsmeldung vom Server lesen
 		String message = sin.readLine();
 		System.out.println(message);
@@ -1120,7 +1121,29 @@ public class ShopFassade implements ShopInterface {
 			String strasse, int plz, String wohnort)
 			throws KundeExistiertBereitsException,
 			UsernameExistiertBereitsException {
-		// TODO Auto-generated method stub
+		sout.println("ke");
+		sout.println(username);
+		sout.println(passwort);
+		sout.println(name);
+		sout.println(strasse);
+		sout.println("" + plz);
+		sout.println(wohnort);
+		String ergebnis = "?";
+		
+		try {
+			ergebnis = sin.readLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (ergebnis.equals("kee")) {
+//			Kunde erfolgreich eingefügt
+			System.out.println("Kunde erfolgreich eingefügt");
+		} else if (ergebnis.equals("keb")) {
+			System.out.println("Kunde existiert bereits");
+		} else if (ergebnis.equals("ueb")) {
+			System.out.println("Username existiert bereits");
+		}
 		
 	}
 	
@@ -1190,7 +1213,6 @@ public class ShopFassade implements ShopInterface {
 		}
 		System.out.println(antwort);
 	}
-
 }
 
 
