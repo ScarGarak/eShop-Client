@@ -1105,8 +1105,14 @@ public class ShopFassade implements ShopInterface {
 	public void kundenBearbeiten(int id, String passwort, String name,
 			String strasse, int plz, String wohnort, boolean blockiert)
 			throws KundeExistiertNichtException {
-		// TODO Auto-generated method stub
-		
+		sout.println("kb");
+		sout.println(id);
+		sout.println(passwort);
+		sout.println(name);
+		sout.println(strasse);
+		sout.println("" + plz);
+		sout.println(wohnort);
+		sout.println(blockiert);
 	}
 
 	@Override
@@ -1121,8 +1127,51 @@ public class ShopFassade implements ShopInterface {
 	@Override
 	public Kunde loginVergessen(String name, String strasse, int plz,
 			String wohnort) {
-		// TODO Auto-generated method stub
+		Kunde k = null;
+		sout.println("lv");
+		sout.println(name);
+		sout.println(strasse);
+		sout.println("" + plz);
+		sout.println(wohnort);
+		//		hgf
+		String antwort = "?";
+
+		try {
+			antwort = sin.readLine();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		if(antwort.equals("ken")) {
+			//				System.out.println("ken");
+		} else if (antwort.equals("kse")) {
+			//				System.out.println("kse");
+			k = empfangeKunde();
+			System.out.println("kunde: " + k);
+			return k;
+		}
 		return null;
+	}
+	
+	public Kunde empfangeKunde() {
+		Kunde k = null;
+		try {
+			int id = Integer.parseInt(sin.readLine());
+			String username = sin.readLine();
+			String passwort = sin.readLine();
+			String name = sin.readLine();
+			String strasse = sin.readLine();
+			int plz = Integer.parseInt(sin.readLine());
+			String wohnort = sin.readLine();
+			k = new Kunde(id, username, passwort, name, strasse, plz, wohnort);
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return k;
 	}
 	
 	@Override
