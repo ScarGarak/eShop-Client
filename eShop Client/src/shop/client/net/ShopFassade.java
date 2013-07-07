@@ -593,6 +593,7 @@ public class ShopFassade implements ShopInterface {
 
 	@Override
 	public Kunde sucheKunde(int id) throws KundeExistiertNichtException {
+		
 		Kunde k = null;
 		sout.println("sk");
 		sout.println("" + id);
@@ -616,7 +617,7 @@ public class ShopFassade implements ShopInterface {
 			e.printStackTrace();
 		}
 		if (k != null) {
-			return k;
+		return k;
 		} else {
 			return null;
 		}
