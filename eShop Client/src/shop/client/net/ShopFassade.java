@@ -1094,7 +1094,7 @@ public class ShopFassade implements ShopInterface {
 		try{
 			antwort = sin.readLine();
 			if(antwort.equals("MitarbeiterExistiertBereits")){
-				throw new MitarbeiterExistiertBereitsException(new Mitarbeiter(-1, "?", "?", "?", MitarbeiterFunktion.Mitarbeiter, 0), " - in ShopFassade (Einfugen von Mitarbeiter)!");
+				throw new MitarbeiterExistiertBereitsException(" - in ShopFassade (Einfuegen von Mitarbeiter)!");
 			}else if(antwort.equals("UsernameExistiertBereits")){
 				throw new UsernameExistiertBereitsException(username, " - in ShopFassade (Einfugen von Mitarbeiter)!");
 			}
