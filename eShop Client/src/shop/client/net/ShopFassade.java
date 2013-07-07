@@ -589,6 +589,15 @@ public class ShopFassade implements ShopInterface {
 	@Override
 	public void schreibeMitarbeiter() throws IOException {
 		sout.println("sm");
+		String antwort = "?";
+		try{
+			antwort = sin.readLine();
+		} catch (Exception e){
+			System.err.println(e.getMessage());
+		}
+		if(antwort.equals("IOException")){
+			throw new IOException("Fehler beim schreiben der Mitarbeiterdaten!");
+		}
 	}
 
 	@Override
@@ -1003,12 +1012,6 @@ public class ShopFassade implements ShopInterface {
 	}
 
 	@Override
-	public String gibBestandsHistorie(int artikelnummer) throws IOException {
-		sout.println("gbh");
-		return sin.readLine();
-	}
-
-	@Override
 	public int[] gibBestandsHistorieDaten(int artikelnummer) throws IOException {
 		sout.println("gbhd");
 		sout.println(artikelnummer);
@@ -1024,12 +1027,24 @@ public class ShopFassade implements ShopInterface {
 	@Override
 	public String gibLogDatei() throws IOException {
 		sout.println("gl");
-		int anzahl = Integer.parseInt(sin.readLine());
-		String logDatei = "";
-		for(int i = 0; i < anzahl; i++){
-			logDatei += sin.readLine()+"\n";
+		String antwort = "?";
+		try{
+			antwort = sin.readLine();
+		} catch (Exception e){
+			System.err.println(e.getMessage());
+			return null;
 		}
-		return logDatei;
+		
+		if(antwort.equals("IOException")){
+			throw new IOException("Fehler beim lesen der Logdatei!");
+		}else{
+			int anzahl = Integer.parseInt(antwort);
+			String logDatei = "";
+			for(int i = 0; i < anzahl; i++){
+				logDatei += sin.readLine()+"\n";
+			}
+			return logDatei;
+		}
 	}
 
 	@Override
