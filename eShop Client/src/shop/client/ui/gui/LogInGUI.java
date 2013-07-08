@@ -60,7 +60,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	private ShopInterface shop;
 	private Person p;
 	private int key;
-//	host/port info
+//	host / port info
 	private static String host;
 	private static int port;
 	
