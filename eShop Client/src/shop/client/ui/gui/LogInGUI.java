@@ -55,7 +55,7 @@ import shop.common.valueobjects.PersonTyp;
 @SuppressWarnings("serial")
 public class LogInGUI extends JFrame implements ActionListener, KeyListener, MouseListener {
 	
-	public static final int DEFAULT_PORT = 6790;
+	public static final int DEFAULT_PORT = 6789;
 	
 	private ShopInterface shop;
 	private Person p;
