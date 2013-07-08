@@ -54,7 +54,7 @@ import shop.common.valueobjects.PersonTyp;
 @SuppressWarnings("serial")
 public class LogInGUI extends JFrame implements ActionListener, KeyListener, MouseListener {
 	
-	public static final int DEFAULT_PORT = 6789;
+	public static final int DEFAULT_PORT = 6790;
 	
 	private ShopInterface shop;
 	private Person p;
@@ -63,12 +63,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	private static String host;
 	private static int port;
 	
-	//	GridBagLayout Variablen
-	private int gridx, gridy, gridwidth, gridheight, fill, anchor, ipadx, ipady;
-    private double weightx, weighty;
-    private Insets insets;
-    
-    private int panBreite;
+	private int panBreite;
     private int ixr;
     private int ixl;
     
@@ -393,11 +388,11 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		cityField.setBackground(Color.WHITE);
 		
 //		hinzufügen der objekte zum frame
-		addGB(frameHeader, gridx = 1, gridy = 1, gridwidth = 3, ipadx = 400, ipady = 150);
-		addGB(linksPan, gridx = 1, gridy = 2, gridwidth = 1, ipadx = 150 - ixl, ipady = 0);
-		addGB(mittePan, gridx = 2, gridy = 2, gridwidth = 1, ipadx = 0, ipady = 0);
-		addGB(rechtsPan, gridx = 3, gridy = 2, gridwidth = 1, ipadx = 150 - ixr, ipady = 0);
-		addGB(untenPan, gridx = 1, gridy = 3, gridwidth = 3, ipadx = 300, ipady = 0);
+		addGB(frameHeader, 1, 1, 3, 400, 150);
+		addGB(linksPan, 1, 2, 1, 150 - ixl, 0);
+		addGB(mittePan, 2, 2, 1, 0, 0);
+		addGB(rechtsPan, 3, 2, 1, 150 - ixr, 0);
+		addGB(untenPan, 1, 3, 3, 300, 0);
 		
 		linksPan.removeAll();
 		mittePan.removeAll();
@@ -417,7 +412,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		mittePan.setLayout(new GridLayout(5, 1, 0, 2));
 		mittePan.add(usernameLabel);
 		mittePan.add(usernameField);
-		usernameField.enable();
+		usernameField.setEditable(true);
 		usernameField.requestFocus();
 		mittePan.add(passwordLabel);
 		mittePan.add(passwordField);
@@ -456,9 +451,9 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		JLabel cityLab = new JLabel("Stadt");
 		JLabel wpwLab = new JLabel("Passwort wiederholen");
 				
-		addGB(linksPan, gridx = 1, gridy = 2, gridwidth = 1, ipadx = 100 - ixl, ipady = 20);
-		addGB(mittePan, gridx = 2, gridy = 2, gridwidth = 1, ipadx = 100, ipady = 20);
-		addGB(rechtsPan, gridx = 3, gridy = 2, gridwidth = 1, ipadx = 100 - ixr, ipady = 20);
+		addGB(linksPan, 1, 2, 1, 100 - ixl, 20);
+		addGB(mittePan, 2, 2, 1, 100, 20);
+		addGB(rechtsPan, 3, 2, 1, 100 - ixr, 20);
 		
 		linksPan.removeAll();
 		linksPan.setLayout(new GridLayout(6, 1));
@@ -484,7 +479,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		mittePan.add(usernameField);
 		mittePan.add(new JLabel (""));
 		mittePan.add(new JLabel (""));
-		usernameField.disable();
+		usernameField.setEditable(false);
 		mittePan.repaint();
 		mittePan.validate();
 		
@@ -546,9 +541,9 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		JLabel cityLab = new JLabel("Stadt");
 		JLabel wpwLab = new JLabel("Passwort wiederholen");
 		
-		addGB(linksPan, gridx = 1, gridy = 2, gridwidth = 1, ipadx = 100 - ixl, ipady = 20);
-		addGB(mittePan, gridx = 2, gridy = 2, gridwidth = 1, ipadx = 100, ipady = 20);
-		addGB(rechtsPan, gridx = 3, gridy = 2, gridwidth = 1, ipadx = 100 - ixr, ipady = 20);
+		addGB(linksPan, 1, 2, 1, 100 - ixl, 20);
+		addGB(mittePan, 2, 2, 1, 100, 20);
+		addGB(rechtsPan, 3, 2, 1, 100 - ixr, 20);
 		
 		linksPan.removeAll();
 		linksPan.setLayout(new GridLayout(6, 1));
@@ -739,6 +734,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	}
 	
 	public void keyPressed(KeyEvent kp) {
+		key = kp.getKeyCode();
 	}
 
 	public void keyReleased(KeyEvent arg0) {
@@ -820,6 +816,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	
 	/**
 	 * Überschreiben der Methode WindowClosing um bei schließen der LoginGUI die Verbindung zum server trennt.
+	 * 
 	 * @author Thummerer
 	 *
 	 */

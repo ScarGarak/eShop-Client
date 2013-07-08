@@ -16,14 +16,14 @@ public class ServerUpdateKundenGUIRequestProcessor implements KundenGUIObserver,
 	private BufferedReader sin; // server-input stream
 
 	// ShopVerwaltung
-	private ShopInterface shop;
+//	private ShopInterface shop;
 	// KundenGUI
-	private KundeGUI gui;	
+//	private KundeGUI gui;	
 	
 	public ServerUpdateKundenGUIRequestProcessor(String host, int port, ShopInterface shop, KundeGUI gui) throws IOException {
 		
-		this.shop = shop;
-		this.gui = gui;
+//		this.shop = shop;
+//		this.gui = gui;
 		
 		try {
 			// Socket-Objekt fuer die Kommunikation mit Host/Port erstellen

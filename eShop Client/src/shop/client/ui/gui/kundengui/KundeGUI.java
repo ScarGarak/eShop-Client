@@ -303,6 +303,9 @@ public class KundeGUI extends JFrame {
 		accountPanel.add(buttonPanel);
 	}
 	
+	/**
+	 * Methode die eine neue JTable kreiert, dieser funktionen hinzufuegt und zum TablePanel hinzufügt.
+	 */
 	private void createTableSearch() {
 		searchTable = new JTable(new ArtikelTableModel(shop.gibAlleArtikelSortiertNachBezeichnung()));
 		searchTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -319,6 +322,9 @@ public class KundeGUI extends JFrame {
 		tablePanel.add(searchScrollPane, BorderLayout.CENTER);
 	}
 	
+	/**
+	 * Methode die die alle Warenkorb Objekte kreiert und der Warenkorb ansich hinzufügt.
+	 */
 	private void createTableWarenkorb() {
 		warenkorbTable = new JTable(new WarenkorbArtikelTableModel(shop.gibWarenkorb(kunde)));
 		warenkorbTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -353,6 +359,9 @@ public class KundeGUI extends JFrame {
 		rechnungPanel.add(rechnungPane, BorderLayout.CENTER);
 	}
 	
+	/**
+	 * Methode die alle footer Objekte erstellt und hinzufügt.
+	 */
 	private void createDetails() {
 		bildPanel = new JImagePanel(null);
 		bezeichnung = new JLabel();
@@ -405,18 +414,33 @@ public class KundeGUI extends JFrame {
 		detailsPanel.setLayout(new BorderLayout());
 	}
 	
+	/**
+	 * Methode welche die searchTable updated.
+	 * @param artikel Artikel die an die searchTable übergeben werden
+	 */
 	private void updateSearchTable(List<Artikel> artikel) {
 		artikelTableModel = new ArtikelTableModel(artikel);
 		searchTable.setModel(artikelTableModel);
 		artikelTableModel.fireTableDataChanged();
 	}
 	
+	/**
+	 * Methode welche die warenkorbTable updated.
+	 * @param warenkorbArtikel die an die warenkorbTable übergeben werden
+	 */
 	private void updateWarenkorbTable(List<WarenkorbArtikel> warenkorbArtikel) {
 		warenkorbArtikelTableModel = new WarenkorbArtikelTableModel(warenkorbArtikel);
 		warenkorbTable.setModel(warenkorbArtikelTableModel);
 		warenkorbArtikelTableModel.fireTableDataChanged();
 	}
 	
+	/**
+	 * Methode welche die Zellen der Spalten anpasst
+	 * 
+	 * @param renderer
+	 * @param table
+	 * @param alignment
+	 */
 	private void setTableCellAlignment(DefaultTableCellRenderer renderer, JTable table, int alignment) {
 		renderer.setHorizontalAlignment(alignment);
 		for (int i = 0; i < table.getColumnCount(); i++) {
@@ -441,6 +465,12 @@ public class KundeGUI extends JFrame {
 		return summe;
 	}
 	
+	/**
+	 * Methode zum updaten der ArtikelMenge in abhängigkeit davon ob es sich um einen
+	 * Massengutartikel handelt oder nicht.
+	 * 
+	 * @param a Artikel dessen Anzahl angepasst werden soll
+	 */
 	private void updateArtikelMenge(Artikel a) {
 		menge.removeAllItems();
 		for (int i = 1; i <= a.getBestand(); i++) {
@@ -454,6 +484,12 @@ public class KundeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Methode zum updaten der ArtikelStueckzahl im Warenkorb in abhängigkeit davon ob es sich um einen
+	 * Massengutartikel handelt oder nicht.
+	 * 
+	 * @param wa Warenkorb in dem die veränderung vorgenommen werden solls
+	 */
 	private void updateWarenkorbArtikelStueckzahl(WarenkorbArtikel wa) {
 		stueckzahl.removeAllItems();
 		for (int i = 0, j = 1; j <= wa.getArtikel().getBestand() + wa.getStueckzahl(); j++) {
@@ -470,6 +506,9 @@ public class KundeGUI extends JFrame {
 		stueckzahl.getModel().setSelectedItem(wa.getStueckzahl());
 	}
 	
+	/**
+	 * Methode zur Anzeige der aktuellen Anzahl der Artikel im Warenkorb
+	 */
 	private void updateArtikelanzahl() {
 		((JWarenkorbButton) warenkorbButton).setArtikelanzahl(shop.gibWarenkorb(kunde).size());
 		if (((JWarenkorbButton) warenkorbButton).getArtikelanzahl() == 0) {
@@ -482,10 +521,16 @@ public class KundeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Methode die den Gesamtpreis der Artikel im Warenkorb aktualisiert
+	 */
 	private void updateGesamtpreis() {
 		gesamtpreis.setText(String.format("Gesamtpreis: %.2f ", getGesamtpreis(kunde)) + Currency.getInstance(Locale.GERMANY));
 	}
 	
+	/**
+	 * Methode zum zurücksetzen von errorMessages
+	 */
 	private void clearErrorMessages() {
 		errorMessage.setText("");
 		errorName.setText("");
@@ -502,6 +547,12 @@ public class KundeGUI extends JFrame {
 		confirmPasswort.setBackground(Color.WHITE);
 	}
 	
+	/**
+	 * Eine eigene Klasse die einen ActionListener für den searchButton & das searchField implementiert
+	 * 
+	 * @author Torres
+	 *
+	 */
 	class SearchListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
@@ -531,6 +582,13 @@ public class KundeGUI extends JFrame {
 		}
 	}
 	
+	
+	/**
+	 * Eine eigene Klasse die einen ActionListener für den warenkorbButton implementiert
+	 * 
+	 * @author Torres
+	 *
+	 */
 	class WarenkorbListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
@@ -559,6 +617,12 @@ public class KundeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Eine eigene Klasse die einen ActionListener für den kaufenButton implementiert
+	 * 
+	 * @author Torres
+	 *
+	 */
 	class KaufenListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
@@ -590,6 +654,12 @@ public class KundeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Eine eigene Klasse die einen ActionListener für den leerenButton implementiert
+	 * 
+	 * @author Torres
+	 *
+	 */
 	class LeerenListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
@@ -622,6 +692,12 @@ public class KundeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Eine eigene Klasse die einen ListSelectionListener für die searchTable implementiert
+	 * 
+	 * @author Torres
+	 *
+	 */
 	class SelectionDetailListener implements ListSelectionListener {
 		@Override
 		public void valueChanged(ListSelectionEvent lse) {
@@ -673,6 +749,12 @@ public class KundeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Eine eigene Klasse die einen ActionListener für den inDenWarenkorbButton implementiert
+	 * 
+	 * @author Torres
+	 *
+	 */
 	class InDenWarenkorbListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
@@ -702,6 +784,12 @@ public class KundeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Eine eigene Klasse die einen ActionListener für den entfernenButton implementiert
+	 * 
+	 * @author Torres
+	 *
+	 */
 	class EntfernenListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
@@ -725,6 +813,12 @@ public class KundeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Eine eigene Klasse die einen ItemListener für änderungen der Stückzahl implementiert
+	 * 
+	 * @author Torres
+	 *
+	 */
 	class StueckzahlListener implements ItemListener {
 		@Override
 	    public void itemStateChanged(ItemEvent event) {
@@ -754,6 +848,12 @@ public class KundeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Eine eigene Klasse die einen ActionListener für den accountButton implementiert
+	 * 
+	 * @author Torres
+	 *
+	 */
 	class AccountButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
@@ -777,6 +877,12 @@ public class KundeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Eine eigene Klasse die einen ActionListener für den logoutButton implementiert
+	 * 
+	 * @author Torres
+	 *
+	 */
 	class LogoutListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
@@ -792,6 +898,12 @@ public class KundeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Eine eigene Klasse die einen ActionListener für den abbrechenButton implementiert
+	 * 
+	 * @author Torres
+	 *
+	 */
 	class AccountListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
@@ -900,6 +1012,12 @@ public class KundeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Überschreiben der Methode WindowClosing um bei schließen der LoginGUI die Verbindung zum server trennt.
+	 * 
+	 * @author Torres
+	 *
+	 */
 	class WindowCloser extends WindowAdapter {
 		@Override
 		public void windowClosing(WindowEvent we) {
