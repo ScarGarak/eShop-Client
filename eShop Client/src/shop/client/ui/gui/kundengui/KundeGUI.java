@@ -123,9 +123,9 @@ public class KundeGUI extends JFrame {
 	private JLabel bezeichnung;
 	private JTextArea details;
 	private JPanel auswahlPanel;
-	private JComboBox<Integer> menge;
+	private JComboBox menge;
 	private JPanel mengePanel;
-	private JComboBox<Integer> stueckzahl;
+	private JComboBox stueckzahl;
 	private JPanel stueckzahlPanel;
 	private JTextArea errorMessage;
 	private JButton inDenWarenkorbButton;
@@ -384,7 +384,7 @@ public class KundeGUI extends JFrame {
 		errorMessage.setEditable(false);
 		errorMessage.setOpaque(false);
 		errorMessage.setPreferredSize(new Dimension(150, 50));
-		menge = new JComboBox<Integer>();
+		menge = new JComboBox();
 		mengePanel = new JPanel();
 		mengePanel.setLayout(new GridLayout(1,2));
 		mengePanel.add(new JLabel("  Menge:"));
@@ -394,7 +394,7 @@ public class KundeGUI extends JFrame {
 		stueckzahlLabel.setLineWrap(true);
 		stueckzahlLabel.setOpaque(false);
 		stueckzahlLabel.setPreferredSize(new Dimension(60, 20));
-		stueckzahl = new JComboBox<Integer>();
+		stueckzahl = new JComboBox();
 		stueckzahl.addItemListener(new StueckzahlListener());
 		stueckzahlPanel = new JPanel();
 		stueckzahlPanel.setLayout(new GridLayout(1,2));
@@ -477,9 +477,9 @@ public class KundeGUI extends JFrame {
 	 * 
 	 * @param a Artikel dessen Anzahl angepasst werden soll
 	 */
-	private void updateArtikelMenge(Artikel a) {
+	private void updateArtikelMenge(Artikel a, int entnommeneMenge) {
 		menge.removeAllItems();
-		for (int i = 1; i <= a.getBestand(); i++) {
+		for (int i = 1; i <= a.getBestand() - entnommeneMenge; i++) {
 			if (a instanceof Massengutartikel) {
 				if (i % ((Massengutartikel) a).getPackungsgroesse() == 0) {
 					menge.addItem(i);
@@ -719,7 +719,7 @@ public class KundeGUI extends JFrame {
 				details.append("Bestand: " + a.getBestand() + "\n");
 				auswahlPanel.remove(stueckzahlPanel);
 				auswahlPanel.add(mengePanel);
-				updateArtikelMenge(a);
+				updateArtikelMenge(a, 0);
 				auswahlPanel.remove(entfernenButton);
 				auswahlPanel.add(inDenWarenkorbButton, BorderLayout.SOUTH);
 			} else 
@@ -772,12 +772,13 @@ public class KundeGUI extends JFrame {
 				ArtikelTableModel atm = (ArtikelTableModel) searchTable.getModel();
 				Artikel a = atm.getRowValue(searchTable.convertRowIndexToModel(searchTable.getSelectedRow()));
 				try {
-					shop.inDenWarenkorbLegen(kunde, a.getArtikelnummer(), (Integer) menge.getItemAt(menge.getSelectedIndex()));
+					int ausgewaehlteMenge = (Integer) menge.getItemAt(menge.getSelectedIndex());
+					shop.inDenWarenkorbLegen(kunde, a.getArtikelnummer(), ausgewaehlteMenge);
 					updateArtikelanzahl();
 					updateSearchTable(shop.gibAlleArtikelSortiertNachBezeichnung());
 					tablePanel.validate();
 					tablePanel.repaint();
-					updateArtikelMenge(a);
+					updateArtikelMenge(a, ausgewaehlteMenge);
 				} catch (NullPointerException e) {
 					errorMessage.setText("Bitte w\u00e4hlen Sie unten eine g\u00fcltige Menge aus.");
 				} catch (ArtikelBestandIstZuKleinException e) {
