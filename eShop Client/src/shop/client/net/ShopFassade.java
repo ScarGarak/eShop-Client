@@ -41,7 +41,7 @@ import shop.common.valueobjects.WarenkorbArtikel;
  * Shopversion bekannte Funktionalität implementiert (z.B. Artikel 
  * einfügen und suchen)
  * 
- * @author teschke
+ * @author Torres
  */
 public class ShopFassade implements ShopInterface {
 
