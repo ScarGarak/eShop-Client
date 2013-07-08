@@ -86,17 +86,7 @@ public class ShopFassade implements ShopInterface {
 		System.out.println(message);
 	}
 
-	/**
-	 * Methode zum Einfügen eines neuen Artikels in den Bestand. 
-	 * Wenn der Artikel bereits im Bestand ist, wird der Bestand nicht geändert.
-	 * 
-	 * @param mitarbeiter Mitarbeiter der den Artikel in den Bestand einfügen will
-	 * @param artikelnummer Artikelnummer des neuen Artikels
-	 * @param bezeichnung Bezeichnung des neuen Artikels
-	 * @param preis Preis des neuen Artikels
-	 * @param bestand Bestand des neuen Artikels
-	 * @throws ArtikelExistiertBereitsException
-	 */
+	@Override
 	public void fuegeArtikelEin(Mitarbeiter mitarbeiter, int artikelnummer, String bezeichnung, double preis, int bestand) throws ArtikelExistiertBereitsException {
 		// Kennzeichen für gewählte Aktion senden
 		sout.println("fae");
@@ -120,19 +110,7 @@ public class ShopFassade implements ShopInterface {
 		} 
 	}
 
-	/**
-	 * Methode zum Einfügen eines neuen Massengutartikels in den Bestand. 
-	 * Wenn der Massengutartikel bereits im Bestand ist, wird der Bestand nicht geändert.
-	 * 
-	 * @param mitarbeiter Mitarbeiter der den Massengutartikel in den Bestand einfügen will
-	 * @param artikelnummer Artikelnummer des neuen Massengutartikels
-	 * @param bezeichnung Bezeichnung des neuen Massengutartikels
-	 * @param preis Preis des neuen Massengutartikels
-	 * @param packungsgroesse Packungsgröße des neuen Massengutartikels
-	 * @param bestand Bestand des neuen Massengutartikels
-	 * @throws ArtikelExistiertBereitsException
-	 * @throws ArtikelBestandIstKeineVielfacheDerPackungsgroesseException
-	 */
+	@Override
 	public void fuegeMassengutartikelEin(Mitarbeiter mitarbeiter, int artikelnummer, String bezeichnung, double preis, int packungsgroesse, int bestand) throws ArtikelExistiertBereitsException, ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
 		// Kennzeichen für gewählte Aktion senden
 		sout.println("fme");
@@ -189,12 +167,7 @@ public class ShopFassade implements ShopInterface {
 		}
 	}
 	
-	/**
-	 * Methode, die eine Liste aller im Bestand befindlichen Artikel, 
-	 * nach ihrer Artikelnummer sortiert, zurückgibt.
-	 * 
-	 * @return Liste aller Artikel sortiert nach Artikelnummer
-	 */
+	@Override
 	public List<Artikel> gibAlleArtikelSortiertNachArtikelnummer() {
 		List<Artikel> liste = new Vector<Artikel>();
 
@@ -245,12 +218,7 @@ public class ShopFassade implements ShopInterface {
 		return liste;
 	}
 
-	/**
-	 * Methode, die eine Liste aller im Bestand befindlichen Artikel, 
-	 * nach ihrer Bezeichnung sortiert, zurückgibt.
-	 * 
-	 * @return Liste aller Artikel sortiert nach Bezeichnung
-	 */
+	@Override
 	public List<Artikel> gibAlleArtikelSortiertNachBezeichnung() {
 		List<Artikel> liste = new Vector<Artikel>();
 
@@ -301,13 +269,7 @@ public class ShopFassade implements ShopInterface {
 		return liste;
 	}
 
-	/**
-	 * Methode zum Suchen von Artikeln anhand der Artikelnummer. Es wird eine Liste von Artikeln
-	 * zurückgegeben, die alle Artikel die Artikelnummer enthalten.
-	 * 
-	 * @param artikelnummer Artikelnummer des gesuchten Artikels
-	 * @return Liste der gefundenen Artikel (evtl. leer)
-	 */
+	@Override
 	public List<Artikel> sucheArtikel(int artikelnummer) {
 		List<Artikel> liste = new Vector<Artikel>();
 		
@@ -360,13 +322,7 @@ public class ShopFassade implements ShopInterface {
 		return liste;
 	}
 
-	/**
-	 * Methode zum Suchen von Artikeln anhand der Bezeichnung. Es wird eine Liste von Artikeln
-	 * zurückgegeben, die alle Artikel die Bezeichnung enthalten.
-	 * 
-	 * @param bezeichnung Bezeichnung des gesuchten Artikels
-	 * @return Liste der gefundenen Artikel (evtl. leer)
-	 */
+	@Override
 	public List<Artikel> sucheArtikel(String bezeichnung) {
 		List<Artikel> liste = new Vector<Artikel>();
 		
@@ -472,11 +428,7 @@ public class ShopFassade implements ShopInterface {
 		}
 	}
 
-	/**
-	 * Methode zum Speichern des Buchbestands in einer Datei.
-	 * 
-	 * @throws IOException
-	 */
+	@Override
 	public void schreibeArtikel() throws IOException {
 		// Kennzeichen für gewählte Aktion senden
 		sout.println("scha");
@@ -686,11 +638,7 @@ public class ShopFassade implements ShopInterface {
 		sout.println("sck");
 	}
 
-	/**
-	 * Methode, die eine Liste aller im Warenkorb befindlichen Artikel zurückgibt.
-	 * 
-	 * @return Liste aller Warenkorb Artikel des Kunden
-	 */
+	@Override
 	public List<WarenkorbArtikel> gibWarenkorb(Kunde kunde) {
 		List<WarenkorbArtikel> liste = new Vector<WarenkorbArtikel>();
 
@@ -746,16 +694,7 @@ public class ShopFassade implements ShopInterface {
 		return liste;
 	}
 	
-	/**
-	 * Methode zum in den Warenkorb legen eines Artikels anhand eines Kunden.
-	 * 
-	 * @param kunde Kunde der den Artikel in seinen Warenkorb legen will
-	 * @param artikelnummer Artikelnummer des Artikels der in den Warenkorb zu legen ist
-	 * @param stueckzahl Stückzahl des Artikels
-	 * @throws ArtikelBestandIstZuKleinException
-	 * @throws ArtikelExistiertNichtException
-	 * @throws ArtikelBestandIstKeineVielfacheDerPackungsgroesseException
-	 */
+	@Override
 	public void inDenWarenkorbLegen(Kunde kunde, int artikelnummer, int stueckzahl) throws ArtikelBestandIstZuKleinException, ArtikelExistiertNichtException, ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
 		// Kennzeichen für gewählte Aktion senden
 		sout.println("idwl");
@@ -783,14 +722,7 @@ public class ShopFassade implements ShopInterface {
 		}		
 	}
 
-	/**
-	 * Methode um einen Artikel aus dem Warenkorb heraus zu nehmen anhand eines Kunden.
-	 * 
-	 * @param kunde Kunde der den Artikel aus seinem Warenkorb herausnehmen will
-	 * @param artikelnummer Artikelnummer eines Artikels der aus dem Warenkorb heraus zu nehmen ist
-	 * @throws ArtikelExistiertNichtException
-	 * @throws ArtikelBestandIstKeineVielfacheDerPackungsgroesseException
-	 */
+	@Override
 	public void ausDemWarenkorbHerausnehmen(Kunde kunde, int artikelnummer) throws ArtikelExistiertNichtException, ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
 		// Kennzeichen für gewählte Aktion senden
 		sout.println("adwh");
@@ -814,16 +746,7 @@ public class ShopFassade implements ShopInterface {
 		}		
 	}
 	
-	/**
-	 * Methode um die Stückzahl eines Warenkorb Artikels im Warenkorb eines Kunden zu ändern.
-	 * 
-	 * @param kunde Kunde der die Stückzahl des Warenkorb Artikels ändern will
-	 * @param warenkorbArtikelnummer Warenkorb Artikelnummer des Warenkorb Artikels dessen Stückzahl zu ändern ist
-	 * @param neueStueckzahl NeueStückzahl des Warenkorb Artikels
-	 * @throws ArtikelBestandIstZuKleinException
-	 * @throws ArtikelExistiertNichtException
-	 * @throws ArtikelBestandIstKeineVielfacheDerPackungsgroesseException
-	 */
+	@Override
 	public void stueckzahlAendern(Kunde kunde, int warenkorbArtikelnummer, int neueStueckzahl) throws ArtikelBestandIstZuKleinException, ArtikelExistiertNichtException, ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
 		// Kennzeichen für gewählte Aktion senden
 		sout.println("sa");
@@ -851,15 +774,7 @@ public class ShopFassade implements ShopInterface {
 		}	
 	}
 
-	/**
-	 * Methode zum Kaufen von Artikeln anhand eines Kunden. Es wird eine Rechnung
-	 * zurückgegeben.
-	 * 
-	 * @param kunde Kunde der die einzelnen Artikel, die sich in seinem Warenkorb befinden, kaufen will
-	 * @return Rechnung
-	 * @throws IOException
-	 * @throws WarenkorbIstLeerException
-	 */
+	@Override
 	public Rechnung kaufen(Kunde kunde) throws IOException, WarenkorbIstLeerException {
 		List<WarenkorbArtikel> warenkorb = new Vector<WarenkorbArtikel>();
 		
@@ -928,12 +843,7 @@ public class ShopFassade implements ShopInterface {
 		}
 	}
 
-	/**
-	 * Methode zum Leeren aller Artikeln aus dem Warenkorb eines Kunden. 
-	 * 
-	 * @param kunde Kunde der alle Artikel, die sich in seinem Warenkorb befinden, entfernen will
-	 * @throws ArtikelBestandIstKeineVielfaceDerPackungsgroesseException
-	 */
+	@Override
 	public void leeren(Kunde kunde) throws ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
 		// Kennzeichen für gewählte Aktion senden
 		sout.println("l");

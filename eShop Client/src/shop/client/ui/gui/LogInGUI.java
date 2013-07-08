@@ -1,5 +1,5 @@
-package shop.client.ui.gui;
 
+package shop.client.ui.gui;
 import static java.awt.GridBagConstraints.CENTER;
 
 import java.awt.Color;
