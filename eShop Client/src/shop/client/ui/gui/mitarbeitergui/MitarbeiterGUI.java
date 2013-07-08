@@ -469,7 +469,7 @@ public class MitarbeiterGUI extends JFrame {
 					String bezeichnung = artikelBezeichnungInput.getText();
 					double preis = Double.parseDouble(artikelPreisInput.getText());
 					int bestand = Integer.parseInt(artikelBestandInput.getText());
-					if(bestand < 0){
+					if(preis < 0 || bestand < 0){
 						// Wird zum Catch Block mit NumberFormatException weitergeleitet
 						// weil -1 kein gŸltiger Wert ist
 						throw new NumberFormatException();
@@ -585,7 +585,10 @@ public class MitarbeiterGUI extends JFrame {
 					try{
 						bezeichnung = artikelBezeichnungInput.getText();
 						preis = Double.parseDouble(artikelPreisInput.getText());
-						if(bezeichnung.equals("")){
+						
+						if(preis < 0){
+							setErrorMsg("Der Preis darf nicht negativ sein!", artikelFooterWrapper);
+						}else if(bezeichnung.equals("")){
 							setErrorMsg("Die Bezeichnung muss einen g\u00fcltigen Namen haben!", artikelFooterWrapper);
 						}else{
 							success = true;
