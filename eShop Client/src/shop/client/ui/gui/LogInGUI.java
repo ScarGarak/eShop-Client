@@ -55,7 +55,7 @@ import shop.common.valueobjects.PersonTyp;
 @SuppressWarnings("serial")
 public class LogInGUI extends JFrame implements ActionListener, KeyListener, MouseListener {
 	
-	public static final int DEFAULT_PORT = 6789;
+	public static final int DEFAULT_PORT = 6790;
 	
 	private ShopInterface shop;
 	private Person p;
@@ -450,51 +450,50 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		JLabel streetLab = new JLabel("Strasse/HNr.");
 		JLabel zipLab = new JLabel("Postleitzahl/zip");
 		JLabel cityLab = new JLabel("Stadt");
-		JLabel wpwLab = new JLabel("wiederhole Pw");
+		JLabel wpwLab = new JLabel("Passwort wiederholen");
 				
-		addGB(linksPan, 1, 2, 1, 40 - ixl, 40);
-		addGB(mittePan, 1, 2, 3, 220, 40);
-		addGB(rechtsPan, 3, 2, 1, 40 - ixr, 40);
+		addGB(linksPan, 1, 2, 1, 100 - ixl, 20);
+		addGB(mittePan, 2, 2, 1, 100, 20);
+		addGB(rechtsPan, 3, 2, 1, 100 - ixr, 20);
 		
 		linksPan.removeAll();
 		linksPan.setLayout(new GridLayout(6, 1));
-//		linksPan.setBackground(Color.BLUE);
-		linksPan.add(new JLabel (""));
-		linksPan.add(new JLabel (""));
+		linksPan.add(nameLab);
+		linksPan.add(nameField);
 		nameField.requestFocus();
-		linksPan.add(new JLabel (""));
-		linksPan.add(new JLabel (""));
-		linksPan.add(new JLabel (""));
-		linksPan.add(new JLabel (""));
+//		linksPan.add(gebDatLab);
+//		linksPan.add(gebDatField);
+		linksPan.add(streetLab);
+		linksPan.add(streetField);
+		linksPan.add(zipLab);
+		linksPan.add(zipField);
 		linksPan.repaint();
 		linksPan.validate();
 		
-//		mittePan.setPreferredSize(new Dimension(300,200));
 		mittePan.removeAll();
-		mittePan.setLayout(new GridLayout(6, 2, 2, 0));
-//		mittePan.setBackground(Color.GREEN);
-		mittePan.add(nameLab);
-		mittePan.add(streetLab);
-		mittePan.add(nameField);
-		mittePan.add(streetField);
-		mittePan.add(zipLab);
+		mittePan.setLayout(new GridLayout(6, 1));
+//		mittePan.add(zipLab);
+//		mittePan.add(zipField);
 		mittePan.add(cityLab);
-		mittePan.add(zipField);
 		mittePan.add(cityField);
-		mittePan.add(passwordLabel);
-		mittePan.add(wpwLab);
-		mittePan.add(pwField);
-		mittePan.add(wpwField);
+		mittePan.add(usernameLabel);
+		mittePan.add(usernameField);
+		mittePan.add(new JLabel (""));
+		mittePan.add(new JLabel (""));
+		usernameField.setEditable(false);
 		mittePan.repaint();
 		mittePan.validate();
 		
 		rechtsPan.removeAll();
 		rechtsPan.setLayout(new GridLayout(6, 1));
-//		rechtsPan.setBackground(Color.GREEN);
-		rechtsPan.add(new JLabel (""));
-		rechtsPan.add(new JLabel (""));
-		rechtsPan.add(new JLabel (""));
-		rechtsPan.add(new JLabel (""));
+//		rechtsPan.add(opwLab);
+//		rechtsPan.add(opwField);
+		rechtsPan.add(passwordLabel);
+		rechtsPan.add(pwField);
+//		pwField.disable();
+		rechtsPan.add(wpwLab);
+		rechtsPan.add(wpwField);
+//		wpwField.disable();
 		rechtsPan.add(rechts3);
 		rechtsPan.add(rechts4);
 		rechtsPan.repaint();
@@ -766,31 +765,6 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	}
 	
 	/**
-	 * ‹berschreiben der Methode WindowClosing um bei schlieﬂen der LoginGUI die Verbindung zum server trennt.
-	 * 
-	 * @author Thummerer
-	 *
-	 */
-	class WindowCloser extends WindowAdapter {
-		@Override
-		public void windowClosing(WindowEvent we) {
-			
-			Window w = we.getWindow();
-			w.setVisible(false);
-			
-			try {
-				shop.disconnect();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-				w.dispose();
-				System.exit(0);
-		}
-	}
-	
-	/**
 	 * Die main-Methode...
 	 */
 	public static void main(String[] args) {
@@ -838,6 +812,31 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * ‹berschreiben der Methode WindowClosing um bei schlieﬂen der LoginGUI die Verbindung zum server trennt.
+	 * 
+	 * @author Thummerer
+	 *
+	 */
+	class WindowCloser extends WindowAdapter {
+		@Override
+		public void windowClosing(WindowEvent we) {
+			
+			Window w = we.getWindow();
+			w.setVisible(false);
+			
+			try {
+				shop.disconnect();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+				w.dispose();
+				System.exit(0);
 		}
 	}
 
