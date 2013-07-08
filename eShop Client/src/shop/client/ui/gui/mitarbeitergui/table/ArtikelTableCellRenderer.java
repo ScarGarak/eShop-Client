@@ -29,7 +29,7 @@ public class ArtikelTableCellRenderer extends DefaultTableCellRenderer{
 	
 	/**
 	 * Diese Methode veraendert die Hintergrund- und Textfarbe. Per default setzt er die Hintergrundfarbe auf Weiß
-	 * und die Textfarbe auf Schwarz. Wenn die Zeile ausgewählt wurde, wird die Hintergrundfarbe auf Orange gesetzt.
+	 * und die Textfarbe auf Schwarz. Wenn die Zeile ausgewaehlt wurde, wird die Hintergrundfarbe auf Orange gesetzt.
 	 * Fuer die Kolonne 4 (= Bestand) wird die Hintergrundfarbe auf Gruen gesetzt, wenn der Wert groesser als 0 ist,
 	 * ist der Wert 0 wird sie auf Rot gesetzt.
 	 * Hinzu kommt noch, dass der Wert der Kolonne 2 (= Preis) formatiert und die Currency hinzugefuegt wird.

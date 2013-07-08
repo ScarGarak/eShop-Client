@@ -42,7 +42,7 @@ public class ServerUpdateKundenGUIRequestProcessor implements KundenGUIObserver,
 	}
 	
 	/**
-	 * Methode zur Abwicklung der Kommunikation mit dem Server gemäß dem
+	 * Methode zur Abwicklung der Kommunikation mit dem Server gemaess dem
 	 * vorgebenen Kommunikationsprotokoll.
 	 */
 	public void run() {

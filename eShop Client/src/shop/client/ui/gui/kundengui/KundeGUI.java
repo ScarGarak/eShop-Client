@@ -57,9 +57,9 @@ import shop.common.valueobjects.Rechnung;
 import shop.common.valueobjects.WarenkorbArtikel;
 
 /**
- * Grafische Oberfläche (GUI) die dem Kunden alle benötigten
- * Interaktionsmglichkeiten zur verfügung stellt um den eShop
- * nutzen zu können.
+ * Grafische Oberfläche (GUI) die dem Kunden alle benoetigten
+ * Interaktionsmglichkeiten zur verfuegung stellt um den eShop
+ * nutzen zu koennen.
  * 
  * @author Torres
  *
@@ -171,7 +171,7 @@ public class KundeGUI extends JFrame {
 	}
 	
 	/**
-	 * Methode die alle Header Objekte implementiert, diesen Events hinzufügt und dies an den Header anfügt.
+	 * Methode die alle Header Objekte implementiert, diesen Events hinzufuegt und dies an den Header anfuegt.
 	 */
 	private void createHeader() {
 		accountButton = new JAccountButton(kunde.getName());
@@ -218,7 +218,7 @@ public class KundeGUI extends JFrame {
 	}
 	
 	/**
-	 * Methode die alle Account Objekte implementiert, diesen Events hinzufügt und dies an das Account Panel anfügt.
+	 * Methode die alle Account Objekte implementiert, diesen Events hinzufuegt und dies an das Account Panel anfuegt.
 	 */
 	public void createAccount() {
 		name = new JTextField();
@@ -304,7 +304,7 @@ public class KundeGUI extends JFrame {
 	}
 	
 	/**
-	 * Methode die eine neue JTable kreiert, dieser funktionen hinzufuegt und zum TablePanel hinzufügt.
+	 * Methode die eine neue JTable kreiert, dieser funktionen hinzufuegt und zum TablePanel hinzufuegt.
 	 */
 	private void createTableSearch() {
 		searchTable = new JTable(new ArtikelTableModel(shop.gibAlleArtikelSortiertNachBezeichnung()));
@@ -323,7 +323,7 @@ public class KundeGUI extends JFrame {
 	}
 	
 	/**
-	 * Methode die die alle Warenkorb Objekte kreiert und der Warenkorb ansich hinzufügt.
+	 * Methode die die alle Warenkorb Objekte kreiert und der Warenkorb ansich hinzufuegt.
 	 */
 	private void createTableWarenkorb() {
 		warenkorbTable = new JTable(new WarenkorbArtikelTableModel(shop.gibWarenkorb(kunde)));
@@ -360,7 +360,7 @@ public class KundeGUI extends JFrame {
 	}
 	
 	/**
-	 * Methode die alle footer Objekte erstellt und hinzufügt.
+	 * Methode die alle footer Objekte erstellt und hinzufuegt.
 	 */
 	private void createDetails() {
 		bildPanel = new JImagePanel(null);
@@ -416,7 +416,7 @@ public class KundeGUI extends JFrame {
 	
 	/**
 	 * Methode welche die searchTable updated.
-	 * @param artikel Artikel die an die searchTable übergeben werden
+	 * @param artikel Artikel die an die searchTable uebergeben werden
 	 */
 	private void updateSearchTable(List<Artikel> artikel) {
 		artikelTableModel = new ArtikelTableModel(artikel);
@@ -429,7 +429,7 @@ public class KundeGUI extends JFrame {
 	
 	/**
 	 * Methode welche die warenkorbTable updated.
-	 * @param warenkorbArtikel die an die warenkorbTable übergeben werden
+	 * @param warenkorbArtikel die an die warenkorbTable uebergeben werden
 	 */
 	private void updateWarenkorbTable(List<WarenkorbArtikel> warenkorbArtikel) {
 		warenkorbArtikelTableModel = new WarenkorbArtikelTableModel(warenkorbArtikel);
@@ -541,7 +541,7 @@ public class KundeGUI extends JFrame {
 	}
 	
 	/**
-	 * Methode zum zurücksetzen von errorMessages
+	 * Methode zum zuruecksetzen von errorMessages
 	 */
 	private void clearErrorMessages() {
 		errorMessage.setText("");
@@ -560,7 +560,7 @@ public class KundeGUI extends JFrame {
 	}
 	
 	/**
-	 * Eine eigene Klasse die einen ActionListener für den searchButton & das searchField implementiert
+	 * Eine eigene Klasse die einen ActionListener fuer den searchButton & das searchField implementiert
 	 * 
 	 * @author Torres
 	 *
@@ -596,7 +596,7 @@ public class KundeGUI extends JFrame {
 	
 	
 	/**
-	 * Eine eigene Klasse die einen ActionListener für den warenkorbButton implementiert
+	 * Eine eigene Klasse die einen ActionListener fuer den warenkorbButton implementiert
 	 * 
 	 * @author Torres
 	 *
@@ -630,7 +630,7 @@ public class KundeGUI extends JFrame {
 	}
 	
 	/**
-	 * Eine eigene Klasse die einen ActionListener für den kaufenButton implementiert
+	 * Eine eigene Klasse die einen ActionListener fuer den kaufenButton implementiert
 	 * 
 	 * @author Torres
 	 *
@@ -667,7 +667,7 @@ public class KundeGUI extends JFrame {
 	}
 	
 	/**
-	 * Eine eigene Klasse die einen ActionListener für den leerenButton implementiert
+	 * Eine eigene Klasse die einen ActionListener fuer den leerenButton implementiert
 	 * 
 	 * @author Torres
 	 *
@@ -705,7 +705,7 @@ public class KundeGUI extends JFrame {
 	}
 	
 	/**
-	 * Eine eigene Klasse die einen ListSelectionListener für die searchTable implementiert
+	 * Eine eigene Klasse die einen ListSelectionListener fuer die searchTable implementiert
 	 * 
 	 * @author Torres
 	 *
@@ -766,7 +766,7 @@ public class KundeGUI extends JFrame {
 	}
 	
 	/**
-	 * Eine eigene Klasse die einen ActionListener für den inDenWarenkorbButton implementiert
+	 * Eine eigene Klasse die einen ActionListener fuer den inDenWarenkorbButton implementiert
 	 * 
 	 * @author Torres
 	 *
@@ -799,7 +799,7 @@ public class KundeGUI extends JFrame {
 	}
 	
 	/**
-	 * Eine eigene Klasse die einen ActionListener für den entfernenButton implementiert
+	 * Eine eigene Klasse die einen ActionListener fuer den entfernenButton implementiert
 	 * 
 	 * @author Torres
 	 *
@@ -828,7 +828,7 @@ public class KundeGUI extends JFrame {
 	}
 	
 	/**
-	 * Eine eigene Klasse die einen ItemListener für änderungen der Stückzahl implementiert
+	 * Eine eigene Klasse die einen ItemListener fuer änderungen der Stueckzahl implementiert
 	 * 
 	 * @author Torres
 	 *
@@ -861,7 +861,7 @@ public class KundeGUI extends JFrame {
 	}
 	
 	/**
-	 * Eine eigene Klasse die einen ActionListener für den accountButton implementiert
+	 * Eine eigene Klasse die einen ActionListener fuer den accountButton implementiert
 	 * 
 	 * @author Torres
 	 *
@@ -890,7 +890,7 @@ public class KundeGUI extends JFrame {
 	}
 	
 	/**
-	 * Eine eigene Klasse die einen ActionListener für den logoutButton implementiert
+	 * Eine eigene Klasse die einen ActionListener fuer den logoutButton implementiert
 	 * 
 	 * @author Torres
 	 *
@@ -929,7 +929,7 @@ public class KundeGUI extends JFrame {
 	}
 	
 	/**
-	 * Eine eigene Klasse die einen ActionListener für den abbrechenButton implementiert
+	 * Eine eigene Klasse die einen ActionListener fuer den abbrechenButton implementiert
 	 * 
 	 * @author Torres
 	 *
@@ -1042,7 +1042,7 @@ public class KundeGUI extends JFrame {
 	}
 	
 	/**
-	 * Überschreiben der Methode WindowClosing um bei schließen der LoginGUI die Verbindung zum server trennt.
+	 * ueberschreiben der Methode WindowClosing um bei schließen der LoginGUI die Verbindung zum server trennt.
 	 * 
 	 * @author Torres
 	 *

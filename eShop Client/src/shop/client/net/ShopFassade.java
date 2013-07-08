@@ -34,18 +34,18 @@ import shop.common.valueobjects.WarenkorbArtikel;
 
 /** 
  * Klasse mit Fassade des Shops auf Client-Seite.
- * Die Klasse stellt die von der GUI erwarteten Methoden zur Verfügung
- * und realisiert (transparent für die GUI) die Kommunikation mit dem 
+ * Die Klasse stellt die von der GUI erwarteten Methoden zur Verfuegung
+ * und realisiert (transparent fuer die GUI) die Kommunikation mit dem 
  * Server.
  * Anmerkung: Auf dem Server wird dann die eigentliche, von der lokalen
- * Shopversion bekannte Funktionalität implementiert (z.B. Artikel 
- * einfügen und suchen)
+ * Shopversion bekannte Funktionalitaet implementiert (z.B. Artikel 
+ * einfuegen und suchen)
  * 
  * @author Torres
  */
 public class ShopFassade implements ShopInterface {
 
-	// Datenstrukturen für die Kommunikation
+	// Datenstrukturen fuer die Kommunikation
 	private Socket socket = null;
 	private BufferedReader sin; // server-input stream
 	private PrintStream sout; // server-output stream
@@ -53,10 +53,10 @@ public class ShopFassade implements ShopInterface {
 	
 	/**
 	 * Konstruktor, der die Verbindung zum Server aufbaut (Socket) und dieser
-	 * Grundlage Eingabe- und Ausgabestreams für die Kommunikation mit dem
+	 * Grundlage Eingabe- und Ausgabestreams fuer die Kommunikation mit dem
 	 * Server erzeugt.
 	 * 
-	 * @param host Rechner, auf dem der Server läuft
+	 * @param host Rechner, auf dem der Server laeuft
 	 * @param port Port, auf dem der Server auf Verbindungsanfragen warten
 	 * @throws IOException
 	 */
@@ -81,16 +81,16 @@ public class ShopFassade implements ShopInterface {
 		System.err.println("Verbunden: " + socket.getInetAddress() + ":"
 				+ socket.getPort());	
 		
-		// Begrüßungsmeldung vom Server lesen
+		// Begrueßungsmeldung vom Server lesen
 		String message = sin.readLine();
 		System.out.println(message);
 	}
 
 	@Override
 	public void fuegeArtikelEin(Mitarbeiter mitarbeiter, int artikelnummer, String bezeichnung, double preis, int bestand) throws ArtikelExistiertBereitsException {
-		// Kennzeichen für gewählte Aktion senden
+		// Kennzeichen fuer gewaehlte Aktion senden
 		sout.println("fae");
-		// Parameter für Aktion senden
+		// Parameter fuer Aktion senden
 		sout.println(mitarbeiter.getId());
 		sout.println(artikelnummer);
 		sout.println(bezeichnung);
@@ -112,9 +112,9 @@ public class ShopFassade implements ShopInterface {
 
 @Override
 	public void fuegeMassengutartikelEin(Mitarbeiter mitarbeiter, int artikelnummer, String bezeichnung, double preis, int packungsgroesse, int bestand) throws ArtikelExistiertBereitsException, ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
-		// Kennzeichen für gewählte Aktion senden
+		// Kennzeichen fuer gewaehlte Aktion senden
 		sout.println("fme");
-		// Parameter für Aktion senden
+		// Parameter fuer Aktion senden
 		sout.println(mitarbeiter.getId());
 		sout.println(artikelnummer);
 		sout.println(bezeichnung);
@@ -144,9 +144,9 @@ public class ShopFassade implements ShopInterface {
 	 */
 	@Override
 	public void artikelBestandVeraendern(Mitarbeiter mitarbeiter, int artikelnummer, int anzahl) throws ArtikelExistiertNichtException, ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
-		// Kennzeichen für gewählte Aktion senden
+		// Kennzeichen fuer gewaehlte Aktion senden
 		sout.println("abv");
-		// Parameter für Aktion senden
+		// Parameter fuer Aktion senden
 		sout.println(mitarbeiter.getId());
 		sout.println(artikelnummer);
 		sout.println(anzahl);
@@ -170,7 +170,7 @@ public class ShopFassade implements ShopInterface {
 	public List<Artikel> gibAlleArtikelSortiertNachArtikelnummer() {
 		List<Artikel> liste = new Vector<Artikel>();
 
-		// Kennzeichen für gewählte Aktion senden
+		// Kennzeichen fuer gewaehlte Aktion senden
 		sout.println("gaasna");
 
 		// Antwort vom Server lesen:
@@ -221,7 +221,7 @@ public class ShopFassade implements ShopInterface {
 	public List<Artikel> gibAlleArtikelSortiertNachBezeichnung() {
 		List<Artikel> liste = new Vector<Artikel>();
 
-		// Kennzeichen für gewählte Aktion senden
+		// Kennzeichen fuer gewaehlte Aktion senden
 		sout.println("gaasnb");
 
 		// Antwort vom Server lesen:
@@ -272,9 +272,9 @@ public class ShopFassade implements ShopInterface {
 	public List<Artikel> sucheArtikel(int artikelnummer) {
 		List<Artikel> liste = new Vector<Artikel>();
 
-		// Kennzeichen für gewählte Aktion senden
+		// Kennzeichen fuer gewaehlte Aktion senden
 		sout.println("saa");
-		// Parameter für Aktion senden
+		// Parameter fuer Aktion senden
 		sout.println(artikelnummer);
 
 		// Antwort vom Server lesen:
@@ -325,9 +325,9 @@ public class ShopFassade implements ShopInterface {
 	public List<Artikel> sucheArtikel(String bezeichnung) {
 		List<Artikel> liste = new Vector<Artikel>();
 		
-		// Kennzeichen für gewählte Aktion senden
+		// Kennzeichen fuer gewaehlte Aktion senden
 		sout.println("sab");
-		// Parameter für Aktion senden
+		// Parameter fuer Aktion senden
 		sout.println(bezeichnung);
 
 		// Antwort vom Server lesen:
@@ -380,9 +380,9 @@ public class ShopFassade implements ShopInterface {
 	 */
 	@Override
 	public void artikelBearbeiten(int artikelnummer, double preis, String bezeichnung) throws ArtikelExistiertNichtException {
-		// Kennzeichen für gewählte Aktion senden
+		// Kennzeichen fuer gewaehlte Aktion senden
 		sout.println("ab");
-		// Parameter für Aktion senden
+		// Parameter fuer Aktion senden
 		sout.println(artikelnummer);
 		sout.println(preis);
 		sout.println(bezeichnung);
@@ -405,9 +405,9 @@ public class ShopFassade implements ShopInterface {
 	 */
 	@Override
 	public void entferneArtikel(Mitarbeiter mitarbeiter, int artikelnummer) throws ArtikelExistiertNichtException, IOException {
-		// Kennzeichen für gewählte Aktion senden
+		// Kennzeichen fuer gewaehlte Aktion senden
 		sout.println("ea");
-		// Parameter für Aktion senden
+		// Parameter fuer Aktion senden
 		sout.println(mitarbeiter.getId());
 		sout.println(artikelnummer);
 
@@ -429,7 +429,7 @@ public class ShopFassade implements ShopInterface {
 
 	@Override
 	public void schreibeArtikel() throws IOException {
-		// Kennzeichen für gewählte Aktion senden
+		// Kennzeichen fuer gewaehlte Aktion senden
 		sout.println("scha");
 		// (Parameter sind hier nicht zu senden)
 
@@ -645,9 +645,9 @@ public class ShopFassade implements ShopInterface {
 	public List<WarenkorbArtikel> gibWarenkorb(Kunde kunde) {
 		List<WarenkorbArtikel> liste = new Vector<WarenkorbArtikel>();
 
-		// Kennzeichen für gewählte Aktion senden
+		// Kennzeichen fuer gewaehlte Aktion senden
 		sout.println("gw");
-		// Parameter für Aktion senden
+		// Parameter fuer Aktion senden
 		sout.println(kunde.getId());
 
 		// Antwort vom Server lesen:
@@ -686,10 +686,10 @@ public class ShopFassade implements ShopInterface {
 					artikel = new Artikel(nummer, artikelbezeichnung, preis,
 							bestand);
 				}
-				// Stückzahl von Warenkorb Artikel i einlesen
+				// Stueckzahl von Warenkorb Artikel i einlesen
 				antwort = sin.readLine();
 				int stueckzahl = Integer.parseInt(antwort);
-				// In den Warenkorb hinzufügen
+				// In den Warenkorb hinzufuegen
 				liste.add(new WarenkorbArtikel(artikel, stueckzahl));
 			}
 		} catch (Exception e) {
@@ -701,9 +701,9 @@ public class ShopFassade implements ShopInterface {
 
 	@Override
 	public void inDenWarenkorbLegen(Kunde kunde, int artikelnummer, int stueckzahl) throws ArtikelBestandIstZuKleinException, ArtikelExistiertNichtException, ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
-		// Kennzeichen für gewählte Aktion senden
+		// Kennzeichen fuer gewaehlte Aktion senden
 		sout.println("idwl");
-		// Parameter für Aktion senden
+		// Parameter fuer Aktion senden
 		sout.println(kunde.getId());
 		sout.println(artikelnummer);
 		sout.println(stueckzahl);
@@ -731,9 +731,9 @@ public class ShopFassade implements ShopInterface {
 
 	@Override
 	public void ausDemWarenkorbHerausnehmen(Kunde kunde, int artikelnummer) throws ArtikelExistiertNichtException, ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
-		// Kennzeichen für gewählte Aktion senden
+		// Kennzeichen fuer gewaehlte Aktion senden
 		sout.println("adwh");
-		// Parameter für Aktion senden
+		// Parameter fuer Aktion senden
 		sout.println(kunde.getId());
 		sout.println(artikelnummer);
 
@@ -757,9 +757,9 @@ public class ShopFassade implements ShopInterface {
 
 	@Override
 	public void stueckzahlAendern(Kunde kunde, int warenkorbArtikelnummer, int neueStueckzahl) throws ArtikelBestandIstZuKleinException, ArtikelExistiertNichtException, ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
-		// Kennzeichen für gewählte Aktion senden
+		// Kennzeichen fuer gewaehlte Aktion senden
 		sout.println("sa");
-		// Parameter für Aktion senden
+		// Parameter fuer Aktion senden
 		sout.println(kunde.getId());
 		sout.println(warenkorbArtikelnummer);
 		sout.println(neueStueckzahl);
@@ -789,9 +789,9 @@ public class ShopFassade implements ShopInterface {
 	public Rechnung kaufen(Kunde kunde) throws IOException, WarenkorbIstLeerException {
 		List<WarenkorbArtikel> warenkorb = new Vector<WarenkorbArtikel>();
 
-		// Kennzeichen für gewählte Aktion senden
+		// Kennzeichen fuer gewaehlte Aktion senden
 		sout.println("k");
-		// Parameter für Aktion senden
+		// Parameter fuer Aktion senden
 		sout.println(kunde.getId());
 
 		// Antwort vom Server lesen:
@@ -842,10 +842,10 @@ public class ShopFassade implements ShopInterface {
 						artikel = new Artikel(nummer, artikelbezeichnung,
 								preis, bestand);
 					}
-					// Stückzahl von Warenkorb Artikel i einlesen
+					// Stueckzahl von Warenkorb Artikel i einlesen
 					antwort = sin.readLine();
 					int stueckzahl = Integer.parseInt(antwort);
-					// In den Warenkorb hinzufügen
+					// In den Warenkorb hinzufuegen
 					warenkorb.add(new WarenkorbArtikel(artikel, stueckzahl));
 				}
 			} catch (Exception e) {
@@ -859,9 +859,9 @@ public class ShopFassade implements ShopInterface {
 
 	@Override
 	public void leeren(Kunde kunde) throws ArtikelBestandIstKeineVielfacheDerPackungsgroesseException {
-		// Kennzeichen für gewählte Aktion senden
+		// Kennzeichen fuer gewaehlte Aktion senden
 		sout.println("l");
-		// Parameter für Aktion senden
+		// Parameter fuer Aktion senden
 		sout.println(kunde.getId());
 
 		// Antwort vom Server lesen:
