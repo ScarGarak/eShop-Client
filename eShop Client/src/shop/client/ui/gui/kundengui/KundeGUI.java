@@ -420,8 +420,11 @@ public class KundeGUI extends JFrame {
 	 */
 	private void updateSearchTable(List<Artikel> artikel) {
 		artikelTableModel = new ArtikelTableModel(artikel);
+		int selectedRow = searchTable.getSelectedRow();
 		searchTable.setModel(artikelTableModel);
-		artikelTableModel.fireTableDataChanged();
+		if (selectedRow >= 0 && selectedRow < searchTable.getRowCount()) {
+			searchTable.setRowSelectionInterval(selectedRow, selectedRow);
+		}
 	}
 	
 	/**
@@ -430,8 +433,11 @@ public class KundeGUI extends JFrame {
 	 */
 	private void updateWarenkorbTable(List<WarenkorbArtikel> warenkorbArtikel) {
 		warenkorbArtikelTableModel = new WarenkorbArtikelTableModel(warenkorbArtikel);
+		int selectedRow = warenkorbTable.getSelectedRow();
 		warenkorbTable.setModel(warenkorbArtikelTableModel);
-		warenkorbArtikelTableModel.fireTableDataChanged();
+		if (selectedRow >= 0 && selectedRow < warenkorbTable.getRowCount()) {
+			warenkorbTable.setRowSelectionInterval(selectedRow, selectedRow);
+		}
 	}
 	
 	/**
@@ -738,13 +744,17 @@ public class KundeGUI extends JFrame {
 				detailsPanel.add(auswahlPanel, BorderLayout.EAST);
 				detailsPanel.validate();
 				detailsPanel.repaint();
+				add(detailsPanel, BorderLayout.SOUTH);
 			} else {
 				detailsPanel.remove(bildPanel);
 				detailsPanel.remove(infoPanel);
 				detailsPanel.remove(auswahlPanel);
 				detailsPanel.validate();
 				detailsPanel.repaint();
+				remove(detailsPanel);
 			}
+			validate();
+			repaint();
 			clearErrorMessages();
 		}
 	}
@@ -765,12 +775,9 @@ public class KundeGUI extends JFrame {
 					shop.inDenWarenkorbLegen(kunde, a.getArtikelnummer(), (Integer) menge.getItemAt(menge.getSelectedIndex()));
 					updateArtikelanzahl();
 					updateSearchTable(shop.gibAlleArtikelSortiertNachBezeichnung());
-					remove(detailsPanel);
 					tablePanel.validate();
 					tablePanel.repaint();
 					updateArtikelMenge(a);
-					//revalidate();
-					repaint();
 				} catch (NullPointerException e) {
 					errorMessage.setText("Bitte w\u00e4hlen Sie unten eine g\u00fcltige Menge aus.");
 				} catch (ArtikelBestandIstZuKleinException e) {
@@ -822,20 +829,18 @@ public class KundeGUI extends JFrame {
 	class StueckzahlListener implements ItemListener {
 		@Override
 	    public void itemStateChanged(ItemEvent event) {
-	       if (event.getStateChange() == ItemEvent.SELECTED) {
+	       if (event.getStateChange() == ItemEvent.SELECTED && warenkorbTable.getSelectedRow() != -1) {
 				WarenkorbArtikelTableModel watm = (WarenkorbArtikelTableModel) warenkorbTable.getModel();
 				WarenkorbArtikel wa = watm.getRowValue(warenkorbTable.convertRowIndexToModel(warenkorbTable.getSelectedRow()));
 				try {
 					if (stueckzahl.getSelectedIndex() != -1) {
-						shop.stueckzahlAendern(kunde, wa.getArtikel().getArtikelnummer(), (Integer) stueckzahl.getItemAt(stueckzahl.getSelectedIndex()));
-						updateGesamtpreis();
-						tablePanel.validate();
-						tablePanel.repaint();
-						details.setText("");
-						details.append("St\u00fcckzahl: " + wa.getStueckzahl() + "\n");
-						details.append("Preis: " + String.format("%.2f ", wa.getArtikel().getPreis()) + Currency.getInstance(Locale.GERMANY) + "\n");
-						detailsPanel.validate();
-						detailsPanel.repaint();
+						if (wa.getStueckzahl() != (Integer) stueckzahl.getItemAt(stueckzahl.getSelectedIndex())) {
+							shop.stueckzahlAendern(kunde, wa.getArtikel().getArtikelnummer(), (Integer) stueckzahl.getItemAt(stueckzahl.getSelectedIndex()));
+							updateWarenkorbTable(shop.gibWarenkorb(kunde));
+							updateGesamtpreis();
+							tablePanel.validate();
+							tablePanel.repaint();
+						}
 					}
 				} catch (ArtikelBestandIstZuKleinException e) {
 					errorMessage.setText("Der Bestand dieses Artikels ist zu klein oder leer.");
@@ -888,9 +893,27 @@ public class KundeGUI extends JFrame {
 		public void actionPerformed(ActionEvent ae) {
 			if (ae.getSource().equals(logoutButton)) {
 				try {
-					shop.disconnect();
-					dispose();
-					new LogInGUI(host, port);
+					if (((JWarenkorbButton) warenkorbButton).getArtikelanzahl() != 0) {
+						if (JOptionPane.showConfirmDialog(null,
+								"Sind Sie sich sicher dass Sie sich Abmelden wollen?\n" +
+								"Sie werden alle Artikel die sich in ihrem Warenkorb befinden verlieren.", "Abmelden",
+				                JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {		
+								try {
+									shop.leeren(kunde);
+									shop.disconnect();
+									dispose();
+									new LogInGUI(host, port);
+								} catch (ArtikelBestandIstKeineVielfacheDerPackungsgroesseException e) {
+									JOptionPane.showConfirmDialog(null,
+											"Der Bestand eines Artikels ist keine Vielfache der Packungsgr\u00f6\u00dfe.", "Abmelden",
+							                JOptionPane.PLAIN_MESSAGE);
+								}
+						}
+					} else {
+						shop.disconnect();
+						dispose();
+						new LogInGUI(host, port);
+					}
 				} catch (IOException e) {
 					JOptionPane.showConfirmDialog(null, "IOException: " + e.getMessage(), "eShop", JOptionPane.PLAIN_MESSAGE);
 				}
@@ -995,8 +1018,7 @@ public class KundeGUI extends JFrame {
 					try {
 						shop.kundenBearbeiten(kunde.getId(), kunde.getPasswort(), kunde.getName(), kunde.getStrasse(), kunde.getPlz(), kunde.getWohnort(), kunde.getBlockiert());
 					} catch (KundeExistiertNichtException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						JOptionPane.showConfirmDialog(null, "Der Kunde exisitiert nicht.", "Account bearbeiten", JOptionPane.PLAIN_MESSAGE);
 					}
 					kaufenButton.setEnabled(true);
 					leerenButton.setEnabled(true);
