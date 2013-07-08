@@ -18,6 +18,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 @SuppressWarnings("serial")
 public class MitarbeiterTableCellRenderer extends DefaultTableCellRenderer {
 
+	/**
+	 * Konstruktor von MitarbeiterTableCellRenderer
+	 * @param table
+	 */
 	public MitarbeiterTableCellRenderer(JTable table) {
 		DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer();
         renderer.setHorizontalAlignment(JLabel.LEFT);

@@ -14,7 +14,7 @@ public class LogTableModel extends AbstractTableModel{
 	private String[] logDatei;
 	
 	/**
-	 * Konstruktor
+	 * Konstruktor von LogTableModel
 	 * @param logDatei
 	 */
 	public LogTableModel(String logDatei) {

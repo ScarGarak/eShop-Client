@@ -1840,7 +1840,7 @@ public class MitarbeiterGUI extends JFrame {
 				mitarbeiterNameInput.setText(mitarbeiter.getName());
 				remove(tabbedPane);
 				add(accountPanel, BorderLayout.CENTER);
-				revalidate();
+				validate();
 				repaint();
 			}else if (e.getSource().equals(accountSpeichernButton)){
 				//Clear Error Messages
@@ -1904,7 +1904,7 @@ public class MitarbeiterGUI extends JFrame {
 					}
 					remove(accountPanel);
 					add(tabbedPane, BorderLayout.CENTER);
-					revalidate();
+					validate();
 					repaint();
 
 					//Clear Error Messages
@@ -1924,7 +1924,7 @@ public class MitarbeiterGUI extends JFrame {
 			}else if (e.getSource().equals(accountAbbrechenButton)){
 				remove(accountPanel);
 				add(tabbedPane, BorderLayout.CENTER);
-				revalidate();
+				validate();
 				repaint();
 			}else if (e.getSource().equals(accountSpeichernButton)){
 				//Clear Error Messages
@@ -1988,7 +1988,7 @@ public class MitarbeiterGUI extends JFrame {
 					}
 					remove(accountPanel);
 					add(tabbedPane, BorderLayout.CENTER);
-					revalidate();
+					validate();
 					repaint();
 
 					//Clear Error Messages
@@ -2008,7 +2008,7 @@ public class MitarbeiterGUI extends JFrame {
 			}else if (e.getSource().equals(accountAbbrechenButton)){
 				remove(accountPanel);
 				add(tabbedPane, BorderLayout.CENTER);
-				revalidate();
+				validate();
 				repaint();
 				
 				//Clear Error Messages

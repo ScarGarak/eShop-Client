@@ -15,10 +15,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 @SuppressWarnings("serial")
 public class KundenTableCellRenderer extends DefaultTableCellRenderer {
 	
-	public KundenTableCellRenderer(){
-		
-	}
-	
 	/**
 	 * Diese Methode veraendert die Hintergrund- und Textfarbe. Per default setzt er die Hintergrundfarbe auf Wei§
 	 * und die Textfarbe auf Schwarz. Die Kolonne 6 wird Rot gezeichnet, wenn der gegebene Kunde blockiert ist.

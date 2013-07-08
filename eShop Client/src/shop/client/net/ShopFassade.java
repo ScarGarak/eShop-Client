@@ -495,6 +495,10 @@ public class ShopFassade implements ShopInterface {
 		}
 	}
 
+	/**
+	 * Diese Methode wird zum Suchen von Mitarbeitern genutzt.
+	 * Sie sendet und empfaengt Informationen gemaess des Protokolls.
+	 */
 	@Override
 	public Mitarbeiter sucheMitarbeiter(int id)
 			throws MitarbeiterExistiertNichtException {
@@ -572,12 +576,20 @@ public class ShopFassade implements ShopInterface {
 		return mitarbeiterListe;
 	}
 
+	/**
+	 * Diese Methode wird zum Loeschen von Mitarbeitern genutzt
+	 * Sie sendet Informationen gemaess des Protokolls.
+	 */
 	@Override
 	public void mitarbeiterLoeschen(Mitarbeiter m) {
 		sout.println("ml");
 		sout.println(m.getId());
 	}
 
+	/**
+	 * Diese Methode sendet den Befehl zum speichern der Mitarbeiterliste auf dem Server.
+	 * Sie sendet Informationen gemaess des Protokolls.
+	 */
 	@Override
 	public void schreibeMitarbeiter() throws IOException {
 		sout.println("sm");
@@ -998,9 +1010,23 @@ public class ShopFassade implements ShopInterface {
 		return p;
 	}
 
+	/**
+	 * Diese Methode sendet den Befehl zum speichern der Ereignisse auf dem Server.
+	 * Sie sendet Informationen gemaess des Protokolls.
+	 */
 	@Override
 	public void schreibeEreignisse() throws IOException {
 		sout.println("se");
+		String antwort = "?";
+		try{
+			antwort = sin.readLine();
+		}catch(Exception e){
+			System.err.println(e.getMessage());
+		}
+		
+		if(antwort != null && antwort.equals("IOException")){
+			throw new IOException("Fehler beim schreiben der Ereignisse!");
+		}
 	}
 
 	/**
@@ -1068,7 +1094,7 @@ public class ShopFassade implements ShopInterface {
 		try{
 			antwort = sin.readLine();
 			if(antwort.equals("MitarbeiterExistiertBereits")){
-				throw new MitarbeiterExistiertBereitsException(new Mitarbeiter(-1, "?", "?", "?", MitarbeiterFunktion.Mitarbeiter, 0), " - in ShopFassade (Einfugen von Mitarbeiter)!");
+				throw new MitarbeiterExistiertBereitsException(" - in ShopFassade (Einfuegen von Mitarbeiter)!");
 			}else if(antwort.equals("UsernameExistiertBereits")){
 				throw new UsernameExistiertBereitsException(username, " - in ShopFassade (Einfugen von Mitarbeiter)!");
 			}

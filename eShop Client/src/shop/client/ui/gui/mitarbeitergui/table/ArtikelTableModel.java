@@ -20,7 +20,7 @@ public class ArtikelTableModel extends AbstractTableModel {
 	private List<Artikel> artikelListe;
 	
 	/**
-	 * Konstruktor
+	 * Konstruktor von ArtikelTableModel
 	 * @param artikelListe
 	 */
 	public ArtikelTableModel(List<Artikel> artikelListe) {
