@@ -18,7 +18,7 @@ public class KundenTableModel extends AbstractTableModel{
 	private List<Kunde> kundenListe;
 	
 	/**
-	 * Konstruktor
+	 * Konstruktor von KundenTableModel
 	 * @param kundenListe
 	 */
 	public KundenTableModel(List<Kunde> kundenListe) {

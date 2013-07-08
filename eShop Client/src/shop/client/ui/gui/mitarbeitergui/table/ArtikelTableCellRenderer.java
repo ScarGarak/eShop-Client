@@ -18,6 +18,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 @SuppressWarnings("serial")
 public class ArtikelTableCellRenderer extends DefaultTableCellRenderer{
 	
+	/**
+	 * Konstruktor von ArtikelTableCellRenderer
+	 * @param table
+	 */
 	public ArtikelTableCellRenderer(JTable table) {
 		DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer();
         renderer.setHorizontalAlignment(JLabel.LEFT);

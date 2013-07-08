@@ -12,12 +12,15 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.InetAddress;
 
@@ -42,14 +45,16 @@ import shop.common.valueobjects.Person;
 import shop.common.valueobjects.PersonTyp;
 
 /**
- * @author Mort
+ * Klasse die LoginGUI auf der Clientseite zur verfügung stellt
+ * 
+ * @author Thummerer
  *
  */
 
 @SuppressWarnings("serial")
 public class LogInGUI extends JFrame implements ActionListener, KeyListener, MouseListener {
 	
-	public static final int DEFAULT_PORT = 6789;
+	public static final int DEFAULT_PORT = 6790;
 	
 	private ShopInterface shop;
 	private Person p;
@@ -58,21 +63,21 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	private static String host;
 	private static int port;
 	
-	//	GridBagLayout Variablen
-	private int gridx, gridy, gridwidth, gridheight, fill, anchor, ipadx, ipady;
-    private double weightx, weighty;
-    private Insets insets;
-    
-    private int panBreite;
+	private int panBreite;
     private int ixr;
     private int ixl;
+    
+    
 	
 //	frame objekte
        	 
 	private JPanel frameHeader = new JPanel() {
+		
+		/**
+		 * Ueberschreibt die Paint Methode um das Logo in der GUI zu zeichnen
+		 */
 		@Override
 		public void paint(Graphics g) {
-//		    Dimension d = this.getPreferredSize();
 		    String header = new String("eShop");
 		    int fontSize = 110;
 		    Font f = new Font("Verdana", Font.PLAIN, fontSize);
@@ -126,22 +131,16 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	private JLabel backLab = new JLabel("<html><u>zur\u00fcck</u></html>");
 	private JLabel regLab = new JLabel("<html><u>Registrieren</u></html>");
 	private JLabel changeLab = new JLabel("<html><u>\u00e4ndern</u></html>");
-	private JTextField gebDatField = new JTextField("");
 	private JTextField nameField = new JTextField("");
 	private JTextField streetField = new JTextField("");
 	private JTextField zipField = new JTextField("");
 	private JTextField cityField = new JTextField("");
 	private JTextField pwField = new JTextField("");
 	private JTextField wpwField = new JTextField("");
-	
-//	forget objekte
-	private JTextField opwField = new JTextField();
-	
+		
 	public LogInGUI(String host, int port) throws IOException {
 		super("eShop - LogIn");
 
-		// die Bib-Verwaltung erledigt die Aufgaben, 
-		// die nichts mit Ein-/Ausgabe zu tun haben
 		shop = new ShopFassade(host, port);
 		
 		initialize();
@@ -154,7 +153,8 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		
 		setLayout(new GridBagLayout());
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		addWindowListener(new WindowCloser());
 		
 		
 //		int xy = ;
@@ -177,6 +177,21 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		setVisible(true);
 	}
 	
+	/**
+	 * Initialisierung der constraints Variablen für das GridBagLayout. Vorbelegung der Variablen mit standard Werten.
+	 * @param component
+	 * @param gridx
+	 * @param gridy
+	 * @param gridwidth
+	 * @param gridheight
+	 * @param fill
+	 * @param weightx
+	 * @param weighty
+	 * @param anchor
+	 * @param insets
+	 * @param ipadx
+	 * @param ipady
+	 */
 	private void addGB(Component component, int gridx, int gridy, int gridwidth, int gridheight,
             int fill, double weightx, double weighty, int anchor, Insets insets,
             int ipadx, int ipady) {
@@ -199,6 +214,9 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
         addGB(component, gridx, gridy, width, 1, GridBagConstraints.BOTH, 0.0, 0.0, CENTER, new Insets(5, 5, 5, 5), ipadx, ipady);
     }
 	
+	/**
+	 * Zeichnen der betroffenen Panels bei auswahl von loginVergessen
+	 */
 	private void loginVergessen(){
 		pwField.setBackground(Color.WHITE);
 		wpwField.setBackground(Color.WHITE);
@@ -251,13 +269,22 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 					wpwField.setBackground(new Color(250,240,230));
 				}
 			}else{
-				//TODO
-				System.err.println("Kein Account mit diesen Angaben gefunden!");
+				JOptionPane.showConfirmDialog(null, "Kein Account mit diesen Angaben gefunden!", "Error", JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE);
+				nameField.setBackground(new Color(250,240,230));
+				streetField.setBackground(new Color(250,240,230));
+				zipField.setBackground(new Color(250,240,230));
+				cityField.setBackground(new Color(250,240,230));
+				pwField.setBackground(new Color(250,240,230));
+				wpwField.setBackground(new Color(250,240,230));
 			}
 		}
 		
 	}
 	
+	
+	/**
+	 * Ueberpruefung der Eingaben bei Registrierung. Bei korrekter Eingabe erfolgt ein aufruf der zum Registrieren nötigen Methoden.
+	 */
 	private void registrierung() {
 		usernameField.setBackground(Color.WHITE);
 		pwField.setBackground(Color.WHITE);
@@ -287,7 +314,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 				!cityField.getText().equals("")) {
 			String strasse = streetField.getText();
 			String name = nameField.getText();
-			String wPasswort = wpwField.getText();
+//			String wPasswort = wpwField.getText();
 			String passwort = pwField.getText();
 			String strPlz = zipField.getText();
 			int plz = Integer.parseInt(strPlz);
@@ -345,6 +372,9 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		rechtsPan.add(rechts5);
 	}
 	
+	/**
+	 * Zeichnen der betroffenen Panels für den Login vorgang.
+	 */
 	private void zeichneLogin() {
 //		berechnung von ipadx in abhängigkeit zum Label
 		panBreite = 1;
@@ -358,11 +388,11 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		cityField.setBackground(Color.WHITE);
 		
 //		hinzufügen der objekte zum frame
-		addGB(frameHeader, gridx = 1, gridy = 1, gridwidth = 3, ipadx = 400, ipady = 150);
-		addGB(linksPan, gridx = 1, gridy = 2, gridwidth = 1, ipadx = 150 - ixl, ipady = 0);
-		addGB(mittePan, gridx = 2, gridy = 2, gridwidth = 1, ipadx = 0, ipady = 0);
-		addGB(rechtsPan, gridx = 3, gridy = 2, gridwidth = 1, ipadx = 150 - ixr, ipady = 0);
-		addGB(untenPan, gridx = 1, gridy = 3, gridwidth = 3, ipadx = 300, ipady = 0);
+		addGB(frameHeader, 1, 1, 3, 400, 150);
+		addGB(linksPan, 1, 2, 1, 150 - ixl, 0);
+		addGB(mittePan, 2, 2, 1, 0, 0);
+		addGB(rechtsPan, 3, 2, 1, 150 - ixr, 0);
+		addGB(untenPan, 1, 3, 3, 300, 0);
 		
 		linksPan.removeAll();
 		mittePan.removeAll();
@@ -382,7 +412,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		mittePan.setLayout(new GridLayout(5, 1, 0, 2));
 		mittePan.add(usernameLabel);
 		mittePan.add(usernameField);
-		usernameField.enable();
+		usernameField.setEditable(true);
 		usernameField.requestFocus();
 		mittePan.add(passwordLabel);
 		mittePan.add(passwordField);
@@ -416,17 +446,14 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		cityField.setText("");
 		
 		JLabel nameLab = new JLabel("Name");
-		JLabel gebDatLab = new JLabel("Geburtsdatum");
 		JLabel streetLab = new JLabel("Strasse/HNr.");
 		JLabel zipLab = new JLabel("Postleitzahl/zip");
 		JLabel cityLab = new JLabel("Stadt");
 		JLabel wpwLab = new JLabel("Passwort wiederholen");
-		
-		JLabel opwLab =new JLabel("altes Passwort");
-		
-		addGB(linksPan, gridx = 1, gridy = 2, gridwidth = 1, ipadx = 100 - ixl, ipady = 20);
-		addGB(mittePan, gridx = 2, gridy = 2, gridwidth = 1, ipadx = 100, ipady = 20);
-		addGB(rechtsPan, gridx = 3, gridy = 2, gridwidth = 1, ipadx = 100 - ixr, ipady = 20);
+				
+		addGB(linksPan, 1, 2, 1, 100 - ixl, 20);
+		addGB(mittePan, 2, 2, 1, 100, 20);
+		addGB(rechtsPan, 3, 2, 1, 100 - ixr, 20);
 		
 		linksPan.removeAll();
 		linksPan.setLayout(new GridLayout(6, 1));
@@ -452,7 +479,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		mittePan.add(usernameField);
 		mittePan.add(new JLabel (""));
 		mittePan.add(new JLabel (""));
-		usernameField.disable();
+		usernameField.setEditable(false);
 		mittePan.repaint();
 		mittePan.validate();
 		
@@ -509,15 +536,14 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 //		wpwField.enable();
 		
 		JLabel nameLab = new JLabel("Name");
-		JLabel gebDatLab = new JLabel("Geburtsdatum");
 		JLabel streetLab = new JLabel("Strasse/HNr.");
 		JLabel zipLab = new JLabel("Postleitzahl/zip");
 		JLabel cityLab = new JLabel("Stadt");
 		JLabel wpwLab = new JLabel("Passwort wiederholen");
 		
-		addGB(linksPan, gridx = 1, gridy = 2, gridwidth = 1, ipadx = 100 - ixl, ipady = 20);
-		addGB(mittePan, gridx = 2, gridy = 2, gridwidth = 1, ipadx = 100, ipady = 20);
-		addGB(rechtsPan, gridx = 3, gridy = 2, gridwidth = 1, ipadx = 100 - ixr, ipady = 20);
+		addGB(linksPan, 1, 2, 1, 100 - ixl, 20);
+		addGB(mittePan, 2, 2, 1, 100, 20);
+		addGB(rechtsPan, 3, 2, 1, 100 - ixr, 20);
 		
 		linksPan.removeAll();
 		linksPan.setLayout(new GridLayout(6, 1));
@@ -563,6 +589,10 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		
 	}
 	
+	/**
+	 * Aufruf der Methode für den Login und anschließendes öffnen der jeweiligen GUI
+	 * abhängig davon ob sich ein Mitarbeiter oder Kunde einloggt.
+	 */
 	private void anmeldeVorgang() {
 		try {
 			logIn();
@@ -573,7 +603,6 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		if (p != null) {
 			if (p.getPersonTyp().equals(PersonTyp.Mitarbeiter)) {
 				try {
-//					dispose();
 					if(!p.getBlockiert()){
 						this.setVisible(false);
 						new MitarbeiterGUI((Mitarbeiter) p, shop, host, port);
@@ -584,7 +613,6 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 				}
 			} else {
 				try {
-//					dispose();
 					if(!p.getBlockiert()){
 						this.setVisible(false);
 						new KundeGUI(shop, (Kunde) p, host, port);
@@ -597,6 +625,10 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		}
 	}
 	
+	/**
+	 * Prüfung der Eingaben des Login Dialoges mit entsprechenden reaktionen auf falsche/keine Eingaben.
+	 * @throws IOException
+	 */
 	private void logIn() throws IOException {
 		if (!usernameField.getText().equals("")) {
 			String username = usernameField.getText();
@@ -621,8 +653,6 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 				passwordField.setBackground(new Color(250,240,230));
 				passwordField.requestFocus();
 				usernameField.setBackground(Color.WHITE);
-//				usernameField.repaint();
-//				usernameField.validate();
 				rechtsPan.removeAll();
 				zeichneErrorPw();
 				rechtsPan.repaint();
@@ -646,8 +676,6 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 				usernameField.setBackground(new Color(250,240,230));
 				usernameField.requestFocus();
 				passwordField.setBackground(Color.WHITE);
-//				passwordField.repaint();
-//				passwordField.validate();
 				rechtsPan.removeAll();
 				zeichneErrorUn();
 				rechtsPan.repaint();
@@ -681,6 +709,9 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 
 	}
 
+	/**
+	 * Aufruf der entsprechenden Methoden wenn Label in der LoginGUI angeklickt werden.
+	 */
 	@Override
 	public void mouseReleased(MouseEvent mr) {
 		// TODO Auto-generated method stub
@@ -704,9 +735,6 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	
 	public void keyPressed(KeyEvent kp) {
 		key = kp.getKeyCode();
-//		System.out.println("key in pressed: " + key);
-//		System.out.println(usernameField.getWidth());
-//		System.out.println(usernameField.getHeight());
 	}
 
 	public void keyReleased(KeyEvent arg0) {
@@ -715,9 +743,6 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	}
 	
 	public void keyTyped (KeyEvent ke) {
-//		if (usernameField.getText().equals("Usernamen eingeben!")) {
-//			usernameField.setText("");
-//		}
 		if (ke.getSource() == nameField) {
 			if (nameField.getText().equals("eingaben prüfen!")) {
 				nameField.setText("");
@@ -786,6 +811,31 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Überschreiben der Methode WindowClosing um bei schließen der LoginGUI die Verbindung zum server trennt.
+	 * 
+	 * @author Thummerer
+	 *
+	 */
+	class WindowCloser extends WindowAdapter {
+		@Override
+		public void windowClosing(WindowEvent we) {
+			
+			Window w = we.getWindow();
+			w.setVisible(false);
+			
+			try {
+				shop.disconnect();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+				w.dispose();
+				System.exit(0);
 		}
 	}
 

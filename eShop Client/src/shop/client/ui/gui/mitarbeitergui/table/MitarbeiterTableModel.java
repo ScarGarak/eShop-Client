@@ -21,7 +21,7 @@ public class MitarbeiterTableModel extends AbstractTableModel{
 	private int columnCount;
 	
 	/**
-	 * Konstruktor
+	 * Konstruktor von MitarbeiterTableModel
 	 * @param mitarbeiterListe
 	 * @param mf
 	 */

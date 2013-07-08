@@ -147,7 +147,7 @@ public class MitarbeiterGUI extends JFrame {
 	private JTextField mitarbeiterUsernameInput;
 	private JTextField mitarbeiterNameInput;
 	private JTextField mitarbeiterGehaltInput;
-	private JComboBox mitarbeiterFunktionInput;
+	private JComboBox<MitarbeiterFunktion> mitarbeiterFunktionInput;
 	
 		//Mitarbeiter Footer
 	private JPanel mitarbeiterFooterWrapper;
@@ -1008,7 +1008,7 @@ public class MitarbeiterGUI extends JFrame {
 		mitarbeiterUsernameInput = new JTextField(10);
 		mitarbeiterNameInput = new JTextField(10);
 		mitarbeiterGehaltInput = new JTextField(10);
-		mitarbeiterFunktionInput = new JComboBox();
+		mitarbeiterFunktionInput = new JComboBox<MitarbeiterFunktion>();
 		MitarbeiterFunktion[] funktionWerte = MitarbeiterFunktion.values();
 		for(MitarbeiterFunktion mf : funktionWerte){
 			mitarbeiterFunktionInput.addItem(mf);
@@ -1840,7 +1840,7 @@ public class MitarbeiterGUI extends JFrame {
 				mitarbeiterNameInput.setText(mitarbeiter.getName());
 				remove(tabbedPane);
 				add(accountPanel, BorderLayout.CENTER);
-				revalidate();
+				validate();
 				repaint();
 			}else if (e.getSource().equals(accountSpeichernButton)){
 				//Clear Error Messages
@@ -1904,7 +1904,7 @@ public class MitarbeiterGUI extends JFrame {
 					}
 					remove(accountPanel);
 					add(tabbedPane, BorderLayout.CENTER);
-					revalidate();
+					validate();
 					repaint();
 
 					//Clear Error Messages
@@ -1924,7 +1924,7 @@ public class MitarbeiterGUI extends JFrame {
 			}else if (e.getSource().equals(accountAbbrechenButton)){
 				remove(accountPanel);
 				add(tabbedPane, BorderLayout.CENTER);
-				revalidate();
+				validate();
 				repaint();
 			}else if (e.getSource().equals(accountSpeichernButton)){
 				//Clear Error Messages
@@ -1988,7 +1988,7 @@ public class MitarbeiterGUI extends JFrame {
 					}
 					remove(accountPanel);
 					add(tabbedPane, BorderLayout.CENTER);
-					revalidate();
+					validate();
 					repaint();
 
 					//Clear Error Messages
@@ -2008,7 +2008,7 @@ public class MitarbeiterGUI extends JFrame {
 			}else if (e.getSource().equals(accountAbbrechenButton)){
 				remove(accountPanel);
 				add(tabbedPane, BorderLayout.CENTER);
-				revalidate();
+				validate();
 				repaint();
 				
 				//Clear Error Messages

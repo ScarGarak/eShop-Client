@@ -56,6 +56,14 @@ import shop.common.valueobjects.Massengutartikel;
 import shop.common.valueobjects.Rechnung;
 import shop.common.valueobjects.WarenkorbArtikel;
 
+/**
+ * Grafische Oberfläche (GUI) die dem Kunden alle benötigten
+ * Interaktionsmglichkeiten zur verfügung stellt um den eShop
+ * nutzen zu können.
+ * 
+ * @author Torres
+ *
+ */
 @SuppressWarnings("serial")
 public class KundeGUI extends JFrame {
 	
@@ -115,9 +123,9 @@ public class KundeGUI extends JFrame {
 	private JLabel bezeichnung;
 	private JTextArea details;
 	private JPanel auswahlPanel;
-	private JComboBox menge;
+	private JComboBox<Integer> menge;
 	private JPanel mengePanel;
-	private JComboBox stueckzahl;
+	private JComboBox<Integer> stueckzahl;
 	private JPanel stueckzahlPanel;
 	private JTextArea errorMessage;
 	private JButton inDenWarenkorbButton;
@@ -161,7 +169,10 @@ public class KundeGUI extends JFrame {
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
-
+	
+	/**
+	 * Methode die alle Header Objekte implementiert, diesen Events hinzufügt und dies an den Header anfügt.
+	 */
 	private void createHeader() {
 		accountButton = new JAccountButton(kunde.getName());
 		accountButton.addActionListener(new AccountButtonListener());
@@ -206,6 +217,9 @@ public class KundeGUI extends JFrame {
 		headerPanel.add(warenkorbPanel, BorderLayout.EAST);
 	}
 	
+	/**
+	 * Methode die alle Account Objekte implementiert, diesen Events hinzufügt und dies an das Account Panel anfügt.
+	 */
 	public void createAccount() {
 		name = new JTextField();
 		JTextField username = new JTextField();
@@ -289,6 +303,9 @@ public class KundeGUI extends JFrame {
 		accountPanel.add(buttonPanel);
 	}
 	
+	/**
+	 * Methode die eine neue JTable kreiert, dieser funktionen hinzufuegt und zum TablePanel hinzufügt.
+	 */
 	private void createTableSearch() {
 		searchTable = new JTable(new ArtikelTableModel(shop.gibAlleArtikelSortiertNachBezeichnung()));
 		searchTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -305,6 +322,9 @@ public class KundeGUI extends JFrame {
 		tablePanel.add(searchScrollPane, BorderLayout.CENTER);
 	}
 	
+	/**
+	 * Methode die die alle Warenkorb Objekte kreiert und der Warenkorb ansich hinzufügt.
+	 */
 	private void createTableWarenkorb() {
 		warenkorbTable = new JTable(new WarenkorbArtikelTableModel(shop.gibWarenkorb(kunde)));
 		warenkorbTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -339,6 +359,9 @@ public class KundeGUI extends JFrame {
 		rechnungPanel.add(rechnungPane, BorderLayout.CENTER);
 	}
 	
+	/**
+	 * Methode die alle footer Objekte erstellt und hinzufügt.
+	 */
 	private void createDetails() {
 		bildPanel = new JImagePanel(null);
 		bezeichnung = new JLabel();
@@ -361,7 +384,7 @@ public class KundeGUI extends JFrame {
 		errorMessage.setEditable(false);
 		errorMessage.setOpaque(false);
 		errorMessage.setPreferredSize(new Dimension(150, 50));
-		menge = new JComboBox();
+		menge = new JComboBox<Integer>();
 		mengePanel = new JPanel();
 		mengePanel.setLayout(new GridLayout(1,2));
 		mengePanel.add(new JLabel("  Menge:"));
@@ -371,7 +394,7 @@ public class KundeGUI extends JFrame {
 		stueckzahlLabel.setLineWrap(true);
 		stueckzahlLabel.setOpaque(false);
 		stueckzahlLabel.setPreferredSize(new Dimension(60, 20));
-		stueckzahl = new JComboBox();
+		stueckzahl = new JComboBox<Integer>();
 		stueckzahl.addItemListener(new StueckzahlListener());
 		stueckzahlPanel = new JPanel();
 		stueckzahlPanel.setLayout(new GridLayout(1,2));
@@ -391,18 +414,39 @@ public class KundeGUI extends JFrame {
 		detailsPanel.setLayout(new BorderLayout());
 	}
 	
+	/**
+	 * Methode welche die searchTable updated.
+	 * @param artikel Artikel die an die searchTable übergeben werden
+	 */
 	private void updateSearchTable(List<Artikel> artikel) {
 		artikelTableModel = new ArtikelTableModel(artikel);
+		int selectedRow = searchTable.getSelectedRow();
 		searchTable.setModel(artikelTableModel);
-		artikelTableModel.fireTableDataChanged();
+		if (selectedRow >= 0 && selectedRow < searchTable.getRowCount()) {
+			searchTable.setRowSelectionInterval(selectedRow, selectedRow);
+		}
 	}
 	
+	/**
+	 * Methode welche die warenkorbTable updated.
+	 * @param warenkorbArtikel die an die warenkorbTable übergeben werden
+	 */
 	private void updateWarenkorbTable(List<WarenkorbArtikel> warenkorbArtikel) {
 		warenkorbArtikelTableModel = new WarenkorbArtikelTableModel(warenkorbArtikel);
+		int selectedRow = warenkorbTable.getSelectedRow();
 		warenkorbTable.setModel(warenkorbArtikelTableModel);
-		warenkorbArtikelTableModel.fireTableDataChanged();
+		if (selectedRow >= 0 && selectedRow < warenkorbTable.getRowCount()) {
+			warenkorbTable.setRowSelectionInterval(selectedRow, selectedRow);
+		}
 	}
 	
+	/**
+	 * Methode welche die Zellen der Spalten anpasst
+	 * 
+	 * @param renderer
+	 * @param table
+	 * @param alignment
+	 */
 	private void setTableCellAlignment(DefaultTableCellRenderer renderer, JTable table, int alignment) {
 		renderer.setHorizontalAlignment(alignment);
 		for (int i = 0; i < table.getColumnCount(); i++) {
@@ -427,6 +471,12 @@ public class KundeGUI extends JFrame {
 		return summe;
 	}
 	
+	/**
+	 * Methode zum updaten der ArtikelMenge in abhängigkeit davon ob es sich um einen
+	 * Massengutartikel handelt oder nicht.
+	 * 
+	 * @param a Artikel dessen Anzahl angepasst werden soll
+	 */
 	private void updateArtikelMenge(Artikel a) {
 		menge.removeAllItems();
 		for (int i = 1; i <= a.getBestand(); i++) {
@@ -440,6 +490,12 @@ public class KundeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Methode zum updaten der ArtikelStueckzahl im Warenkorb in abhängigkeit davon ob es sich um einen
+	 * Massengutartikel handelt oder nicht.
+	 * 
+	 * @param wa Warenkorb in dem die veränderung vorgenommen werden solls
+	 */
 	private void updateWarenkorbArtikelStueckzahl(WarenkorbArtikel wa) {
 		stueckzahl.removeAllItems();
 		for (int i = 0, j = 1; j <= wa.getArtikel().getBestand() + wa.getStueckzahl(); j++) {
@@ -456,6 +512,9 @@ public class KundeGUI extends JFrame {
 		stueckzahl.getModel().setSelectedItem(wa.getStueckzahl());
 	}
 	
+	/**
+	 * Methode zur Anzeige der aktuellen Anzahl der Artikel im Warenkorb
+	 */
 	private void updateArtikelanzahl() {
 		((JWarenkorbButton) warenkorbButton).setArtikelanzahl(shop.gibWarenkorb(kunde).size());
 		if (((JWarenkorbButton) warenkorbButton).getArtikelanzahl() == 0) {
@@ -468,10 +527,16 @@ public class KundeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Methode die den Gesamtpreis der Artikel im Warenkorb aktualisiert
+	 */
 	private void updateGesamtpreis() {
 		gesamtpreis.setText(String.format("Gesamtpreis: %.2f ", getGesamtpreis(kunde)) + Currency.getInstance(Locale.GERMANY));
 	}
 	
+	/**
+	 * Methode zum zurücksetzen von errorMessages
+	 */
 	private void clearErrorMessages() {
 		errorMessage.setText("");
 		errorName.setText("");
@@ -488,6 +553,12 @@ public class KundeGUI extends JFrame {
 		confirmPasswort.setBackground(Color.WHITE);
 	}
 	
+	/**
+	 * Eine eigene Klasse die einen ActionListener für den searchButton & das searchField implementiert
+	 * 
+	 * @author Torres
+	 *
+	 */
 	class SearchListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
@@ -517,6 +588,13 @@ public class KundeGUI extends JFrame {
 		}
 	}
 	
+	
+	/**
+	 * Eine eigene Klasse die einen ActionListener für den warenkorbButton implementiert
+	 * 
+	 * @author Torres
+	 *
+	 */
 	class WarenkorbListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
@@ -545,6 +623,12 @@ public class KundeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Eine eigene Klasse die einen ActionListener für den kaufenButton implementiert
+	 * 
+	 * @author Torres
+	 *
+	 */
 	class KaufenListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
@@ -576,6 +660,12 @@ public class KundeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Eine eigene Klasse die einen ActionListener für den leerenButton implementiert
+	 * 
+	 * @author Torres
+	 *
+	 */
 	class LeerenListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
@@ -608,6 +698,12 @@ public class KundeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Eine eigene Klasse die einen ListSelectionListener für die searchTable implementiert
+	 * 
+	 * @author Torres
+	 *
+	 */
 	class SelectionDetailListener implements ListSelectionListener {
 		@Override
 		public void valueChanged(ListSelectionEvent lse) {
@@ -648,17 +744,27 @@ public class KundeGUI extends JFrame {
 				detailsPanel.add(auswahlPanel, BorderLayout.EAST);
 				detailsPanel.validate();
 				detailsPanel.repaint();
+				add(detailsPanel, BorderLayout.SOUTH);
 			} else {
 				detailsPanel.remove(bildPanel);
 				detailsPanel.remove(infoPanel);
 				detailsPanel.remove(auswahlPanel);
 				detailsPanel.validate();
 				detailsPanel.repaint();
+				remove(detailsPanel);
 			}
+			validate();
+			repaint();
 			clearErrorMessages();
 		}
 	}
 	
+	/**
+	 * Eine eigene Klasse die einen ActionListener für den inDenWarenkorbButton implementiert
+	 * 
+	 * @author Torres
+	 *
+	 */
 	class InDenWarenkorbListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
@@ -669,12 +775,9 @@ public class KundeGUI extends JFrame {
 					shop.inDenWarenkorbLegen(kunde, a.getArtikelnummer(), (Integer) menge.getItemAt(menge.getSelectedIndex()));
 					updateArtikelanzahl();
 					updateSearchTable(shop.gibAlleArtikelSortiertNachBezeichnung());
-					remove(detailsPanel);
 					tablePanel.validate();
 					tablePanel.repaint();
 					updateArtikelMenge(a);
-					//revalidate();
-					repaint();
 				} catch (NullPointerException e) {
 					errorMessage.setText("Bitte w\u00e4hlen Sie unten eine g\u00fcltige Menge aus.");
 				} catch (ArtikelBestandIstZuKleinException e) {
@@ -688,6 +791,12 @@ public class KundeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Eine eigene Klasse die einen ActionListener für den entfernenButton implementiert
+	 * 
+	 * @author Torres
+	 *
+	 */
 	class EntfernenListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
@@ -711,23 +820,27 @@ public class KundeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Eine eigene Klasse die einen ItemListener für änderungen der Stückzahl implementiert
+	 * 
+	 * @author Torres
+	 *
+	 */
 	class StueckzahlListener implements ItemListener {
 		@Override
 	    public void itemStateChanged(ItemEvent event) {
-	       if (event.getStateChange() == ItemEvent.SELECTED) {
+	       if (event.getStateChange() == ItemEvent.SELECTED && warenkorbTable.getSelectedRow() != -1) {
 				WarenkorbArtikelTableModel watm = (WarenkorbArtikelTableModel) warenkorbTable.getModel();
 				WarenkorbArtikel wa = watm.getRowValue(warenkorbTable.convertRowIndexToModel(warenkorbTable.getSelectedRow()));
 				try {
 					if (stueckzahl.getSelectedIndex() != -1) {
-						shop.stueckzahlAendern(kunde, wa.getArtikel().getArtikelnummer(), (Integer) stueckzahl.getItemAt(stueckzahl.getSelectedIndex()));
-						updateGesamtpreis();
-						tablePanel.validate();
-						tablePanel.repaint();
-						details.setText("");
-						details.append("St\u00fcckzahl: " + wa.getStueckzahl() + "\n");
-						details.append("Preis: " + String.format("%.2f ", wa.getArtikel().getPreis()) + Currency.getInstance(Locale.GERMANY) + "\n");
-						detailsPanel.validate();
-						detailsPanel.repaint();
+						if (wa.getStueckzahl() != (Integer) stueckzahl.getItemAt(stueckzahl.getSelectedIndex())) {
+							shop.stueckzahlAendern(kunde, wa.getArtikel().getArtikelnummer(), (Integer) stueckzahl.getItemAt(stueckzahl.getSelectedIndex()));
+							updateWarenkorbTable(shop.gibWarenkorb(kunde));
+							updateGesamtpreis();
+							tablePanel.validate();
+							tablePanel.repaint();
+						}
 					}
 				} catch (ArtikelBestandIstZuKleinException e) {
 					errorMessage.setText("Der Bestand dieses Artikels ist zu klein oder leer.");
@@ -740,6 +853,12 @@ public class KundeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Eine eigene Klasse die einen ActionListener für den accountButton implementiert
+	 * 
+	 * @author Torres
+	 *
+	 */
 	class AccountButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
@@ -763,14 +882,38 @@ public class KundeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Eine eigene Klasse die einen ActionListener für den logoutButton implementiert
+	 * 
+	 * @author Torres
+	 *
+	 */
 	class LogoutListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
 			if (ae.getSource().equals(logoutButton)) {
 				try {
-					shop.disconnect();
-					dispose();
-					new LogInGUI(host, port);
+					if (((JWarenkorbButton) warenkorbButton).getArtikelanzahl() != 0) {
+						if (JOptionPane.showConfirmDialog(null,
+								"Sind Sie sich sicher dass Sie sich Abmelden wollen?\n" +
+								"Sie werden alle Artikel die sich in ihrem Warenkorb befinden verlieren.", "Abmelden",
+				                JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {		
+								try {
+									shop.leeren(kunde);
+									shop.disconnect();
+									dispose();
+									new LogInGUI(host, port);
+								} catch (ArtikelBestandIstKeineVielfacheDerPackungsgroesseException e) {
+									JOptionPane.showConfirmDialog(null,
+											"Der Bestand eines Artikels ist keine Vielfache der Packungsgr\u00f6\u00dfe.", "Abmelden",
+							                JOptionPane.PLAIN_MESSAGE);
+								}
+						}
+					} else {
+						shop.disconnect();
+						dispose();
+						new LogInGUI(host, port);
+					}
 				} catch (IOException e) {
 					JOptionPane.showConfirmDialog(null, "IOException: " + e.getMessage(), "eShop", JOptionPane.PLAIN_MESSAGE);
 				}
@@ -778,6 +921,12 @@ public class KundeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Eine eigene Klasse die einen ActionListener für den abbrechenButton implementiert
+	 * 
+	 * @author Torres
+	 *
+	 */
 	class AccountListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
@@ -869,8 +1018,7 @@ public class KundeGUI extends JFrame {
 					try {
 						shop.kundenBearbeiten(kunde.getId(), kunde.getPasswort(), kunde.getName(), kunde.getStrasse(), kunde.getPlz(), kunde.getWohnort(), kunde.getBlockiert());
 					} catch (KundeExistiertNichtException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						JOptionPane.showConfirmDialog(null, "Der Kunde exisitiert nicht.", "Account bearbeiten", JOptionPane.PLAIN_MESSAGE);
 					}
 					kaufenButton.setEnabled(true);
 					leerenButton.setEnabled(true);
@@ -886,6 +1034,12 @@ public class KundeGUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Überschreiben der Methode WindowClosing um bei schließen der LoginGUI die Verbindung zum server trennt.
+	 * 
+	 * @author Torres
+	 *
+	 */
 	class WindowCloser extends WindowAdapter {
 		@Override
 		public void windowClosing(WindowEvent we) {
