@@ -477,9 +477,15 @@ public class KundeGUI extends JFrame {
 	 * 
 	 * @param a Artikel dessen Anzahl angepasst werden soll
 	 */
-	private void updateArtikelMenge(Artikel a) {
+	/**
+	 * Methode zum updaten der ArtikelMenge in abhängigkeit davon ob es sich um einen
+	 * Massengutartikel handelt oder nicht.
+	 * 
+	 * @param a Artikel dessen Anzahl angepasst werden soll
+	 */
+	private void updateArtikelMenge(Artikel a, int entnommeneMenge) {
 		menge.removeAllItems();
-		for (int i = 1; i <= a.getBestand(); i++) {
+		for (int i = 1; i <= a.getBestand() - entnommeneMenge; i++) {
 			if (a instanceof Massengutartikel) {
 				if (i % ((Massengutartikel) a).getPackungsgroesse() == 0) {
 					menge.addItem(i);
@@ -719,7 +725,7 @@ public class KundeGUI extends JFrame {
 				details.append("Bestand: " + a.getBestand() + "\n");
 				auswahlPanel.remove(stueckzahlPanel);
 				auswahlPanel.add(mengePanel);
-				updateArtikelMenge(a);
+				updateArtikelMenge(a, 0);
 				auswahlPanel.remove(entfernenButton);
 				auswahlPanel.add(inDenWarenkorbButton, BorderLayout.SOUTH);
 			} else 
@@ -772,12 +778,13 @@ public class KundeGUI extends JFrame {
 				ArtikelTableModel atm = (ArtikelTableModel) searchTable.getModel();
 				Artikel a = atm.getRowValue(searchTable.convertRowIndexToModel(searchTable.getSelectedRow()));
 				try {
-					shop.inDenWarenkorbLegen(kunde, a.getArtikelnummer(), (Integer) menge.getItemAt(menge.getSelectedIndex()));
+					int ausgewaehlteMenge = (Integer) menge.getItemAt(menge.getSelectedIndex());
+					shop.inDenWarenkorbLegen(kunde, a.getArtikelnummer(), ausgewaehlteMenge);
 					updateArtikelanzahl();
 					updateSearchTable(shop.gibAlleArtikelSortiertNachBezeichnung());
 					tablePanel.validate();
 					tablePanel.repaint();
-					updateArtikelMenge(a);
+					updateArtikelMenge(a, ausgewaehlteMenge);
 				} catch (NullPointerException e) {
 					errorMessage.setText("Bitte w\u00e4hlen Sie unten eine g\u00fcltige Menge aus.");
 				} catch (ArtikelBestandIstZuKleinException e) {
