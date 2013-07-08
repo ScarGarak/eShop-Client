@@ -765,31 +765,6 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	}
 	
 	/**
-	 * ueberschreiben der Methode WindowClosing um bei schlieﬂen der LoginGUI die Verbindung zum server trennt.
-	 * 
-	 * @author Thummerer
-	 *
-	 */
-	class WindowCloser extends WindowAdapter {
-		@Override
-		public void windowClosing(WindowEvent we) {
-			
-			Window w = we.getWindow();
-			w.setVisible(false);
-			
-			try {
-				shop.disconnect();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-				w.dispose();
-				System.exit(0);
-		}
-	}
-	
-	/**
 	 * Die main-Methode...
 	 */
 	public static void main(String[] args) {
@@ -840,4 +815,31 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		}
 	}
 	
+
+	/**
+	 * ‹berschreiben der Methode WindowClosing um bei schlieﬂen der LoginGUI die Verbindung zum server trennt.
+	 * 
+	 * @author Thummerer
+	 *
+	 */
+	class WindowCloser extends WindowAdapter {
+		@Override
+		public void windowClosing(WindowEvent we) {
+			
+			Window w = we.getWindow();
+			w.setVisible(false);
+			
+			try {
+				shop.disconnect();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+				w.dispose();
+				System.exit(0);
+		}
+	}
+
+
 }
