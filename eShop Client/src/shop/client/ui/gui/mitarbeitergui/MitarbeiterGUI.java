@@ -69,7 +69,7 @@ import shop.common.valueobjects.MitarbeiterFunktion;
 /**
  * Diese Klasse erstellt die graphishe Oberflaesche fuer Mitarbeiter. Sie ermoeglicht es die Artikel, Mitarbeiter und
  * Kunden des eShops zu verwalten, sowie die LogDatei anzusehen. 
- * Einige Funktion dieser MitarbeiterGUI werden abhängig von der Funktion des Mitarbeiters ausgeblendet.
+ * Einige Funktion dieser MitarbeiterGUI werden abhaengig von der Funktion des Mitarbeiters ausgeblendet.
  * @author Migliosi Angelo
  *
  */
@@ -469,9 +469,9 @@ public class MitarbeiterGUI extends JFrame {
 					String bezeichnung = artikelBezeichnungInput.getText();
 					double preis = Double.parseDouble(artikelPreisInput.getText());
 					int bestand = Integer.parseInt(artikelBestandInput.getText());
-					if(bestand < 0){
+					if(preis < 0 || bestand < 0){
 						// Wird zum Catch Block mit NumberFormatException weitergeleitet
-						// weil -1 kein gültiger Wert ist
+						// weil -1 kein gueltiger Wert ist
 						throw new NumberFormatException();
 					}
 					if(bezeichnung != null && !bezeichnung.equals("")){
@@ -501,7 +501,7 @@ public class MitarbeiterGUI extends JFrame {
 					artikelFooterWrapper.setVisible(false);
 					artikelFooterWrapper.remove(artikelFooterPanel);
 					
-					// Wähle die hinzugefügte Zeile aus
+					// Waehle die hinzugefuegte Zeile aus
 					int index = artikelTableModel.getRowIndex(artikelnummer);
 					
 					if(index != -1){
@@ -585,7 +585,10 @@ public class MitarbeiterGUI extends JFrame {
 					try{
 						bezeichnung = artikelBezeichnungInput.getText();
 						preis = Double.parseDouble(artikelPreisInput.getText());
-						if(bezeichnung.equals("")){
+						
+						if(preis < 0){
+							setErrorMsg("Der Preis darf nicht negativ sein!", artikelFooterWrapper);
+						}else if(bezeichnung.equals("")){
 							setErrorMsg("Die Bezeichnung muss einen g\u00fcltigen Namen haben!", artikelFooterWrapper);
 						}else{
 							success = true;
@@ -1101,7 +1104,7 @@ public class MitarbeiterGUI extends JFrame {
 						mitarbeiterTable.setRowSelectionInterval(index, index);
 					}
 					
-					//Setze alles zurück
+					//Setze alles zurueck
 					clearErrorMsg();
 					clearMitarbeiterEingabeFelder();
 					mitarbeiterFooterPanel.removeAll();
@@ -1483,7 +1486,7 @@ public class MitarbeiterGUI extends JFrame {
 	class ArtikelPanelListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// Säubere zuerst alle nötigen Komponenten
+			// Saeubere zuerst alle naetigen Komponenten
 			clearErrorMsg();
 			clearEingabeFelder();
 			artikelFooterPanel.removeAll();
@@ -2119,7 +2122,7 @@ public class MitarbeiterGUI extends JFrame {
 			case 0: searchField.setEnabled(true);
 					searchButton.setEnabled(true);
 					
-					// Alles von den anderen Tabs zurücksetzen
+					// Alles von den anderen Tabs zuruecksetzen
 					clearMitarbeiterTableSelection();
 
 					mitarbeiterFooterWrapper.setVisible(false);
@@ -2131,7 +2134,7 @@ public class MitarbeiterGUI extends JFrame {
 			case 1: searchField.setEnabled(true);
 					searchButton.setEnabled(true);
 					
-					// Alles von den anderen Tabs zurücksetzen
+					// Alles von den anderen Tabs zuruecksetzen
 					clearArtikelTableSelection();
 					artikelFooterWrapper.setVisible(false);
 					clearKundenTableSelection();
@@ -2141,7 +2144,7 @@ public class MitarbeiterGUI extends JFrame {
 			case 2: searchField.setEnabled(true);
 					searchButton.setEnabled(true);
 					
-					// Alles von den anderen Tabs zurücksetzen
+					// Alles von den anderen Tabs zuruecksetzen
 					clearArtikelTableSelection();
 					artikelFooterWrapper.setVisible(false);
 					clearMitarbeiterTableSelection();
@@ -2152,7 +2155,7 @@ public class MitarbeiterGUI extends JFrame {
 			case 3: searchField.setEnabled(true);
 					searchButton.setEnabled(true);
 					
-					// Alles von den anderen Tabs zurücksetzen
+					// Alles von den anderen Tabs zuruecksetzen
 					clearArtikelTableSelection();
 					artikelFooterWrapper.setVisible(false);
 					clearMitarbeiterTableSelection();
@@ -2172,7 +2175,7 @@ public class MitarbeiterGUI extends JFrame {
 	}
 	
 	/**
-	 * Hier wird der ListSelectionListener für die Artikeltabelle implementiert. Er aktiviert alle Buttons, die
+	 * Hier wird der ListSelectionListener fuer die Artikeltabelle implementiert. Er aktiviert alle Buttons, die
 	 * sich auf ein Artikel beziehen, d.h. die eine Auswahl in der Tabelle benoetigen.
 	 * @author Migliosi Angelo
 	 *
@@ -2194,7 +2197,7 @@ public class MitarbeiterGUI extends JFrame {
 	}
 	
 	/**
-	 * Hier wird der ListSelectionListener für die Mitarbeitertabelle implementiert. Er aktiviert alle Buttons, die
+	 * Hier wird der ListSelectionListener fuer die Mitarbeitertabelle implementiert. Er aktiviert alle Buttons, die
 	 * sich auf einen Mitarbeiter beziehen, d.h. die eine Auswahl in der Tabelle benoetigen.
 	 * @author Migliosi Angelo
 	 *
@@ -2224,7 +2227,7 @@ public class MitarbeiterGUI extends JFrame {
 	}
 
 	/**
-	 * Hier wird der ListSelectionListener für die Kundentabelle implementiert. Er aktiviert alle Buttons, die
+	 * Hier wird der ListSelectionListener fuer die Kundentabelle implementiert. Er aktiviert alle Buttons, die
 	 * sich auf einen Kunden beziehen, d.h. die eine Auswahl in der Tabelle benoetigen.
 	 * @author Migliosi Angelo
 	 *

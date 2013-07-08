@@ -46,7 +46,7 @@ import shop.common.valueobjects.Person;
 import shop.common.valueobjects.PersonTyp;
 
 /**
- * Klasse die LoginGUI auf der Clientseite zur verfügung stellt
+ * Klasse die LoginGUI auf der Clientseite zur verfuegung stellt
  * 
  * @author Thummerer
  *
@@ -103,7 +103,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	private JPanel rechtsPan = new JPanel();
 	private JPanel untenPan = new JPanel();
 	
-//	login objekte hinzufügen
+//	login objekte hinzufuegen
 	private JButton logInButton = new JButton("LogIn");
 	private JTextField usernameField = new JTextField();
 	private JTextField passwordField = new JPasswordField();
@@ -111,10 +111,10 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	private JLabel passwordLabel = new JLabel("Passwort");
 	private JLabel forgetLabel = new JLabel("<html><u>Login vergessen?</u></html>");
 	
-//	links objekte hinzufügen
+//	links objekte hinzufuegen
 	private JLabel links = new JLabel("");
 	
-//	rechts objekte hinzufügen
+//	rechts objekte hinzufuegen
 	private JLabel rechts = new JLabel("");
 	private JLabel rechts2 = new JLabel("");
 	private JLabel rechts3 = new JLabel("");
@@ -125,7 +125,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	private JLabel usernameError = new JLabel("<html><font color=#FF0000>Bitte Usernamen eingeben</font></html>");
 	private JLabel passwordError = new JLabel("<html><font color=#FF0000>Bitte Passwort eingeben</font></html>");
 	
-//	unten objekte hinzufügen
+//	unten objekte hinzufuegen
 	private JLabel registerLabel = new JLabel("<html><u>Registrieren</u></html>");
 	
 //	register objekte
@@ -163,7 +163,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		
 		zeichneLogin();
 		
-//		hinzufügen der events
+//		hinzufuegen der events
 		logInButton.addActionListener(this);
 		usernameField.addKeyListener(this);
 		passwordField.addKeyListener(this);
@@ -179,7 +179,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	}
 	
 	/**
-	 * Initialisierung der constraints Variablen für das GridBagLayout. Vorbelegung der Variablen mit standard Werten.
+	 * Initialisierung der constraints Variablen fuer das GridBagLayout. Vorbelegung der Variablen mit standard Werten.
 	 * @param component
 	 * @param gridx
 	 * @param gridy
@@ -284,7 +284,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	
 	
 	/**
-	 * Ueberpruefung der Eingaben bei Registrierung. Bei korrekter Eingabe erfolgt ein aufruf der zum Registrieren nötigen Methoden.
+	 * Ueberpruefung der Eingaben bei Registrierung. Bei korrekter Eingabe erfolgt ein aufruf der zum Registrieren noetigen Methoden.
 	 */
 	private void registrierung() {
 		usernameField.setBackground(Color.WHITE);
@@ -294,7 +294,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		streetField.setBackground(Color.WHITE);
 		zipField.setBackground(Color.WHITE);
 		cityField.setBackground(Color.WHITE);
-//		überprüfung der Eingaben des Nutzers
+//		ueberpruefung der Eingaben des Nutzers
 		if (usernameField.getText().equals(""))
 			usernameField.setBackground(new Color(250,240,230));
 		if (pwField.getText().equals(""))
@@ -323,7 +323,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 			String username = usernameField.getText();
 			try {
 				shop.fuegeKundenHinzu(username, passwort, name, strasse, plz, wohnort);
-				System.out.println("Kunde wurde hinzugefügt!");
+				System.out.println("Kunde wurde hinzugefuegt!");
 				zeichneLogin();
 				try {
 					shop.schreibeKunden();
@@ -337,7 +337,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 				System.err.println(e.getMessage());
 			}
 		} else {
-			nameField.setText("eingaben prüfen!");
+			nameField.setText("eingaben pruefen!");
 		}
 	}
 	
@@ -374,7 +374,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	}
 	
 	/**
-	 * Zeichnen der betroffenen Panels für den Login vorgang.
+	 * Zeichnen der betroffenen Panels fuer den Login vorgang.
 	 */
 	private void zeichneLogin() {
 //		berechnung von ipadx in abhängigkeit zum Label
@@ -388,7 +388,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		zipField.setBackground(Color.WHITE);
 		cityField.setBackground(Color.WHITE);
 		
-//		hinzufügen der objekte zum frame
+//		hinzufuegen der objekte zum frame
 		addGB(frameHeader, 1, 1, 3, 400, 150);
 		addGB(linksPan, 1, 2, 1, 150 - ixl, 0);
 		addGB(mittePan, 2, 2, 1, 0, 0);
@@ -409,7 +409,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		untenPan.add(registerLabel);
 		untenPan.repaint();
 		
-//		füge mittePan objekte hinzu
+//		fuege mittePan objekte hinzu
 		mittePan.setLayout(new GridLayout(5, 1, 0, 2));
 		mittePan.add(usernameLabel);
 		mittePan.add(usernameField);
@@ -421,7 +421,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		mittePan.add(mitteUnten);
 		mittePan.repaint();
 		
-//		füge mitteUnten objekte hinzu
+//		fuege mitteUnten objekte hinzu
 		mitteUnten.setLayout(new GridLayout(1, 2, 10, 0));
 		mitteUnten.add(forgetLabel);
 		mitteUnten.add(logInButton);
@@ -450,51 +450,50 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		JLabel streetLab = new JLabel("Strasse/HNr.");
 		JLabel zipLab = new JLabel("Postleitzahl/zip");
 		JLabel cityLab = new JLabel("Stadt");
-		JLabel wpwLab = new JLabel("wiederhole Pw");
+		JLabel wpwLab = new JLabel("Passwort wiederholen");
 				
-		addGB(linksPan, 1, 2, 1, 40 - ixl, 40);
-		addGB(mittePan, 1, 2, 3, 220, 40);
-		addGB(rechtsPan, 3, 2, 1, 40 - ixr, 40);
+		addGB(linksPan, 1, 2, 1, 100 - ixl, 20);
+		addGB(mittePan, 2, 2, 1, 100, 20);
+		addGB(rechtsPan, 3, 2, 1, 100 - ixr, 20);
 		
 		linksPan.removeAll();
 		linksPan.setLayout(new GridLayout(6, 1));
-//		linksPan.setBackground(Color.BLUE);
-		linksPan.add(new JLabel (""));
-		linksPan.add(new JLabel (""));
+		linksPan.add(nameLab);
+		linksPan.add(nameField);
 		nameField.requestFocus();
-		linksPan.add(new JLabel (""));
-		linksPan.add(new JLabel (""));
-		linksPan.add(new JLabel (""));
-		linksPan.add(new JLabel (""));
+//		linksPan.add(gebDatLab);
+//		linksPan.add(gebDatField);
+		linksPan.add(streetLab);
+		linksPan.add(streetField);
+		linksPan.add(zipLab);
+		linksPan.add(zipField);
 		linksPan.repaint();
 		linksPan.validate();
 		
-//		mittePan.setPreferredSize(new Dimension(300,200));
 		mittePan.removeAll();
-		mittePan.setLayout(new GridLayout(6, 2, 2, 0));
-//		mittePan.setBackground(Color.GREEN);
-		mittePan.add(nameLab);
-		mittePan.add(streetLab);
-		mittePan.add(nameField);
-		mittePan.add(streetField);
-		mittePan.add(zipLab);
+		mittePan.setLayout(new GridLayout(6, 1));
+//		mittePan.add(zipLab);
+//		mittePan.add(zipField);
 		mittePan.add(cityLab);
-		mittePan.add(zipField);
 		mittePan.add(cityField);
-		mittePan.add(passwordLabel);
-		mittePan.add(wpwLab);
-		mittePan.add(pwField);
-		mittePan.add(wpwField);
+		mittePan.add(usernameLabel);
+		mittePan.add(usernameField);
+		mittePan.add(new JLabel (""));
+		mittePan.add(new JLabel (""));
+		usernameField.setEditable(false);
 		mittePan.repaint();
 		mittePan.validate();
 		
 		rechtsPan.removeAll();
 		rechtsPan.setLayout(new GridLayout(6, 1));
-//		rechtsPan.setBackground(Color.GREEN);
-		rechtsPan.add(new JLabel (""));
-		rechtsPan.add(new JLabel (""));
-		rechtsPan.add(new JLabel (""));
-		rechtsPan.add(new JLabel (""));
+//		rechtsPan.add(opwLab);
+//		rechtsPan.add(opwField);
+		rechtsPan.add(passwordLabel);
+		rechtsPan.add(pwField);
+//		pwField.disable();
+		rechtsPan.add(wpwLab);
+		rechtsPan.add(wpwField);
+//		wpwField.disable();
 		rechtsPan.add(rechts3);
 		rechtsPan.add(rechts4);
 		rechtsPan.repaint();
@@ -592,7 +591,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	}
 	
 	/**
-	 * Aufruf der Methode für den Login und anschließendes öffnen der jeweiligen GUI
+	 * Aufruf der Methode fuer den Login und anschließendes oeffnen der jeweiligen GUI
 	 * abhängig davon ob sich ein Mitarbeiter oder Kunde einloggt.
 	 */
 	private void anmeldeVorgang() {
@@ -628,7 +627,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	}
 	
 	/**
-	 * Prüfung der Eingaben des Login Dialoges mit entsprechenden reaktionen auf falsche/keine Eingaben.
+	 * Pruefung der Eingaben des Login Dialoges mit entsprechenden reaktionen auf falsche/keine Eingaben.
 	 * @throws IOException
 	 */
 	private void logIn() throws IOException {
@@ -746,7 +745,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	
 	public void keyTyped (KeyEvent ke) {
 		if (ke.getSource() == nameField) {
-			if (nameField.getText().equals("eingaben prüfen!")) {
+			if (nameField.getText().equals("eingaben pruefen!")) {
 				nameField.setText("");
 			}
 		}
@@ -766,7 +765,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 	}
 	
 	/**
-	 * Überschreiben der Methode WindowClosing um bei schließen der LoginGUI die Verbindung zum server trennt.
+	 * ueberschreiben der Methode WindowClosing um bei schließen der LoginGUI die Verbindung zum server trennt.
 	 * 
 	 * @author Thummerer
 	 *
@@ -799,7 +798,7 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 		InetAddress ia = null;
 
 		// ---
-		// Hier werden die main-Parameter geprüft:
+		// Hier werden die main-Parameter geprueft:
 		// ---
 
 		// Host- und Port-Argument einlesen, wenn angegeben
@@ -840,5 +839,5 @@ public class LogInGUI extends JFrame implements ActionListener, KeyListener, Mou
 			e.printStackTrace();
 		}
 	}
-
+	
 }
